@@ -1,10 +1,18 @@
+drop table usuari cascade constraint;
+drop table jugador cascade constraint;
+drop table membre cascade constraint;
+drop table equip cascade constraint;
+drop table categoria cascade constraint;
+drop table temporada cascade constraint;
+
+
 CREATE TABLE USUARI (
 	login VARCHAR2 (30) CONSTRAINT PK_USUARI PRIMARY KEY 
 			CONSTRAINT CK_LOGIN_USUARI CHECK (LENGTH (login) BETWEEN 4 AND 30),
     	nom VARCHAR2 (40) CONSTRAINT NN_NOM_USUARI NOT NULL 
 			CONSTRAINT CK_NOM_USUARI CHECK ((LENGTH (nom) BETWEEN 2 AND 40) AND REGEXP_LIKE (nom, '^[A-Za-z]+$')),
 	password VARCHAR2 (50) CONSTRAINT NN_PASSWORD_USUARI NOT NULL 
-			CONSTRAINT CK_PASSWORD_USUARI CHECK((LENGTH (password) BETWEEN 35 AND 45) AND REGEXP_LIKE (password, '^[0-9A-Z]+$'))
+			CONSTRAINT CK_PASSWORD_USUARI CHECK((LENGTH (password) BETWEEN 35 AND 45) AND REGEXP_LIKE (password, '^[0-9A-Za-z]+$'))
 );
 
 
@@ -48,7 +56,7 @@ CREATE TABLE JUGADOR (
         		CONSTRAINT CK_COGNOM_JUGADOR CHECK (LENGTH(cognom) > 1 AND LENGTH(cognom) < 40 AND REGEXP_LIKE(cognom, '^[A-Za-z]+$')),
 	sexe CHAR(1) CONSTRAINT NN_SEXE_JUGADOR NOT NULL
 			CONSTRAINT CK_SEXE_JUGADOR CHECK (sexe IN ('H', 'D')),
-	foto VARCHAR2(2500) CONSTRAINT NN_FOTO_JUGADOR NOT NULL,
+	foto VARCHAR(2500) CONSTRAINT NN_FOTO_JUGADOR NOT NULL,
 	data_naix DATE CONSTRAINT NN_DATANAIX_JUGADOR NOT NULL,
 	adreca VARCHAR2 (150) CONSTRAINT NN_ADRECA_JUGADOR NOT NULL
 			CONSTRAINT CK_ADRECA_JUGADOR CHECK (LENGTH(adreca) >= 5),
@@ -226,7 +234,6 @@ END;
 
 
 
-
 CREATE OR REPLACE TRIGGER trg_check_categoria_titular
 BEFORE INSERT OR UPDATE ON MEMBRE
 FOR EACH ROW
@@ -255,7 +262,7 @@ BEGIN
     v_edat_jugador := v_any_temporada - EXTRACT(YEAR FROM v_data_naix);
 
     IF :NEW.titular_convidat = 'T' AND v_edat_jugador < v_edat_min THEN
-        RAISE_APPLICATION_ERROR(-20009, 'El jugador no pot ser titular, la seva edat és inferior a l''edat mínima de la categoria');
+        RAISE_APPLICATION_ERROR(-20006, 'El jugador no pot ser titular, la seva edat és inferior a l''edat mínima de la categoria');
     END IF;
 END;
 /
