@@ -2,18 +2,19 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package potrony.lopez.bru.SportManager;
+package potrony.bru.SportManager;
 
 /**
  *
  * @author Vago
  */
 public class Categoria {
-    long id;
-    String nom;
-    int edat_min;
-    int edat_max;
+    private long id;
+    private String nom;
+    private int edat_min;
+    private int edat_max;
 
+    
     public long getId() {
         return id;
     }
