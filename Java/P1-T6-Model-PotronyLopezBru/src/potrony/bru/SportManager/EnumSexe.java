@@ -8,6 +8,6 @@ package potrony.bru.SportManager;
  *
  * @author Vago
  */
-public class EnumSexe {
-    
+public enum EnumSexe {
+    H,D;
 }

@@ -9,5 +9,11 @@ package potrony.bru.SportManager;
  * @author Vago
  */
 public class SportModelException extends RuntimeException {
-    
+    public SportModelException(String message) {
+        super(message);
+    }
+
+    public SportModelException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

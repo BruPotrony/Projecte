@@ -9,14 +9,9 @@ package potrony.bru.SportManager;
  * @author Vago
  */
 public class Equip {
-    static long idCounter=0; //per generar id automaticament
-    long id;
-    long idCategoria;
-    int idTemporada;
-    String nom;
-    EnumTipus tipus;
-    
-    public void generarIdAutomatic(){
-        this.id = idCounter++;
-    }
+    private long id;//Aqui nomes tindre id pel get, ja que ID ho assigna automaticament la bd
+    private Categoria categoria;
+    private Temporada temporada;
+    private String nom;
+    private EnumTipus tipus;  
 }

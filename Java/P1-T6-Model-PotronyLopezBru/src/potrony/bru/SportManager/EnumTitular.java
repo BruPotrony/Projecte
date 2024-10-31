@@ -9,5 +9,5 @@ package potrony.bru.SportManager;
  * @author Vago
  */
 public enum EnumTitular {
-    
+    T,C
 }

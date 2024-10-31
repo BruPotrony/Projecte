@@ -9,5 +9,7 @@ package potrony.bru.SportManager;
  * @author Vago
  */
 public class Membre {
-    
+    private Equip equip;
+    private Jugador jugador;
+    private EnumTitular titularitat;
 }
