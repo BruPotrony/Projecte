@@ -22,18 +22,18 @@ public class Jugador {
     private String foto;
     private String adreca;
     private String iban;
-    private String id_Legal;
+    private String idLegal;
     private int any_fi_revisio_medica;
 
     public Jugador(String nom, String cognom, EnumSexe sexe, Date data_naix, String foto, String adreca, String iban, String id_Legal, int any_fi_revisio_medica) {
-        this.nom = nom;
-        this.cognom = cognom;
-        this.sexe = sexe;
-        this.data_naix = data_naix;
-        this.foto = foto;
-        this.adreca = adreca;
-        this.iban = iban;
-        this.id_Legal = id_Legal;
+        setNom(nom);
+        setCognom(cognom);
+        setSexe(sexe);
+        setData_naix(data_naix);
+        setFoto(foto);
+        setAdreca(adreca);
+        setIban(iban);
+        setId_Legal(id_Legal);
         this.any_fi_revisio_medica = any_fi_revisio_medica;
     }
 
@@ -83,7 +83,7 @@ public class Jugador {
     }
 
     public String getId_Legal() {
-        return id_Legal;
+        return idLegal;
     }
     
     
@@ -133,7 +133,6 @@ public class Jugador {
         this.sexe = sexe;
     }
 
-    
     public void setData_naix(Date data_naix) {
         //comprobar que tingui mes de 6 anys
         if (calcularEdatIniciAnyActual(data_naix)>6){
@@ -143,7 +142,6 @@ public class Jugador {
         }
         
     }
-
     
      public int calcularEdatIniciAnyActual(Date data_naixament) {
          //Ho converteixo a localdate ja que date te molts metodes deprecated com el getYear
@@ -220,7 +218,7 @@ public class Jugador {
             throw new SportModelException("La longitud de l'ID legal no pot ser superior a 40 caràcters");
         }
 
-        this.id_Legal = id_Legal;
+        this.idLegal = id_Legal;
     }
     
     
