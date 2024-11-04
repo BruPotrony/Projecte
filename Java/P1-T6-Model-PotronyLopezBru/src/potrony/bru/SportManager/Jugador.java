@@ -34,7 +34,7 @@ public class Jugador {
         setAdreca(adreca);
         setIban(iban);
         setId_Legal(id_Legal);
-        this.any_fi_revisio_medica = any_fi_revisio_medica;
+        setAny_fi_revisio_medica(any_fi_revisio_medica);
     }
 
 
@@ -127,7 +127,7 @@ public class Jugador {
     }
 
     public void setSexe(EnumSexe sexe) {
-        if (sexe == null || (!sexe.equals(EnumSexe.H) && !sexe.equals(EnumSexe.D))) {
+        if (sexe == null || !(sexe.equals(EnumSexe.D)||sexe.equals(EnumSexe.H))) {
             throw new SportModelException("El sexe ha de ser 'H' o 'D'");
         }
         this.sexe = sexe;

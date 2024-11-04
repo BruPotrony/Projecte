@@ -14,9 +14,9 @@ public class Membre {
     private EnumTitular titularitat;
 
     public Membre(Equip equip, Jugador jugador, EnumTitular titularitat) {
-        this.equip = equip;
-        this.jugador = jugador;
-        this.titularitat = titularitat;
+        setEquip(equip);
+        setJugador(jugador);
+        setTitularitat(titularitat);
     }
 
     public Equip getEquip() {
@@ -32,14 +32,21 @@ public class Membre {
     }
 
     public void setEquip(Equip equip) {
+        if (equip==null)throw new SportModelException("S'ha passat un equip null");
         this.equip = equip;
     }
 
     public void setJugador(Jugador jugador) {
+        if (jugador==null)throw new SportModelException("S'ha passat un jugador null");
         this.jugador = jugador;
     }
 
     public void setTitularitat(EnumTitular titularitat) {
+        if (titularitat==null)throw new SportModelException("S'ha passat titularitat null");
+        
+        if (!(titularitat.equals(EnumTitular.C)||titularitat.equals(EnumTitular.T))){
+            throw new SportModelException("La titularitat pot ser 'C' o 'T'");
+        }
         this.titularitat = titularitat;
     }
     
