@@ -6,6 +6,8 @@ package potrony.bru;
 
 import java.util.List;
 import potrony.bru.SportManager.Categoria;
+import potrony.bru.SportManager.EnumTitular;
+import potrony.bru.SportManager.Equip;
 import potrony.bru.SportManager.Jugador;
 import potrony.bru.SportManager.Temporada;
 import potrony.bru.SportManager.Usuari;
@@ -120,7 +122,43 @@ public interface SportManagerInferfaceCP {
     /********************************EQUIP**************************************************/  
 
     
+    /*Per a cargar un equip si sabem el nom
+    i la temporada ja que sense la temporada
+    pot ser que no sigui unic*/
+    Equip loadEquipNom(String nom, int temporada);
     
+    /*Per a cargar tots els equips*/
+    List<Equip> loadEquips();
+    
+    /*Guardar un equip o una llista d'equips
+    retorna cert o fals si ho ha guardat
+    correctament*/
+    boolean saveEquip(Equip equip);
+    boolean saveEquips(List<Equip> equips);
+    
+    /*Retorna cert si l'equip esta repetit*/
+    boolean equipRepetit(String nom, int any);
+    
+    /*modificar un equip si sabem el nom i l'any
+    retorna cert si s'ha guardat correctament*/
+    boolean modificarEquip (String nom, int any, Equip equip);
+    
+    /*eliminar un Equip, passem l'equip sencer*/
+    boolean eliminarEquip (Equip equip);
+    
+    
+    /********************************MEMBRE**************************************************/ 
+    
+    
+    /*Afegir un jugador a un equip com a titular
+    o convidat*/
+    boolean afegirJugadorEquip(EnumTitular titularitat, Equip equip, Jugador jugador);
+    
+    /*Retorna cert si ja es titular en algun equip*/
+    boolean esTitular(Jugador jugador);
+    
+    /*Eliminar jugador d'un equip*/
+    boolean eliminarJugadorEquip(Jugador jugador, Equip equip);
     
     
     /********************************OTHERS**************************************************/  
