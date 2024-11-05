@@ -4,6 +4,8 @@
  */
 package potrony.bru;
 
+import potrony.bru.Interface.SportManagerInferfaceCP;
+import potrony.bru.Interface.GestorSportManagerException;
 import java.beans.Statement;
 import java.io.FileInputStream;
 import java.io.IOException;
