@@ -18,22 +18,19 @@ public class ComprobarConnexio {
     public static void main(String[] args) {
         SportManagerOracle sportManager = null;
         try {
-            // Crea una instancia de SportManagerOracle
             sportManager = new SportManagerOracle("connectionBD.properties");
-            System.out.println("Conexión establecida con éxito.");
+            System.out.println("Connexió establerta correctament");
 
-            // Aquí puedes agregar más lógica para trabajar con la conexión, si es necesario
             
         } catch (GestorSportManagerException e) {
-            System.err.println("Error al establecer la conexión: " + e.getMessage());
+            System.err.println("Error a l'establir la connexió: " + e.getMessage());
         } finally {
-            // Asegúrate de cerrar la conexión al final
             if (sportManager != null) {
                 try {
                     sportManager.tancarConnexio();
-                    System.out.println("Conexión cerrada correctamente.");
+                    System.out.println("Connexió tancada correctament");
                 } catch (GestorSportManagerException e) {
-                    System.err.println("Error al cerrar la conexión: " + e.getMessage());
+                    System.err.println("Error al tancar la connexió: " + e.getMessage());
                 }
             }
         }

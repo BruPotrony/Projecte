@@ -6,14 +6,19 @@ package potrony.bru;
 
 import potrony.bru.Interface.SportManagerInferfaceCP;
 import potrony.bru.Interface.GestorSportManagerException;
-import java.beans.Statement;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import potrony.bru.SportManager.Categoria;
 import potrony.bru.SportManager.EnumTitular;
 import potrony.bru.SportManager.Equip;
@@ -28,7 +33,8 @@ import potrony.bru.SportManager.Usuari;
 public class SportManagerOracle implements SportManagerInferfaceCP {
 
     private Connection conn;
-    private Statement stmt;
+    
+    private PreparedStatement psSaveUsuaris;
     
     public SportManagerOracle() throws GestorSportManagerException {
         this("connectionBD.properties");
@@ -56,19 +62,48 @@ public class SportManagerOracle implements SportManagerInferfaceCP {
         } catch (IOException ex) {
             throw new GestorSportManagerException("Problemes en recuperar l'arxiu de propietats " + nomProperties, ex);
         } catch (SQLException ex) {
-            throw new GestorSportManagerException("No es pot establir la connexió.", ex);
+            throw new GestorSportManagerException("No es pot establir la connexió", ex);
         }
     }
 
     
     @Override
-    public boolean saveUsuari(Usuari usuari) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public boolean saveUsuari(Usuari usuari) throws GestorSportManagerException {
+        if (psSaveUsuaris==null){
+            prepareSaveUsuariStatement();
+        }
+        
+        try {
+            psSaveUsuaris.setString(1, usuari.getLogin());
+            psSaveUsuaris.setString(2, usuari.getNom());
+            psSaveUsuaris.setString(3, encriptarContrassenya(usuari.getPassword()));
+            
+            return psSaveUsuaris.executeUpdate() > 0; 
+        } catch (SQLException ex) {
+            throw new GestorSportManagerException("error en guardar usuari amb login "+usuari.getLogin(), ex);
+        }
     }
 
     @Override
-    public boolean saveUsuaris(List<Usuari> usuaris) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public boolean saveUsuaris(List<Usuari> usuaris) throws GestorSportManagerException {
+        if (psSaveUsuaris==null){
+            prepareSaveUsuariStatement();
+        }
+
+        for (Usuari usuari : usuaris) {
+            saveUsuari(usuari);
+        }
+        return true;
+    }
+    
+    
+    //Prepara PreparedStatement per el saveUsuari o saveUsuaris
+    private void prepareSaveUsuariStatement() throws GestorSportManagerException {
+        try {
+            psSaveUsuaris = conn.prepareStatement("INSERT INTO usuari (login, nom, password) VALUES (?, ?, ?)");
+        } catch (SQLException ex) {
+            throw new GestorSportManagerException("Error en preparar la sentencia psSaveUsuaris", ex);
+        }
     }
 
     @Override
@@ -102,8 +137,23 @@ public class SportManagerOracle implements SportManagerInferfaceCP {
     }
 
     @Override
-    public String encriptarContrassenya(String contrassenya) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public String encriptarContrassenya(String contrassenya) throws GestorSportManagerException {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-1");
+
+            // Convertir contrassenya a array de bytes i calular el hash
+            byte[] hashBytes = md.digest(contrassenya.getBytes());
+
+            // Convertir hash a hexadecimal
+            StringBuilder sb = new StringBuilder();
+            for (byte b : hashBytes) {
+                sb.append(String.format("%02x", b));
+            }
+
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new GestorSportManagerException("Error en encriptar la contrassenya", e);
+        }
     }
 
     @Override
