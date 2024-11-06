@@ -61,24 +61,18 @@ public class Usuari {
     }
     
     
-    //Valida si la contrassenya te mes de 7 caracters i que contingui numeros, majuscules i caracters especials
-    //Aquí la contrassenya encara no esta encriptada
+    //Valida si la contrassenya encriptada te entre 35 i 46 numeros o lletres ja que encriptació en
+    //SHA1 te 40 numeros o lletres, i deixo un marge de 5 amunt i aball
     public boolean isPasswordValid(String password){
         if (password == null) throw new SportModelException("S'ha passat un password null");
         
-        boolean llargada = password.length()>7;
-        boolean majuscula = password.matches(".*[A-Z].*");
-        boolean numero = password.matches(".*[0-9].*");
-        boolean especial = password.matches(".*[_\\-\\.\"·$%&/()]+.*");
+        boolean llargada = password.length()>34 && password.length()<46;
+        boolean contingut = password.matches("^[0-9a-z]+$");
         
         if (!llargada){
-            throw new SportModelException("La llargada del password ha de ser major a 7");
-        }else if(!majuscula){
-            throw new SportModelException("El password ha de contenir majúscules");
-        }else if(!numero){
-            throw new SportModelException("El password ha de contenir números");
-        }else if(!especial){
-            throw new SportModelException("El password ha de contenir algun caracter especial");
+            throw new SportModelException("La llargada del password no es correcte");
+        }else if(!contingut){
+            throw new SportModelException("El password ha de contenir números i lletres");
         }
         
         return true;
@@ -90,12 +84,9 @@ public class Usuari {
         if (login == null) throw new SportModelException("S'ha passat un login null");
         
         boolean llargada = login.length() >= 4 && login.length() <= 30;
-        boolean contingut = login.matches("[a-zA-Z0-9]+");
         
         if (!llargada){
             throw new SportModelException("La llargada del login ha de ser major a 3 i menor que 31");
-        }else if (!contingut){
-            throw new SportModelException("El login nomes soporta numeros majúscules i minúscules");
         }
 
         return true;

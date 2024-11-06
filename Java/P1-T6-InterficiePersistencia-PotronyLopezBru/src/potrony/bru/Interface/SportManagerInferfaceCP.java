@@ -27,7 +27,7 @@ public interface SportManagerInferfaceCP {
     
     /*Per cargar un usuari si sabem el login
     o cargar tots els usuaris que tenim*/
-    Usuari loadUsuari(String login)throws GestorSportManagerException;
+    Usuari loadUsuariLogin(String login)throws GestorSportManagerException;
     List<Usuari> loadUsuaris()throws GestorSportManagerException;
     
     /*Li passem el login d'un usuari, i un 
@@ -47,9 +47,8 @@ public interface SportManagerInferfaceCP {
     ja que ha de ser unic*/
     boolean loginRepetit(String login)throws GestorSportManagerException;
     
-    /*Encripta i desencripta la contrassenya amb SHA1*/
+    /*Encripta la contrassenya amb SHA1*/
     String encriptarContrassenya(String contrassenya)throws GestorSportManagerException;
-    String desencriptarContrassenya(String encriptada)throws GestorSportManagerException;
 
 
     

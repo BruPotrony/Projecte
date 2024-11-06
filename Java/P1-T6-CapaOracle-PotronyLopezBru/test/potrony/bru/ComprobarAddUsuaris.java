@@ -31,7 +31,7 @@ public class ComprobarAddUsuaris {
             boolean result = manager.saveUsuaris(usuaris);
             System.out.println("Usuarios guardados: " + result);
             
-            manager.confirmarCanvis();
+            manager.desferCanvis();
         } catch (GestorSportManagerException e) {
             e.printStackTrace();
         }
