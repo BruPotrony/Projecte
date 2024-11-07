@@ -15,6 +15,17 @@ public class Categoria {
     private int edat_max;
 
     
+    //Aquest constructor nomes servira per quan recuperem les dades de la bd ja que 
+    //en principi no es poden crear categories
+    public Categoria(long id, String nom, int edat_min, int edat_max) {
+        this.id = id;
+        this.nom = nom;
+        this.edat_min = edat_min;
+        this.edat_max = edat_max;
+    }
+    
+    
+    
     public long getId() {
         return id;
     }

@@ -65,11 +65,11 @@ public interface SportManagerInferfaceCP {
     
     /*Eliminar una temporada retorna cert o fals
     si l'ha eliminat correctament*/
-    boolean eliminarTemporada(Temporada temporada)throws GestorSportManagerException;
+    boolean eliminarTemporada(int any)throws GestorSportManagerException;
     
     /*Serveix per saber si la temporada ja esta
     inserida per tant no es pot repetir*/
-    boolean temporadaRepetida (Temporada temporada)throws GestorSportManagerException;
+    boolean temporadaRepetida (int any)throws GestorSportManagerException;
     
     
     /********************************CATEGORIA**************************************************/  
@@ -77,7 +77,7 @@ public interface SportManagerInferfaceCP {
     
     /*Per cargar una sola categoria sabent nom
     o totes les categories que estan inserides*/
-    Categoria loadCategoria(String nom)throws GestorSportManagerException;
+    Categoria loadCategoriaId(long id)throws GestorSportManagerException;
     List<Categoria> loadCategories()throws GestorSportManagerException;
     
     

@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -42,6 +43,17 @@ public class SportManagerOracle implements SportManagerInferfaceCP {
     private PreparedStatement psUpdateUsuari;
     private PreparedStatement psDeleteUsuari;
     private PreparedStatement psLoginCorrecte;
+    private PreparedStatement psLoginRepetit;
+    
+    private PreparedStatement psSaveTemporada;
+    private PreparedStatement psLoadTemporades;
+    private PreparedStatement psDeleteTemporada;
+    private PreparedStatement psTemporadaRepetida;
+    
+    private PreparedStatement psLoadCategoria;
+    private PreparedStatement psLoadCategories;
+    
+    private PreparedStatement psSaveJugador;
     
     public SportManagerOracle() throws GestorSportManagerException {
         this("connectionBD.properties");
@@ -132,7 +144,7 @@ public class SportManagerOracle implements SportManagerInferfaceCP {
                 
         if (psLoadUsuari==null){
             try {
-            psLoadUsuari = conn.prepareStatement("select login, nom, password from usuari where login = ?");
+                psLoadUsuari = conn.prepareStatement("select login, nom, password from usuari where login = ?");
             } catch (SQLException ex) {
                 throw new GestorSportManagerException("Error en preparar la sentencia psLoadUsuaris", ex);
             }
@@ -271,8 +283,25 @@ public class SportManagerOracle implements SportManagerInferfaceCP {
     }
 
     @Override
-    public boolean loginRepetit(String login) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public boolean loginRepetit(String login) throws GestorSportManagerException {
+        if (psLoginRepetit==null){
+            try {
+                psLoginRepetit = conn.prepareStatement("SELECT login FROM usuari WHERE login=?");
+            } catch (SQLException ex) {
+                throw new GestorSportManagerException("Error en la consulta SQL psLoginRepetit", ex);
+            }
+        }
+        
+        try {
+            psLoginRepetit.setString(1, login);
+            ResultSet rs = psLoginRepetit.executeQuery();
+
+            return rs.next();
+            
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            throw new GestorSportManagerException("Error en executar la query psLoginRepetit", ex);
+        }
     }
 
     @Override
@@ -315,23 +344,100 @@ public class SportManagerOracle implements SportManagerInferfaceCP {
     
 
     @Override
-    public boolean saveTemporada(Temporada temporada) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public boolean saveTemporada(Temporada temporada) throws GestorSportManagerException {
+        if (psSaveTemporada==null){
+            try {
+                psSaveTemporada = conn.prepareStatement("Insert into temporada (anys) VALUES (?)");
+            } catch (SQLException ex) {
+                throw new GestorSportManagerException("Error en preparar la sentencia psSaveTemporada", ex);
+            }
+        }
+        
+        try {
+            psSaveTemporada.setInt(1, temporada.getAny());
+            
+            return psSaveTemporada.executeUpdate() > 0; 
+        } catch (SQLException ex) {
+            throw new GestorSportManagerException("error en guardar any: "+temporada.getAny(), ex);
+        }
     }
 
     @Override
-    public List<Temporada> loadTemporades() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public List<Temporada> loadTemporades() throws GestorSportManagerException {
+        List<Temporada> temporades = new ArrayList<>();
+        
+        if (psLoadTemporades==null){
+            try {
+                psLoadTemporades = conn.prepareStatement("Select anys from temporada");
+            } catch (SQLException ex) {
+                throw new GestorSportManagerException("Error en preparar la sentencia psLoadTemporades", ex);
+            }
+        }
+        
+        try {
+            ResultSet rs = psLoadTemporades.executeQuery();
+            
+            while(rs.next()){
+                temporades.add(new Temporada(rs.getInt("anys")));
+            }
+            
+        } catch (SQLException ex) {
+            throw new GestorSportManagerException("Error en executar la query per a recuperar temporades", ex);
+        }
+        
+        return temporades;
     }
 
     @Override
-    public boolean eliminarTemporada(Temporada temporada) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public boolean eliminarTemporada(int any) throws GestorSportManagerException {
+        if (psDeleteTemporada==null){
+            try {
+                psDeleteTemporada = conn.prepareStatement("DELETE FROM temporada WHERE anys=?");
+            } catch (SQLException ex) {
+                throw new GestorSportManagerException("Error en preparar statement psDeleteTemporada", ex);
+            }
+        }
+        
+        try {
+            psDeleteTemporada.setInt(1, any);
+        } catch (SQLException ex) {
+            throw new GestorSportManagerException("Error en assignar valor a la sentencia psDeleteUsuari "+any, ex);
+        }
+        
+        int rowsDeleted;
+        try {
+            rowsDeleted = psDeleteTemporada.executeUpdate();
+        } catch (SQLException ex) {
+            throw new GestorSportManagerException("Error en eliminar temporada amb any: " + any, ex);
+        }
+        
+        if (rowsDeleted == 0) {
+            throw new GestorSportManagerException("No s'ha trobat temporada amb any: " + any);
+        }
+        
+        return rowsDeleted != 0;
     }
 
     @Override
-    public boolean temporadaRepetida(Temporada temporada) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public boolean temporadaRepetida(int any) throws GestorSportManagerException {
+        if (psTemporadaRepetida==null){
+            try {
+                psTemporadaRepetida = conn.prepareStatement("SELECT anys FROM temporada WHERE anys=?");
+            } catch (SQLException ex) {
+                throw new GestorSportManagerException("Error en preparar statement psTemporadaRepetida", ex);
+            }
+        }
+        
+        try {
+            psTemporadaRepetida.setInt(1, any);
+            ResultSet rs = psTemporadaRepetida.executeQuery();
+
+            return rs.next();
+            
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            throw new GestorSportManagerException("Error en executar la query psTemporadaRepetida", ex);
+        }
     }
 
     
@@ -352,13 +458,60 @@ public class SportManagerOracle implements SportManagerInferfaceCP {
     
     
     @Override
-    public Categoria loadCategoria(String nom) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public Categoria loadCategoriaId(long id) throws GestorSportManagerException {
+        Categoria categoria=null;
+                
+        if (psLoadCategoria==null){
+            try {
+                psLoadCategoria = conn.prepareStatement("select id, nom,edat_min,edat_max from categoria where id = ?");
+            } catch (SQLException ex) {
+                throw new GestorSportManagerException("Error en preparar la sentencia psLoadCategoria", ex);
+            }
+        }
+        try {
+            Categoria cat=null;
+            psLoadCategoria.setLong(1, id);
+            ResultSet rs = psLoadCategoria.executeQuery();
+            if (rs.next()) {
+                cat = new Categoria(rs.getLong("id"), rs.getString("nom"), rs.getInt("edat_min"),rs.getInt("edat_max"));
+            } else {
+                throw new GestorSportManagerException("No s'ha trobat categoria amb id: "+cat.getId());
+            }
+            return cat;
+        } catch (SQLException ex) {
+            throw new GestorSportManagerException("Error en recuperar categoria", ex);
+        }
+        
+        
     }
 
     @Override
-    public List<Categoria> loadCategories() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public List<Categoria> loadCategories() throws GestorSportManagerException {
+        List<Categoria> categories = new ArrayList<>();
+        
+        if (psLoadCategories==null){
+            try {
+                psLoadCategories = conn.prepareStatement("select id, nom,edat_min,edat_max from categoria");
+            } catch (SQLException ex) {
+                throw new GestorSportManagerException("Error en preparar la sentencia psLoadCategoria", ex);
+            }
+        }
+        
+        try {
+            ResultSet rs = psLoadCategories.executeQuery();
+            
+            while (rs.next()){
+                try{
+                    categories.add(new Categoria(rs.getLong("id"),rs.getString("nom"),rs.getInt("edat_min"),rs.getInt("edat_max")));
+                }catch(Exception ex){
+                    throw new GestorSportManagerException("Error en inserir categoria a l'array amb nom: "+rs.getString("nom"), ex);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new GestorSportManagerException("Error en executar la query psLoadCategories", ex);
+        }
+        
+        return categories;
     }
 
     
@@ -379,13 +532,39 @@ public class SportManagerOracle implements SportManagerInferfaceCP {
     
     
     @Override
-    public boolean saveJugador(Jugador jugador) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public boolean saveJugador(Jugador jugador) throws GestorSportManagerException {
+        if (psSaveJugador==null){
+            try {
+                psSaveJugador = conn.prepareStatement("INSERT INTO jugador (nom, cognom,sexe,foto,data_naix,adreca,any_fi_revisio_medica,iban,idlegal)\n" +
+                                                      "VALUES ('?','?','?','?',?,'?',?,'?','?')");
+            } catch (SQLException ex) {
+                throw new GestorSportManagerException("Error en preparar la sentencia psSaveJugador", ex);
+            }
+        }
+        
+        try {
+            psSaveJugador.setString(1, jugador.getNom());
+            psSaveJugador.setString(2, jugador.getCognom());
+            psSaveJugador.setString(3, String.valueOf(jugador.getSexe()));
+            psSaveJugador.setString(4, jugador.getFoto());
+            psSaveJugador.setDate(5, (Date) jugador.getData_naix());
+            psSaveJugador.setString(6, jugador.getAdreca());
+            psSaveJugador.setInt(7, jugador.getAny_fi_revisio_medica());
+            psSaveJugador.setString(8, jugador.getIban());
+            psSaveJugador.setString(9, jugador.getId_Legal());
+            
+            return psSaveJugador.executeUpdate() > 0; 
+        } catch (SQLException ex) {
+            throw new GestorSportManagerException("error en guardar jugador amb idLegal "+jugador.getId_Legal(), ex);
+        }
     }
 
     @Override
-    public boolean saveJugadors(List<Jugador> jugadors) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public boolean saveJugadors(List<Jugador> jugadors) throws GestorSportManagerException {
+        for (Jugador jugador : jugadors) {
+            saveJugador(jugador);
+        }
+        return true;
     }
 
     @Override

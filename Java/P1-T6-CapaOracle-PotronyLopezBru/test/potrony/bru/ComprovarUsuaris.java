@@ -11,7 +11,7 @@ import potrony.bru.SportManager.Usuari;
  *
  * @author Vago
  */
-public class ComprovarUpdateDeleteUsuari {
+public class ComprovarUsuaris {
     public static void main(String[] args) {
         try {
             // Crear una instància de SportManagerOracle
@@ -19,11 +19,17 @@ public class ComprovarUpdateDeleteUsuari {
 
             // Crear un usuari de prova
             Usuari usuariProva = new Usuari("usuari1", "Password1", "NomProva",false);
-
+          
             // Guardar l'usuari de prova a la base de dades
             System.out.println("Guardant usuari...");
             manager.saveUsuari(usuariProva);
             System.out.println("Usuari guardat correctament.");
+            
+            if (manager.loginRepetit(usuariProva.getLogin())){
+                System.out.println("Funcio per veure Login repetit funciona");
+            }else{
+                System.out.println("Usuari no trobat a la BD");
+            }
 
             // Modificar l'usuari de prova
             Usuari usuariModificat = new Usuari("usuari1","password43Nou", "NomModificat",false);

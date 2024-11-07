@@ -10,14 +10,14 @@ package potrony.bru.SportManager;
  */
 public class Equip {
     private long id;//Aqui nomes tindre id pel get, ja que ID ho assigna automaticament la bd
-    private Categoria categoria;
-    private Temporada temporada;
+    private long idCategoria;
+    private int anyTemporada;
     private String nom;
     private EnumTipus tipus;  
 
-    public Equip(Categoria categoria, Temporada temporada, String nom, EnumTipus tipus) {
-        setCategoria(categoria);
-        setTemporada(temporada);
+    public Equip(long idCategoria, int anyTemporada, String nom, EnumTipus tipus) {
+        setIdCategoria(idCategoria);
+        setAnyTemporada(anyTemporada);
         setNom(nom);
         setTipus(tipus);
     }
@@ -26,12 +26,12 @@ public class Equip {
         return id;
     }
 
-    public Categoria getCategoria() {
-        return categoria;
+    public long getCategoria() {
+        return idCategoria;
     }
 
-    public Temporada getTemporada() {
-        return temporada;
+    public long getTemporada() {
+        return anyTemporada;
     }
 
     public String getNom() {
@@ -45,14 +45,13 @@ public class Equip {
     
     
     
-    public void setCategoria(Categoria categoria) {
-        if (categoria==null)throw new SportModelException("S'ha passat una categoria null");
-        this.categoria = categoria;
+    public void setIdCategoria(Long idCategoria) {
+        if (idCategoria==null)throw new SportModelException("S'ha passat una categoria 0");
+        this.idCategoria = idCategoria;
     }
 
-    public void setTemporada(Temporada temporada) {
-        if (temporada==null)throw new SportModelException("S'ha passat una temporada null");
-        this.temporada = temporada;
+    public void setAnyTemporada(int temporada) {
+        this.anyTemporada = temporada;
     }
 
     public void setNom(String nom) {
