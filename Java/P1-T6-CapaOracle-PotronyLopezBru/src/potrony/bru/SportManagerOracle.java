@@ -39,6 +39,9 @@ public class SportManagerOracle implements SportManagerInferfaceCP {
     private PreparedStatement psSaveUsuaris;
     private PreparedStatement psLoadUsuari;
     private PreparedStatement psLoadUsuaris;
+    private PreparedStatement psUpdateUsuari;
+    private PreparedStatement psDeleteUsuari;
+    private PreparedStatement psLoginCorrecte;
     
     public SportManagerOracle() throws GestorSportManagerException {
         this("connectionBD.properties");
@@ -71,6 +74,22 @@ public class SportManagerOracle implements SportManagerInferfaceCP {
     }
 
     
+    
+    
+    
+    
+    
+    
+    //***********************************************************USUARI*************************************************************
+    
+    
+    
+    
+    
+    
+    
+    
+    
     @Override
     public boolean saveUsuari(Usuari usuari) throws GestorSportManagerException {
         if (psSaveUsuaris==null){
@@ -80,7 +99,7 @@ public class SportManagerOracle implements SportManagerInferfaceCP {
         try {
             psSaveUsuaris.setString(1, usuari.getLogin());
             psSaveUsuaris.setString(2, usuari.getNom());
-            psSaveUsuaris.setString(3, encriptarContrassenya(usuari.getPassword()));
+            psSaveUsuaris.setString(3, usuari.getPassword());
             
             return psSaveUsuaris.executeUpdate() > 0; 
         } catch (SQLException ex) {
@@ -122,7 +141,7 @@ public class SportManagerOracle implements SportManagerInferfaceCP {
             psLoadUsuari.setString(1, login);
             ResultSet rs = psLoadUsuari.executeQuery();
             if (rs.next()) {
-                usuari = new Usuari(rs.getString("login"), rs.getString("password"), rs.getString("nom"));
+                usuari = new Usuari(rs.getString("login"), rs.getString("password"), rs.getString("nom"),true);
             } else {
                 throw new GestorSportManagerException("No s'ha trobat usuari amb login: "+login);
             }
@@ -152,14 +171,14 @@ public class SportManagerOracle implements SportManagerInferfaceCP {
             
             while (rs.next()) {
                 try{
-                    Usuari usuari = new Usuari(rs.getString("login"), rs.getString("password"), rs.getString("nom"));
+                    Usuari usuari = new Usuari(rs.getString("login"), rs.getString("password"), rs.getString("nom"),true);
                     usuaris.add(usuari);
                 }catch (SQLException ex) {
                     throw new GestorSportManagerException("Error en recuperar usuari amb login "+ rs.getString("login"));
                 }
             }
         } catch (SQLException ex) {
-            throw new GestorSportManagerException("Error en recuperar usuari amb login ");
+            throw new GestorSportManagerException("Error en recuperar usuaris");
         }
 
         return usuaris;
@@ -167,18 +186,88 @@ public class SportManagerOracle implements SportManagerInferfaceCP {
     
 
     @Override
-    public void modificarUsuari(String login, Usuari usuari) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void modificarUsuari(String login, Usuari usuari) throws GestorSportManagerException {
+        
+            if (psUpdateUsuari==null){
+                try {
+                    psUpdateUsuari = conn.prepareStatement("UPDATE usuari SET nom = ?, password = ?, login=? WHERE login = ?");
+                } catch (SQLException ex) {
+                    throw new GestorSportManagerException("Error en preparar la sentencia psUpdateUsuari", ex);
+                }
+            }
+            
+            try {
+                psUpdateUsuari.setString(1, usuari.getNom());
+                psUpdateUsuari.setString(2, usuari.getPassword());
+                psUpdateUsuari.setString(3, usuari.getLogin());
+                psUpdateUsuari.setString(4, login);
+
+                int rowUpdated = psUpdateUsuari.executeUpdate();
+                
+                if (rowUpdated==0){
+                    throw new GestorSportManagerException("No s'ha trobat usuari amb login "+login);
+                }
+            } catch (SQLException ex) {
+                throw new GestorSportManagerException("Error en assignar valors a la sentencia psUpdateUsuari", ex);
+            }
     }
 
     @Override
-    public boolean eliminarUsuari(Usuari usuari) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public boolean eliminarUsuari(String login) throws GestorSportManagerException {
+        if (psDeleteUsuari==null){
+            try {
+                psDeleteUsuari = conn.prepareStatement("DELETE FROM usuari WHERE login=?");
+            } catch (SQLException ex) {
+                throw new GestorSportManagerException("Error en preparar statement psDeleteUsuari", ex);
+            }
+        }
+        
+        try {
+            psDeleteUsuari.setString(1, login);
+        } catch (SQLException ex) {
+            throw new GestorSportManagerException("Error en assignar valor a la sentencia psDeleteUsuari "+login, ex);
+        }
+        
+        int rowsDeleted;
+        try {
+            rowsDeleted = psDeleteUsuari.executeUpdate();
+        } catch (SQLException ex) {
+            throw new GestorSportManagerException("Error en eliminar usuari amb login: " + login, ex);
+        }
+        
+        if (rowsDeleted == 0) {
+            throw new GestorSportManagerException("No s'ha trobat usuari amb login: " + login);
+        }
+        
+        return rowsDeleted != 0;
     }
 
     @Override
-    public boolean estaRegistrat(String login, String contrassenya) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public boolean estaRegistrat(String login, String contrassenya) throws GestorSportManagerException {
+        if (psLoginCorrecte==null){
+            try {
+                psLoginCorrecte = conn.prepareStatement("SELECT login, password FROM usuari WHERE login=?");
+            } catch (SQLException ex) {
+                throw new GestorSportManagerException("Error en preparar statememtnt psLoginCorrecte", ex);
+            }
+        }
+        
+        try {
+            psLoginCorrecte.setString(1, login);
+            
+            ResultSet rs = psLoginCorrecte.executeQuery();
+            
+            if (!rs.next()) {
+                throw new GestorSportManagerException("No hi ha cap usuari registrat amb el login: " + login);
+            } else {
+                
+                return contrassenya.equals(rs.getString("password"));
+
+            }
+            
+        } catch (SQLException ex) {
+            throw new GestorSportManagerException("Error en executar la query", ex);
+        }
     }
 
     @Override
@@ -206,6 +295,24 @@ public class SportManagerOracle implements SportManagerInferfaceCP {
         }
     }
 
+    
+    
+    
+    
+    
+    
+    
+    
+    //***********************************************************TEMPORADA*************************************************************
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     @Override
     public boolean saveTemporada(Temporada temporada) {
@@ -227,6 +334,23 @@ public class SportManagerOracle implements SportManagerInferfaceCP {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
+    
+    
+    
+    
+    
+    
+    
+    //***********************************************************CATEGORIA*************************************************************
+    
+    
+    
+    
+    
+    
+    
+    
+    
     @Override
     public Categoria loadCategoria(String nom) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
@@ -237,6 +361,23 @@ public class SportManagerOracle implements SportManagerInferfaceCP {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
+    
+    
+    
+    
+    
+    
+    
+    //***********************************************************JUGADORS*************************************************************
+    
+    
+    
+    
+    
+    
+    
+    
+    
     @Override
     public boolean saveJugador(Jugador jugador) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
@@ -277,6 +418,23 @@ public class SportManagerOracle implements SportManagerInferfaceCP {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
+    
+    
+    
+    
+    
+    
+    
+    //***********************************************************EQUIP*************************************************************
+    
+    
+    
+    
+    
+    
+    
+    
+    
     @Override
     public Equip loadEquipNom(String nom, int temporada) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
@@ -312,6 +470,23 @@ public class SportManagerOracle implements SportManagerInferfaceCP {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
+    
+    
+    
+    
+    
+    
+    
+    //***********************************************************MEMBRE*************************************************************
+    
+    
+    
+    
+    
+    
+    
+    
+    
     @Override
     public boolean afegirJugadorEquip(EnumTitular titularitat, Equip equip, Jugador jugador) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
@@ -327,6 +502,23 @@ public class SportManagerOracle implements SportManagerInferfaceCP {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
+    
+    
+    
+    
+    
+    
+    
+    //***********************************************************OTHERS*************************************************************
+    
+    
+    
+    
+    
+    
+    
+    
+    
     @Override
     public void saveAll() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody

@@ -25,12 +25,12 @@ public class ComprobarLoadUsuaris {
             Usuari usuari = manager.loadUsuariLogin(login);
 
             if (usuari != null) {
-                System.out.println("Usuario cargado con éxito:");
+                System.out.println("Usuari cargat:");
                 System.out.println("Login: " + usuari.getLogin());
                 System.out.println("Nombre: " + usuari.getNom());
                 System.out.println("Password: " + usuari.getPassword());
             } else {
-                System.out.println("No se encontró un usuario con el login: " + login);
+                System.out.println("No es troba cap usuari amb el login: " + login);
             }
 
         } catch (GestorSportManagerException ex) {
@@ -40,31 +40,25 @@ public class ComprobarLoadUsuaris {
         }
         
         
-        // Ruta del archivo de propiedades para la conexión a la base de datos
-        String propertiesFile = "connectionBD.properties"; // Ajusta el nombre si es necesario
+        String propertiesFile = "connectionBD.properties";
         
         try {
-            // Crear instancia de SportManagerOracle con el archivo de propiedades
             SportManagerOracle sportManager = new SportManagerOracle(propertiesFile);
             
-            // Llamar al método loadUsuaris para cargar todos los usuarios
             List<Usuari> usuaris = sportManager.loadUsuaris();
             
-            // Verificar si se encontraron usuarios
             if (usuaris.isEmpty()) {
-                System.out.println("No se encontraron usuarios.");
+                System.out.println("No s'han trobat usuaris");
             } else {
-                // Imprimir los usuarios cargados
-                System.out.println("Usuarios encontrados:");
+                System.out.println("Usuarios trobats:");
                 for (Usuari usuari : usuaris) {
-                    System.out.println("Login: " + usuari.getLogin() + ", Nombre: " + usuari.getNom());
+                    System.out.println("Login: " + usuari.getLogin() + ", Nom: " + usuari.getNom());
                 }
             }
             
         } catch (GestorSportManagerException ex) {
-            // Manejar errores específicos del gestor de deportes
             System.err.println("Error en el gestor de deporte: " + ex.getMessage());
-            ex.printStackTrace();
+            
         } 
     }
     

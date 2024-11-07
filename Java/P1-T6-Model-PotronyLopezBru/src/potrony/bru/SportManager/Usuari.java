@@ -4,9 +4,17 @@
  */
 package potrony.bru.SportManager;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 /**
  *
- * @author Vago
+ * Constructor: li arriben totes les dades dels parametres i una mes: 
+ * estaEncriptada la qual ens dira si li estem passant la contrassenya encriptada
+ * (com quan la recuperem de la base de dades) o si no esta encriptada i per tant ha 
+ * de passar un filtre de contrassenya
+ * 
+ * @author Bru Potrony
  */
 public class Usuari {
     private String login;
@@ -14,9 +22,14 @@ public class Usuari {
     private String nom;
 
     
-    public Usuari(String login, String password, String nom) {
+    public Usuari(String login, String password, String nom, boolean estaEncriptada) {
         this.setLogin(login);
-        this.setPassword(password);
+        if (estaEncriptada){
+            this.password=password;
+        }else{
+            this.setPassword(password);
+        }
+        
         this.setNom(nom);
     }
 
@@ -41,7 +54,7 @@ public class Usuari {
 
     public void setPassword(String password) {
         if (this.isPasswordValid(password)){
-           this.password = password; 
+           this.password = encriptarContrassenya(password); 
         }else{
             throw new SportModelException("Error en assignar el Password de l'usuari");
         }
@@ -61,21 +74,52 @@ public class Usuari {
     }
     
     
-    //Valida si la contrassenya encriptada te entre 35 i 46 numeros o lletres ja que encriptació en
-    //SHA1 te 40 numeros o lletres, i deixo un marge de 5 amunt i aball
+    
+    public String encriptarContrassenya(String contrassenya) throws SportModelException {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-1");
+
+            // Convertir contrassenya a array de bytes i calular el hash
+            byte[] hashBytes = md.digest(contrassenya.getBytes());
+
+            // Convertir hash a hexadecimal
+            StringBuilder sb = new StringBuilder();
+            for (byte b : hashBytes) {
+                sb.append(String.format("%02x", b));
+            }
+
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new SportModelException("Error en encriptar la contrassenya", e);
+        }
+    }
+    
+    
+    
+    //Valida si la contrassenya te mes de 7 caracters i que contingui numeros i majuscules
+    //Aquí la contrassenya encara no esta encriptada
     public boolean isPasswordValid(String password){
-        if (password == null) throw new SportModelException("S'ha passat un password null");
-        
-        boolean llargada = password.length()>34 && password.length()<46;
-        boolean contingut = password.matches("^[0-9a-z]+$");
-        
-        if (!llargada){
-            throw new SportModelException("La llargada del password no es correcte");
-        }else if(!contingut){
-            throw new SportModelException("El password ha de contenir números i lletres");
+        if (password==null){
+            throw new SportModelException("El password no pot ser null");
         }
         
-        return true;
+        boolean llargada = password.length()>7;
+        boolean majuscula = password.matches(".*[A-Z].*");
+        boolean numero = password.matches(".*[0-9].*");
+        
+        
+        
+        if (!llargada){
+            throw new SportModelException("La llargada del password ha de ser major a 7");
+        }
+        if (!majuscula){
+            throw new SportModelException("El password ha de contenir alguna majuscula");
+        }
+        if (!numero){
+            throw new SportModelException("El password ha de contenir alguna numero");
+        }
+        
+        return llargada && majuscula && numero;
     }
     
     

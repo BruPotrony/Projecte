@@ -37,7 +37,7 @@ public interface SportManagerInferfaceCP {
     
     /*Li passem un usuari, el busca pel Login i el
     borra, retorna true si l'ha borrat o false si no*/
-    boolean eliminarUsuari(Usuari usuari)throws GestorSportManagerException;
+    boolean eliminarUsuari(String login)throws GestorSportManagerException;
     
     /*Per saber si un usuari esta registrat
     i la contrassenya es correcte*/
