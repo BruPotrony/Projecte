@@ -94,9 +94,9 @@ public interface SportManagerInferfaceCP {
     /*Cargar tots els jugadors*/
     List<Jugador> loadJugadors()throws GestorSportManagerException;
     
-    /*Cargar jugador per idLegal nomes en pot cargar
-    un ja que idLegal es unic*/
-    Jugador loadJugadorIdLegal(String idLegal)throws GestorSportManagerException;
+    /*Cargar jugador per id nomes en pot cargar
+    un ja que id es unic*/
+    Jugador loadJugadorId(Long id)throws GestorSportManagerException;
     
     /*Carga una llista dels jugadors que tinguin el 
     nom o cognom que passem*/
@@ -108,7 +108,7 @@ public interface SportManagerInferfaceCP {
     
     /*Busca si un jugador ja esta repetit,
     mitjançant idLegal ja que ha de ser unic*/
-    boolean jugadorRepetit(String idLegal)throws GestorSportManagerException;
+    boolean jugadorIdLegalRepetit(String idLegal)throws GestorSportManagerException;
     
     /*Elimina un jugador retorna cert o fals
     si ho ha completat*/
@@ -163,8 +163,7 @@ public interface SportManagerInferfaceCP {
     
     
     
-    /*Serveix per a guardar-ho tot*/
-    void saveAll()throws GestorSportManagerException;
+
     
     /*Serveix per tancar la connexió amb
     la capa de persistència retorna cert

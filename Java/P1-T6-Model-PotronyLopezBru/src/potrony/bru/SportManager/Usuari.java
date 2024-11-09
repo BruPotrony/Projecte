@@ -142,7 +142,7 @@ public class Usuari {
     public boolean isNomValid(String nom){
         if (nom == null) throw new SportModelException("S'ha passat un nom null");
         boolean llargada = nom.length() > 1 && nom.length() <= 40;
-        boolean contingut = nom.matches("[a-zA-Z]*");
+        boolean contingut = nom.toUpperCase().matches("[a-zA-ZÀÁÈÉÍÏÒÓÚÜÇÑ]*");
         
         if (!llargada){
             throw new SportModelException("La llargada del nom ha de ser major a 1 i menor que 41");

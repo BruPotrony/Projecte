@@ -18,14 +18,14 @@ public class Jugador {
     private String nom;
     private String cognom;
     private EnumSexe sexe;
-    private Date data_naix;
+    private LocalDate data_naix;
     private String foto;
     private String adreca;
     private String iban;
     private String idLegal;
     private int any_fi_revisio_medica;
 
-    public Jugador(String nom, String cognom, EnumSexe sexe, Date data_naix, String foto, String adreca, String iban, String id_Legal, int any_fi_revisio_medica) {
+    public Jugador(String nom, String cognom, EnumSexe sexe, LocalDate data_naix, String foto, String adreca, String iban, String id_Legal, int any_fi_revisio_medica) {
         setNom(nom);
         setCognom(cognom);
         setSexe(sexe);
@@ -37,6 +37,22 @@ public class Jugador {
         setAny_fi_revisio_medica(any_fi_revisio_medica);
     }
 
+    public Jugador(long id, String nom, String cognom, EnumSexe sexe, LocalDate data_naix, String foto, String adreca, String iban, String id_Legal, int any_fi_revisio_medica) {
+        setId(id);
+        setNom(nom);
+        setCognom(cognom);
+        setSexe(sexe);
+        setData_naix(data_naix);
+        setFoto(foto);
+        setAdreca(adreca);
+        setIban(iban);
+        setId_Legal(id_Legal);
+        setAny_fi_revisio_medica(any_fi_revisio_medica);
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     
     
@@ -62,7 +78,7 @@ public class Jugador {
         return sexe;
     }
 
-    public Date getData_naix() {
+    public LocalDate getData_naix() {
         return data_naix;
     }
 
@@ -98,7 +114,7 @@ public class Jugador {
     public void setNom(String nom) {
         if (nom == null) throw new SportModelException("S'ha passat un nom null");
 
-        boolean alfabetic = nom.matches("[a-zA-Z]+");
+        boolean alfabetic = nom.toUpperCase().matches("[a-zA-ZÀÁÈÉÍÏÒÓÚÜÇÑ]+");
         boolean llargada = nom.length() > 1 && nom.length() < 40;
 
         if (!alfabetic) {
@@ -113,8 +129,8 @@ public class Jugador {
 
     public void setCognom(String cognom) {
         if (cognom == null) throw new SportModelException("S'ha passat un cognom null");
-
-        boolean alfabetic = cognom.matches("[a-zA-Z]+");
+        
+        boolean alfabetic = cognom.toUpperCase().matches("[A-ZÀÁÈÉÍÏÒÓÚÜÇÑ]+");
         boolean llargada = cognom.length() > 1 && cognom.length() < 40;
 
         if (!alfabetic) {
@@ -133,7 +149,7 @@ public class Jugador {
         this.sexe = sexe;
     }
 
-    public void setData_naix(Date data_naix) {
+    public void setData_naix(LocalDate data_naix) {
         //comprobar que tingui mes de 6 anys
         if (calcularEdatIniciAnyActual(data_naix)>6){
             this.data_naix = data_naix;
@@ -143,18 +159,15 @@ public class Jugador {
         
     }
     
-     public int calcularEdatIniciAnyActual(Date data_naixament) {
-         //Ho converteixo a localdate ja que date te molts metodes deprecated com el getYear
-        LocalDate dataNaix = data_naixament.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-
-        //Obtinc 1 de gener de l'any actual
+     public int calcularEdatIniciAnyActual(LocalDate data_naixament) {
+        // Obtenim el 1 de gener de l'any actual
         LocalDate iniciAnyAct = LocalDate.now().withDayOfYear(1);
 
-        // Calcular edat
-        int any = iniciAnyAct.getYear() - dataNaix.getYear();
+        // Calculem l'edat
+        int any = iniciAnyAct.getYear() - data_naixament.getYear();
 
-        //Resta 1 si el cumple encara no ha passat
-        if (dataNaix.isAfter(iniciAnyAct)) {
+        // Restem 1 si l'aniversari encara no ha passat aquest any
+        if (data_naixament.isAfter(iniciAnyAct)) {
             any--;
         }
 
@@ -220,6 +233,14 @@ public class Jugador {
 
         this.idLegal = id_Legal;
     }
+
+    @Override
+    public String toString() {
+        return "Jugador{" + "id=" + id + ", nom=" + nom + ", cognom=" + cognom + ", sexe=" + sexe + ", data_naix=" + data_naix + ", foto=" + foto + ", adreca=" + adreca + ", iban=" + iban + ", idLegal=" + idLegal + ", any_fi_revisio_medica=" + any_fi_revisio_medica + '}';
+    }
+
+    
+    
     
     
 }
