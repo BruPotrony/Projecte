@@ -9,6 +9,7 @@ import potrony.bru.SportManager.Categoria;
 import potrony.bru.SportManager.EnumTitular;
 import potrony.bru.SportManager.Equip;
 import potrony.bru.SportManager.Jugador;
+import potrony.bru.SportManager.Membre;
 import potrony.bru.SportManager.Temporada;
 import potrony.bru.SportManager.Usuari;
 
@@ -125,6 +126,9 @@ public interface SportManagerInferfaceCP {
     pot ser que no sigui unic*/
     Equip loadEquipNom(String nom, int temporada)throws GestorSportManagerException;
     
+    /*Cargar un equip pel seu id*/
+    Equip loadEquipId(long id) throws GestorSportManagerException;
+    
     /*Per a cargar tots els equips*/
     List<Equip> loadEquips()throws GestorSportManagerException;
     
@@ -132,10 +136,7 @@ public interface SportManagerInferfaceCP {
     retorna cert o fals si ho ha guardat
     correctament*/
     boolean saveEquip(Equip equip)throws GestorSportManagerException;
-    boolean saveEquips(List<Equip> equips)throws GestorSportManagerException;
     
-    /*Retorna cert si l'equip esta repetit*/
-    boolean equipRepetit(String nom, int any)throws GestorSportManagerException;
     
     /*modificar un equip si sabem el nom i l'any
     retorna cert si s'ha guardat correctament*/
@@ -150,14 +151,23 @@ public interface SportManagerInferfaceCP {
     
     /*Afegir un jugador a un equip com a titular
     o convidat*/
-    boolean afegirJugadorEquip(EnumTitular titularitat, Equip equip, Jugador jugador)throws GestorSportManagerException;
+    boolean afegirJugadorEquip(Membre membre)throws GestorSportManagerException;
     
     /*Retorna cert si ja es titular en algun equip*/
-    boolean esTitular(Jugador jugador)throws GestorSportManagerException;
+    boolean esTitular(long idJugador)throws GestorSportManagerException;
     
     /*Eliminar jugador d'un equip*/
-    boolean eliminarJugadorEquip(Jugador jugador, Equip equip)throws GestorSportManagerException;
+    boolean eliminarJugadorEquip(long idJugador, long idEquip)throws GestorSportManagerException;
     
+    /*Carrega tots els jugadors que estan en equip amb idEquip*/
+    List<Jugador> loadJugadorsIdEquip(long idEquip)throws GestorSportManagerException;
+    
+    /*Carrega tots els equips que hi ha el jugador amb idJugador*/
+    List<Equip> loadEquipsIdJugador(long idJugador)throws GestorSportManagerException;
+    
+            
+            
+            
     
     /********************************OTHERS**************************************************/  
     

@@ -35,6 +35,11 @@ public class ComprovarJugadors {
                 System.out.println("Error en instanciar SportManager");
             }
             
+            
+            
+            
+            
+            System.out.println("\nGuardar Jugadors Correctes:");
             List <Jugador> jugadors = new ArrayList<>();
             
             System.out.println("\nGuardant jugadors:");
@@ -54,30 +59,75 @@ public class ComprovarJugadors {
             }
             
             
+            
+            
+            
+            jugadors.clear();
+            System.out.println("\nGuardar Jugadors Incorrectes:");
+            
+            System.out.println("\nGuardant jugadors:");
+            try {
+                jugadors.add(new Jugador("Juan", "López", EnumSexe.D, LocalDate.parse("2005-04-15", formatter), "foto1.jpg", "Calle 1", "ES12345678901234567890", "IDLEGAL1", 2022));
+                jugadors.add(new Jugador("María", "López", EnumSexe.D, LocalDate.parse("2006-06-20", formatter), "foto2.jpg", "Calle 2", "ES09876543210987654321", "IDLEGAL2", 2024));
+                jugadors.add(new Jugador("Carlos", "Gómez", EnumSexe.H, LocalDate.parse("2004-02-25", formatter), "foto3.jpg", "Calle 3", "ES11223344556677889900", "IDLEGAL3", 2025));
+            }catch (Exception ex) {
+                System.out.println("Error en construir el jugador");
+            }
+            
+            try {
+                if(gestor.saveJugadors(jugadors)){
+                    System.out.println("\nJugadors guardats"); 
+                }
+                  
+            } catch (GestorSportManagerException ex) {
+                System.out.println("Error en guardar el jugador ");
+            }
+            
+            
+            
+            
+            System.out.println("\nRecuperar Jugadors:");
             jugadors.clear();
         try {
-            System.out.println("\nRecuperant jugadors");
             jugadors = gestor.loadJugadors();
         } catch (Exception ex) {
-            ex.printStackTrace();
             System.out.println("Error en recuperar jugador "+ex);
         }
             
         for (Jugador jugador : jugadors) {
             System.out.println(jugador);
         }
-        System.out.println("\nJugadors recuperats\n");
+        System.out.println("Jugadors recuperats");
         
-        System.out.println("\nRecuperar Jugador per id");
+        
+        
+        
+        
+        
+        
+        System.out.println("\nRecuperar Jugador per id Correcte");
         
         long id = 10;
         try {
             System.out.println(gestor.loadJugadorId(id));
-            System.out.println("\nJugador amb id "+id+" recuperat\n");
+            System.out.println("Jugador amb id "+id+" recuperat");
         } catch (Exception ex) {
-            ex.printStackTrace();
             System.out.println("Error en recuperar el jugador amb id "+id);
         }
+        
+        
+        
+        System.out.println("\nRecuperar Jugador per id incorrecte");
+        
+        id=-4;
+        try {
+            System.out.println(gestor.loadJugadorId(id));
+            System.out.println("Jugador amb id "+id+" recuperat");
+        } catch (Exception ex) {
+            System.out.println("Error en recuperar el jugador amb id "+id);
+        }
+        
+        
         
         
         System.out.println("\nRecuperar Jugador per nom/cognom");
@@ -96,7 +146,6 @@ public class ComprovarJugadors {
             
             System.out.println("\nJugadors recuperats\n");
         } catch (Exception ex) {
-            ex.printStackTrace();
             System.out.println("Error en recuperar el jugador amb nom/cognom "+nom+"/"+cognom);
         }
         
@@ -128,17 +177,15 @@ public class ComprovarJugadors {
             System.out.println("\nJugador modificat: \n" + jugadorModificat);
 
         } catch (GestorSportManagerException ex) {
-            ex.printStackTrace();
             System.out.println("Error en modificar jugador");
         }
         
         
-        System.out.println("\nEliminar jugador");
+        System.out.println("\nEliminar jugador(No s'hauria d'eliminar)");
         try {
             gestor.eliminarJugador(gestor.loadJugadorId((long)3));
         } catch (GestorSportManagerException ex) {
-            ex.printStackTrace();
-            System.out.println("Error en eliminar el jugador");
+            System.out.println("Error en eliminar el jugador\n"+ ex.getMessage());
         }
 
     }

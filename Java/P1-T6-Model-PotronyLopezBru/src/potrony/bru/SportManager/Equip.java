@@ -22,15 +22,32 @@ public class Equip {
         setTipus(tipus);
     }
 
+    public Equip(long id, long idCategoria, int anyTemporada, String nom, EnumTipus tipus) {
+        this.id = id;
+        this.idCategoria = idCategoria;
+        this.anyTemporada = anyTemporada;
+        this.nom = nom;
+        this.tipus = tipus;
+    }
+
+    
+    
+    
+    public void setId(long id) {
+        this.id = id;
+    }
+      
+
+    
     public long getId() {
         return id;
     }
 
-    public long getCategoria() {
+    public long getIdCategoria() {
         return idCategoria;
     }
 
-    public long getTemporada() {
+    public int getIdTemporada() {
         return anyTemporada;
     }
 
@@ -72,5 +89,13 @@ public class Equip {
         }
         this.tipus = tipus;
     }
+
+    @Override
+    public String toString() {
+        return "Equip{" + "id=" + id + ", idCategoria=" + idCategoria + ", anyTemporada=" + anyTemporada + ", nom=" + nom + ", tipus=" + tipus + '}';
+    }
+    
+    
+    
     
 }

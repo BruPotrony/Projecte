@@ -14,16 +14,16 @@ public class Membre {
     private EnumTitular titularitat;
 
     public Membre(long equip, long jugador, EnumTitular titularitat) {
-        setEquip(equip);
-        setJugador(jugador);
+        setIdEquip(equip);
+        setIdJugador(jugador);
         setTitularitat(titularitat);
     }
 
-    public long getEquip() {
+    public long getIdEquip() {
         return idEquip;
     }
 
-    public long getJugador() {
+    public long getIdJugador() {
         return idJugador;
     }
 
@@ -31,13 +31,13 @@ public class Membre {
         return titularitat;
     }
 
-    public void setEquip(Long equip) {
-        if (equip==null)throw new SportModelException("S'ha passat un equip null");
+    public void setIdEquip(long equip) {
+        if (equip<=0)throw new SportModelException("S'ha passat un equip null");
         this.idEquip = equip;
     }
 
-    public void setJugador(Long jugador) {
-        if (jugador==null)throw new SportModelException("S'ha passat un jugador null");
+    public void setIdJugador(long jugador) {
+        if (jugador<=0)throw new SportModelException("S'ha passat un jugador null");
         this.idJugador = jugador;
     }
 
