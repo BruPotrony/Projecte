@@ -4,6 +4,7 @@
  */
 package potrony.bru;
 
+import potrony.bru.CapaPersistencia.SportManagerOracle;
 import potrony.bru.Interface.GestorSportManagerException;
 
 /**
