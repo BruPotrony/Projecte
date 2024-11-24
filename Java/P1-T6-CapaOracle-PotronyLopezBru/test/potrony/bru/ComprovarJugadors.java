@@ -45,9 +45,9 @@ public class ComprovarJugadors {
             
             System.out.println("\nGuardant jugadors:");
             try {
-                jugadors.add(new Jugador("Juan", "López", EnumSexe.D, LocalDate.parse("2005-04-15", formatter), "foto1.jpg", "Calle 1", "ES12345678901234567890", "IDLEGAL1", 2025));
-                jugadors.add(new Jugador("María", "López", EnumSexe.D, LocalDate.parse("2006-06-20", formatter), "foto2.jpg", "Calle 2", "ES09876543210987654321", "IDLEGAL2", 2024));
-                jugadors.add(new Jugador("Carlos", "Gómez", EnumSexe.H, LocalDate.parse("2004-02-25", formatter), "foto3.jpg", "Calle 3", "ES11223344556677889900", "IDLEGAL3", 2025));
+                jugadors.add(new Jugador("Juan", "López", EnumSexe.D, LocalDate.parse("2005-04-15", formatter), "foto1.jpg", "Calle 1","28720","Bellver de Cerdanya", "ES12345678901234567890", "IDLEGAL1", 2025));
+                jugadors.add(new Jugador("María", "López", EnumSexe.D, LocalDate.parse("2006-06-20", formatter), "foto2.jpg", "Calle 2", "08700","Igualada", "ES09876543210987654321", "IDLEGAL2", 2024));
+                jugadors.add(new Jugador("Carlos", "Gómez", EnumSexe.H, LocalDate.parse("2004-02-25", formatter), "foto3.jpg", "Calle 3","08700","Barcelona", "ES11223344556677889900", "IDLEGAL3", 2025));
             }catch (Exception ex) {
                 System.out.println("Error en construir el jugador");
             }
@@ -68,9 +68,9 @@ public class ComprovarJugadors {
             
             System.out.println("\nGuardant jugadors:");
             try {
-                jugadors.add(new Jugador("Juan", "López", EnumSexe.D, LocalDate.parse("2005-04-15", formatter), "foto1.jpg", "Calle 1", "ES12345678901234567890", "IDLEGAL1", 2022));
-                jugadors.add(new Jugador("María", "López", EnumSexe.D, LocalDate.parse("2006-06-20", formatter), "foto2.jpg", "Calle 2", "ES09876543210987654321", "IDLEGAL2", 2024));
-                jugadors.add(new Jugador("Carlos", "Gómez", EnumSexe.H, LocalDate.parse("2004-02-25", formatter), "foto3.jpg", "Calle 3", "ES11223344556677889900", "IDLEGAL3", 2025));
+                jugadors.add(new Jugador("Juan", "López", EnumSexe.D, LocalDate.parse("2005-04-15", formatter), "foto1.jpg", "Calle 1","28720","Bellver de Cerdanya", "ES12345678901234567890", "IDLEGAL1", 2025));
+                jugadors.add(new Jugador("María", "López", EnumSexe.D, LocalDate.parse("2006-06-20", formatter), "foto2.jpg", "Calle 2", "08700","Igualada", "ES09876543210987654321", "IDLEGAL2", 2024));
+                jugadors.add(new Jugador("Carlos", "Gómez", EnumSexe.H, LocalDate.parse("2004-02-25", formatter), "foto3.jpg", "Calle 3","08700","Barcelona", "ES11223344556677889900", "IDLEGAL3", 2025));
             }catch (Exception ex) {
                 System.out.println("Error en construir el jugador");
             }
@@ -168,7 +168,7 @@ public class ComprovarJugadors {
             System.out.println("Jugador a modificar: \n" + jugAux);
 
             // Crear un nou objecte Jugador amb les dades modificades
-            Jugador modificar = new Jugador("María", "López", EnumSexe.D, LocalDate.parse("2006-06-20", formatter), "foto2.jpg", "Calle 2", "ES09876543210987654321", "IDLEGAL9", 2024);
+            Jugador modificar = new Jugador("María", "López", EnumSexe.D, LocalDate.parse("2006-06-20", formatter), "foto2.jpg", "Calle 2","08700","Igualada", "ES09876543210987654321", "IDLEGAL9", 2024);
 
             // Cridar el mètode per modificar el jugador en la base de dades
             gestor.modificarJugador(jugAux.getId_Legal(), modificar);

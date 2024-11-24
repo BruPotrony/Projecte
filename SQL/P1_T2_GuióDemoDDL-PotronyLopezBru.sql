@@ -37,166 +37,171 @@ INSERT INTO EQUIP (id_categoria, any_temporada, nom, tipus) VALUES (6, 2024, 'Se
 
 
 -- Jugadors Benjamí Mixt
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('David', 'Moreno', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2016-01-01', 'YYYY-MM-DD'), 'Carrer H, 8', 2025, 'ES6621000418401231', '23456789B');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Ana', 'Sánchez', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2017-01-01', 'YYYY-MM-DD'), 'Carrer I, 3', 2025, 'ES5521000418401232', '33456789A');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Carlos', 'López', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2016-01-01', 'YYYY-MM-DD'), 'Carrer J, 12', 2025, 'ES4421000418401233', '43456789C');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Laura', 'Martínez', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2017-01-01', 'YYYY-MM-DD'), 'Carrer K, 7', 2025, 'ES3321000418401234', '53456789D');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Jorge', 'Pérez', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2016-01-01', 'YYYY-MM-DD'), 'Carrer L, 14', 2025, 'ES2221000418401235', '63456789E');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Lucía', 'González', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2017-01-01', 'YYYY-MM-DD'), 'Carrer M, 2', 2025, 'ES1121000418401236', '73456789F');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Pablo', 'Ramírez', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2016-01-01', 'YYYY-MM-DD'), 'Carrer N, 5', 2025, 'ES0021000418401237', '83456789G');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Marta', 'Torres', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2017-01-01', 'YYYY-MM-DD'), 'Carrer O, 1', 2025, 'ES7721000418401238', '93456789H');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Sergio', 'Hernández', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2016-01-01', 'YYYY-MM-DD'), 'Carrer P, 6', 2025, 'ES6621000418401239', '13456789J');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Clara', 'Ruiz', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2017-01-01', 'YYYY-MM-DD'), 'Carrer Q, 11', 2025, 'ES5521000418401240', '23456789K');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Javier', 'Díaz', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2016-01-01', 'YYYY-MM-DD'), 'Carrer R, 9', 2025, 'ES4421000418401241', '33456789L');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, IBAN, idLegal) 
+VALUES ('David', 'Moreno', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2016-01-01', 'YYYY-MM-DD'), 'Carrer H, 8', '28001', 'Madrid', 2025, 'ES6621000418401231', '23456789B');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, IBAN, idLegal) 
+VALUES ('Ana', 'Sánchez', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2017-01-01', 'YYYY-MM-DD'), 'Carrer I, 3', '46001', 'València', 2025, 'ES5521000418401232', '33456789A');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, IBAN, idLegal) 
+VALUES ('Carlos', 'López', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2016-01-01', 'YYYY-MM-DD'), 'Carrer J, 12', '50001', 'Zaragoza', 2025, 'ES4421000418401233', '43456789C');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, IBAN, idLegal) 
+VALUES ('Laura', 'Martínez', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2017-01-01', 'YYYY-MM-DD'), 'Carrer K, 7', '41001', 'Sevilla', 2025, 'ES3321000418401234', '53456789D');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, IBAN, idLegal) 
+VALUES ('Jorge', 'Pérez', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2016-01-01', 'YYYY-MM-DD'), 'Carrer L, 14', '08010', 'Barcelona', 2025, 'ES2221000418401235', '63456789E');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, IBAN, idLegal) 
+VALUES ('Lucía', 'González', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2017-01-01', 'YYYY-MM-DD'), 'Carrer M, 2', '15001', 'A Coruña', 2025, 'ES1121000418401236', '73456789F');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, IBAN, idLegal) 
+VALUES ('Pablo', 'Ramírez', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2016-01-01', 'YYYY-MM-DD'), 'Carrer N, 5', '33001', 'Oviedo', 2025, 'ES0021000418401237', '83456789G');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, IBAN, idLegal) 
+VALUES ('Marta', 'Torres', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2017-01-01', 'YYYY-MM-DD'), 'Carrer O, 1', '27001', 'Lleida', 2025, 'ES7721000418401238', '93456789H');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, IBAN, idLegal) 
+VALUES ('Sergio', 'Hernández', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2016-01-01', 'YYYY-MM-DD'), 'Carrer P, 6', '29001', 'Málaga', 2025, 'ES6621000418401239', '13456789J');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, IBAN, idLegal) 
+VALUES ('Clara', 'Ruiz', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2017-01-01', 'YYYY-MM-DD'), 'Carrer Q, 11', '38001', 'Santa Cruz de Tenerife', 2025, 'ES5521000418401240', '23456789K');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, IBAN, idLegal) 
+VALUES ('Javier', 'Díaz', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2016-01-01', 'YYYY-MM-DD'), 'Carrer R, 9', '41010', 'Sevilla', 2025, 'ES4421000418401241', '33456789L');
 
 
 
 -- Jugadors Aleví Femení
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('María', 'López', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2014-01-01', 'YYYY-MM-DD'), 'Carrer S, 10', 2025, 'ES8821000418401242', '44556789A');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Sara', 'Martín', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2015-01-01', 'YYYY-MM-DD'), 'Carrer T, 22', 2025, 'ES9921000418401243', '54556789B');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Paula', 'Fernández', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2014-01-01', 'YYYY-MM-DD'), 'Carrer U, 5', 2025, 'ES7721000418401244', '64556789C');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Cristina', 'García', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2015-01-01', 'YYYY-MM-DD'), 'Carrer V, 9', 2025, 'ES6621000418401245', '74556789D');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Claudia', 'Serrano', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2014-01-01', 'YYYY-MM-DD'), 'Carrer W, 7', 2025, 'ES5521000418401246', '84556789E');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Lucía', 'Romero', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2015-01-01', 'YYYY-MM-DD'), 'Carrer X, 15', 2025, 'ES4421000418401247', '94556789F');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Carmen', 'Ortiz', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2014-01-01', 'YYYY-MM-DD'), 'Carrer Y, 11', 2025, 'ES3321000418401248', '14556789G');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Patricia', 'Molina', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2015-01-01', 'YYYY-MM-DD'), 'Carrer Z, 6', 2025, 'ES2221000418401249', '24556789H');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Isabel', 'Reyes', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2014-01-01', 'YYYY-MM-DD'), 'Carrer A, 18', 2025, 'ES1121000418401250', '34556789I');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Raquel', 'Gil', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2015-01-01', 'YYYY-MM-DD'), 'Carrer B, 4', 2025, 'ES0021000418401251', '44556789J');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Eva', 'Vargas', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2014-01-01', 'YYYY-MM-DD'), 'Carrer C, 21', 2025, 'ES9921000418401252', '54556789K');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, IBAN, idLegal) 
+VALUES ('María', 'López', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2014-01-01', 'YYYY-MM-DD'), 'Carrer S, 10', '08001', 'Barcelona', 2025, 'ES8821000418401242', '44556789A');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, IBAN, idLegal) 
+VALUES ('Sara', 'Martín', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2015-01-01', 'YYYY-MM-DD'), 'Carrer T, 22', '46001', 'València', 2025, 'ES9921000418401243', '54556789B');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, IBAN, idLegal) 
+VALUES ('Paula', 'Fernández', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2014-01-01', 'YYYY-MM-DD'), 'Carrer U, 5', '29001', 'Màlaga', 2025, 'ES7721000418401244', '64556789C');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, IBAN, idLegal) 
+VALUES ('Cristina', 'García', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2015-01-01', 'YYYY-MM-DD'), 'Carrer V, 9', '28001', 'Madrid', 2025, 'ES6621000418401245', '74556789D');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, IBAN, idLegal) 
+VALUES ('Claudia', 'Serrano', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2014-01-01', 'YYYY-MM-DD'), 'Carrer W, 7', '50001', 'Saragossa', 2025, 'ES5521000418401246', '84556789E');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, IBAN, idLegal) 
+VALUES ('Lucía', 'Romero', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2015-01-01', 'YYYY-MM-DD'), 'Carrer X, 15', '41001', 'Sevilla', 2025, 'ES4421000418401247', '94556789F');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, IBAN, idLegal) 
+VALUES ('Carmen', 'Ortiz', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2014-01-01', 'YYYY-MM-DD'), 'Carrer Y, 11', '07001', 'Palma de Mallorca', 2025, 'ES3321000418401248', '14556789G');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, IBAN, idLegal) 
+VALUES ('Patricia', 'Molina', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2015-01-01', 'YYYY-MM-DD'), 'Carrer Z, 6', '38001', 'Santa Cruz de Tenerife', 2025, 'ES2221000418401249', '24556789H');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, IBAN, idLegal) 
+VALUES ('Isabel', 'Reyes', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2014-01-01', 'YYYY-MM-DD'), 'Carrer A, 18', '37001', 'Salamanca', 2025, 'ES1121000418401250', '34556789I');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, IBAN, idLegal) 
+VALUES ('Raquel', 'Gil', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2015-01-01', 'YYYY-MM-DD'), 'Carrer B, 4', '08008', 'Barcelona', 2025, 'ES0021000418401251', '44556789J');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, IBAN, idLegal) 
+VALUES ('Eva', 'Vargas', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2014-01-01', 'YYYY-MM-DD'), 'Carrer C, 21', '11001', 'Cádiz', 2025, 'ES9921000418401252', '54556789K');
 
 
 
 -- Jugadors Infantil Femení
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Marina', 'Hernández', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2011-01-01', 'YYYY-MM-DD'), 'Carrer D, 14', 2025, 'ES8821000418401253', '64556789A');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Alba', 'Cano', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2012-01-01', 'YYYY-MM-DD'), 'Carrer E, 30', 2025, 'ES9921000418401254', '74556789B');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Noa', 'Salas', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2013-01-01', 'YYYY-MM-DD'), 'Carrer F, 16', 2025, 'ES7721000418401255', '84556789C');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Irene', 'Paz', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2011-01-01', 'YYYY-MM-DD'), 'Carrer G, 2', 2025, 'ES6621000418401256', '94556789D');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Bianca', 'Ferrer', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2012-01-01', 'YYYY-MM-DD'), 'Carrer H, 17', 2025, 'ES5521000418401257', '04556789E');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Olivia', 'Bravo', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2013-01-01', 'YYYY-MM-DD'), 'Carrer I, 8', 2025, 'ES4421000418401258', '14556789F');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Silvia', 'Navas', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2011-01-01', 'YYYY-MM-DD'), 'Carrer J, 19', 2025, 'ES3321000418401259', '24556789G');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Raquel', 'Santos', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2012-01-01', 'YYYY-MM-DD'), 'Carrer K, 3', 2025, 'ES2221000418401260', '34556789H');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Lola', 'Quintana', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2013-01-01', 'YYYY-MM-DD'), 'Carrer L, 12', 2025, 'ES1121000418401261', '44556789I');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Tania', 'Alonso', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2011-01-01', 'YYYY-MM-DD'), 'Carrer M, 22', 2025, 'ES0021000418401262', '54556789J');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Aitana', 'Valdés', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2012-01-01', 'YYYY-MM-DD'), 'Carrer N, 13', 2025, 'ES9921000418401263', '64556789K');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal, codiPostal, poblacio) 
+VALUES ('Marina', 'Hernández', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2011-01-01', 'YYYY-MM-DD'), 'Carrer D, 14', 2025, 'ES8821000418401253', '64556789A', '08001', 'Barcelona');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal, codiPostal, poblacio) 
+VALUES ('Alba', 'Cano', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2012-01-01', 'YYYY-MM-DD'), 'Carrer E, 30', 2025, 'ES9921000418401254', '74556789B', '46001', 'València');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal, codiPostal, poblacio) 
+VALUES ('Noa', 'Salas', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2013-01-01', 'YYYY-MM-DD'), 'Carrer F, 16', 2025, 'ES7721000418401255', '84556789C', '29001', 'Màlaga');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal, codiPostal, poblacio) 
+VALUES ('Irene', 'Paz', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2011-01-01', 'YYYY-MM-DD'), 'Carrer G, 2', 2025, 'ES6621000418401256', '94556789D', '41001', 'Sevilla');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal, codiPostal, poblacio) 
+VALUES ('Bianca', 'Ferrer', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2012-01-01', 'YYYY-MM-DD'), 'Carrer H, 17', 2025, 'ES5521000418401257', '04556789E', '33001', 'Oviedo');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal, codiPostal, poblacio) 
+VALUES ('Olivia', 'Bravo', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2013-01-01', 'YYYY-MM-DD'), 'Carrer I, 8', 2025, 'ES4421000418401258', '14556789F', '08002', 'Barcelona');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal, codiPostal, poblacio) 
+VALUES ('Silvia', 'Navas', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2011-01-01', 'YYYY-MM-DD'), 'Carrer J, 19', 2025, 'ES3321000418401259', '24556789G', '48001', 'Bilbao');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal, codiPostal, poblacio) 
+VALUES ('Raquel', 'Santos', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2012-01-01', 'YYYY-MM-DD'), 'Carrer K, 3', 2025, 'ES2221000418401260', '34556789H', '28001', 'Madrid');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal, codiPostal, poblacio) 
+VALUES ('Lola', 'Quintana', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2013-01-01', 'YYYY-MM-DD'), 'Carrer L, 12', 2025, 'ES1121000418401261', '44556789I', '39001', 'Santander');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal, codiPostal, poblacio) 
+VALUES ('Tania', 'Alonso', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2011-01-01', 'YYYY-MM-DD'), 'Carrer M, 22', 2025, 'ES0021000418401262', '54556789J', '07001', 'Palma de Mallorca');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal, codiPostal, poblacio) 
+VALUES ('Aitana', 'Valdés', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2012-01-01', 'YYYY-MM-DD'), 'Carrer N, 13', 2025, 'ES9921000418401263', '64556789K', '12001', 'Huesca');
+
+
+
 
 
 
 -- Jugadors Cadet Masculí
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Lucas', 'Moreno', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2009-01-01', 'YYYY-MM-DD'), 'Carrer O, 4', 2025, 'ES8821000418401264', '74556789A');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Santiago', 'Martínez', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2010-01-01', 'YYYY-MM-DD'), 'Carrer P, 9', 2025, 'ES9921000418401265', '84556789B');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Diego', 'Sánchez', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2009-01-01', 'YYYY-MM-DD'), 'Carrer Q, 10', 2025, 'ES7721000418401266', '94556789C');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('David', 'Ramírez', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2010-01-01', 'YYYY-MM-DD'), 'Carrer R, 12', 2025, 'ES6621000418401267', '04556789D');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Andrés', 'García', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2009-01-01', 'YYYY-MM-DD'), 'Carrer S, 11', 2025, 'ES5521000418401268', '14556789E');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Javier', 'Cruz', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2010-01-01', 'YYYY-MM-DD'), 'Carrer T, 5', 2025, 'ES4421000418401269', '24556789F');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Álvaro', 'Hernández', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2009-01-01', 'YYYY-MM-DD'), 'Carrer U, 20', 2025, 'ES3321000418401270', '34556789G');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Felipe', 'Mendoza', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2010-01-01', 'YYYY-MM-DD'), 'Carrer V, 6', 2025, 'ES2221000418401271', '44556789H');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Gabriel', 'Reyes', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2009-01-01', 'YYYY-MM-DD'), 'Carrer W, 1', 2025, 'ES1121000418401272', '54556789I');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Manuel', 'Vidal', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2010-01-01', 'YYYY-MM-DD'), 'Carrer X, 3', 2025, 'ES0021000418401273', '64556789J');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Samuel', 'González', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2009-01-01', 'YYYY-MM-DD'), 'Carrer Y, 15', 2025, 'ES9921000418401274', '74556789K');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal, codiPostal, poblacio) 
+VALUES ('Lucas', 'Moreno', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2009-01-01', 'YYYY-MM-DD'), 'Carrer O, 4', 2025, 'ES8821000418401264', '74556789A', '08011', 'Barcelona');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal, codiPostal, poblacio) 
+VALUES ('Santiago', 'Martínez', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2010-01-01', 'YYYY-MM-DD'), 'Carrer P, 9', 2025, 'ES9921000418401265', '84556789B', '29011', 'Màlaga');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal, codiPostal, poblacio) 
+VALUES ('Diego', 'Sánchez', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2009-01-01', 'YYYY-MM-DD'), 'Carrer Q, 10', 2025, 'ES7721000418401266', '94556789C', '41011', 'Sevilla');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal, codiPostal, poblacio) 
+VALUES ('David', 'Ramírez', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2010-01-01', 'YYYY-MM-DD'), 'Carrer R, 12', 2025, 'ES6621000418401267', '04556789D', '12011', 'Huesca');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal, codiPostal, poblacio) 
+VALUES ('Andrés', 'García', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2009-01-01', 'YYYY-MM-DD'), 'Carrer S, 11', 2025, 'ES5521000418401268', '14556789E', '46011', 'València');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal, codiPostal, poblacio) 
+VALUES ('Javier', 'Vázquez', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2010-01-01', 'YYYY-MM-DD'), 'Carrer T, 5', 2025, 'ES4421000418401269', '24556789F', '33011', 'Oviedo');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal, codiPostal, poblacio) 
+VALUES ('Álvaro', 'Fernández', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2009-01-01', 'YYYY-MM-DD'), 'Carrer U, 7', 2025, 'ES3321000418401270', '34556789G', '28011', 'Madrid');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal, codiPostal, poblacio) 
+VALUES ('Carlos', 'Gómez', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2010-01-01', 'YYYY-MM-DD'), 'Carrer V, 1', 2025, 'ES2221000418401271', '44556789H', '39011', 'Santander');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal, codiPostal, poblacio) 
+VALUES ('Antonio', 'Ruiz', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2009-01-01', 'YYYY-MM-DD'), 'Carrer W, 18', 2025, 'ES1121000418401272', '54556789I', '07011', 'Palma de Mallorca');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal, codiPostal, poblacio) 
+VALUES ('Pedro', 'López', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2010-01-01', 'YYYY-MM-DD'), 'Carrer X, 15', 2025, 'ES0021000418401273', '64556789J', '12011', 'Huesca');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal, codiPostal, poblacio) 
+VALUES ('Joe', 'Manuel', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2009-01-01', 'YYYY-MM-DD'), 'Carrer X, 15', 2025, 'ES0029900418401273', '64511789J', '12011', 'Huesca');
+
 
 
 
 -- Jugadors Juvenil Masculí
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Pablo', 'Cordero', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2007-01-01', 'YYYY-MM-DD'), 'Carrer Z, 8', 2025, 'ES8821000418401275', '84556789A');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Marc', 'López', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2008-01-01', 'YYYY-MM-DD'), 'Carrer AA, 3', 2025, 'ES9921000418401276', '94556789B');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Iván', 'Cáceres', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2008-01-01', 'YYYY-MM-DD'), 'Carrer BB, 14', 2025, 'ES7721000418401277', '04556789C');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Carlos', 'Ruiz', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2007-01-01', 'YYYY-MM-DD'), 'Carrer CC, 11', 2025, 'ES6621000418401278', '14556789D');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Nicolás', 'Soler', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2008-01-01', 'YYYY-MM-DD'), 'Carrer DD, 6', 2025, 'ES5521000418401279', '24556789E');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Adrián', 'García', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2007-01-01', 'YYYY-MM-DD'), 'Carrer EE, 7', 2025, 'ES4421000418401280', '34556789F');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Fernando', 'Alvarez', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2007-01-01', 'YYYY-MM-DD'), 'Carrer FF, 2', 2025, 'ES3321000418401281', '44556789G');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Jorge', 'Montes', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2007-01-01', 'YYYY-MM-DD'), 'Carrer GG, 18', 2025, 'ES2221000418401282', '54556789H');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Raúl', 'Pérez', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2008-01-01', 'YYYY-MM-DD'), 'Carrer HH, 16', 2025, 'ES1121000418401283', '64556789I');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Hugo', 'Torres', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2007-01-01', 'YYYY-MM-DD'), 'Carrer II, 4', 2025, 'ES0021000418401284', '74556789J');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Álvaro', 'Moreno', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2008-01-01', 'YYYY-MM-DD'), 'Carrer JJ, 5', 2025, 'ES9921000418401285', '84556789K');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, IBAN, idLegal) 
+VALUES ('Pablo', 'Cordero', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2007-01-01', 'YYYY-MM-DD'), 'Carrer Z, 8', '08001', 'Barcelona', 2025, 'ES8821000418401275', '84556789A');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, IBAN, idLegal) 
+VALUES ('Marc', 'López', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2008-01-01', 'YYYY-MM-DD'), 'Carrer AA, 3', '08002', 'Barcelona', 2025, 'ES9921000418401276', '94556789B');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, IBAN, idLegal) 
+VALUES ('Iván', 'Cáceres', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2008-01-01', 'YYYY-MM-DD'), 'Carrer BB, 14', '08003', 'Barcelona', 2025, 'ES7721000418401277', '04556789C');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, IBAN, idLegal) 
+VALUES ('Carlos', 'Ruiz', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2007-01-01', 'YYYY-MM-DD'), 'Carrer CC, 11', '08004', 'Barcelona', 2025, 'ES6621000418401278', '14556789D');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, IBAN, idLegal) 
+VALUES ('Nicolás', 'Soler', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2008-01-01', 'YYYY-MM-DD'), 'Carrer DD, 6', '08005', 'Barcelona', 2025, 'ES5521000418401279', '24556789E');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, IBAN, idLegal) 
+VALUES ('Adrián', 'García', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2007-01-01', 'YYYY-MM-DD'), 'Carrer EE, 7', '08006', 'Barcelona', 2025, 'ES4421000418401280', '34556789F');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, IBAN, idLegal) 
+VALUES ('Fernando', 'Alvarez', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2007-01-01', 'YYYY-MM-DD'), 'Carrer FF, 2', '08007', 'Barcelona', 2025, 'ES3321000418401281', '44556789G');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, IBAN, idLegal) 
+VALUES ('Jorge', 'Montes', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2007-01-01', 'YYYY-MM-DD'), 'Carrer GG, 18', '08008', 'Barcelona', 2025, 'ES2221000418401282', '54556789H');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, IBAN, idLegal) 
+VALUES ('Raúl', 'Pérez', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2008-01-01', 'YYYY-MM-DD'), 'Carrer HH, 16', '08009', 'Barcelona', 2025, 'ES1121000418401283', '64556789I');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, IBAN, idLegal) 
+VALUES ('Hugo', 'Torres', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2007-01-01', 'YYYY-MM-DD'), 'Carrer II, 4', '08010', 'Barcelona', 2025, 'ES0021000418401284', '74556789J');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, IBAN, idLegal) 
+VALUES ('Álvaro', 'Moreno', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2008-01-01', 'YYYY-MM-DD'), 'Carrer JJ, 5', '08011', 'Barcelona', 2025, 'ES9921000418401285', '84556789K');
+
 
 
 
 
 -- Jugadors Senior Femení
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Lucía', 'Mora', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2005-01-01', 'YYYY-MM-DD'), 'Carrer KK, 10', 2025, 'ES8821000418401286', '94556789A');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Carmen', 'Jurado', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2000-01-01', 'YYYY-MM-DD'), 'Carrer LL, 12', 2025, 'ES9921000418401287', '04556789B');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Ana', 'Guerrero', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('1995-01-01', 'YYYY-MM-DD'), 'Carrer MM, 3', 2025, 'ES7721000418401288', '14556789C');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('María', 'Castaño', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('1990-01-01', 'YYYY-MM-DD'), 'Carrer NN, 14', 2025, 'ES6621000418401289', '24556789D');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Beatriz', 'Sierra', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('1980-01-01', 'YYYY-MM-DD'), 'Carrer OO, 7', 2025, 'ES5521000418401290', '34556789E');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Patricia', 'Martínez', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2005-01-01', 'YYYY-MM-DD'), 'Carrer PP, 8', 2025, 'ES4421000418401291', '44556789F');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Teresa', 'Maldonado', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2000-01-01', 'YYYY-MM-DD'), 'Carrer QQ, 1', 2025, 'ES3321000418401292', '54556789G');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Vanessa', 'Ríos', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('1995-01-01', 'YYYY-MM-DD'), 'Carrer RR, 9', 2025, 'ES2221000418401293', '64556789H');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Gloria', 'Torres', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('1990-01-01', 'YYYY-MM-DD'), 'Carrer SS, 5', 2025, 'ES1121000418401294', '74556789I');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Elena', 'Pérez', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('1980-01-01', 'YYYY-MM-DD'), 'Carrer TT, 6', 2025, 'ES0021000418401295', '84556789J');
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Cristina', 'Sánchez', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2005-01-01', 'YYYY-MM-DD'), 'Carrer UU, 4', 2025, 'ES9921000418401296', '94556789K');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, IBAN, idLegal) 
+VALUES ('Lucía', 'Mora', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2005-01-01', 'YYYY-MM-DD'), 'Carrer KK, 10', '08012', 'Barcelona', 2025, 'ES8821000418401286', '94556789A');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, IBAN, idLegal) 
+VALUES ('Carmen', 'Jurado', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2000-01-01', 'YYYY-MM-DD'), 'Carrer LL, 12', '08013', 'Barcelona', 2025, 'ES9921000418401287', '04556789B');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, IBAN, idLegal) 
+VALUES ('Ana', 'Guerrero', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('1995-01-01', 'YYYY-MM-DD'), 'Carrer MM, 3', '08014', 'Barcelona', 2025, 'ES7721000418401288', '14556789C');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, IBAN, idLegal) 
+VALUES ('María', 'Castaño', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('1990-01-01', 'YYYY-MM-DD'), 'Carrer NN, 14', '08015', 'Barcelona', 2025, 'ES6621000418401289', '24556789D');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, IBAN, idLegal) 
+VALUES ('Beatriz', 'Sierra', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('1980-01-01', 'YYYY-MM-DD'), 'Carrer OO, 7', '08016', 'Barcelona', 2025, 'ES5521000418401290', '34556789E');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, IBAN, idLegal) 
+VALUES ('Patricia', 'Martínez', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('1985-01-01', 'YYYY-MM-DD'), 'Carrer PP, 8', '08017', 'Barcelona', 2025, 'ES4421000418401291', '44556789F');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, IBAN, idLegal) 
+VALUES ('Paula', 'Moreno', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('1992-01-01', 'YYYY-MM-DD'), 'Carrer QQ, 11', '08018', 'Barcelona', 2025, 'ES3321000418401292', '54556789G');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, IBAN, idLegal) 
+VALUES ('Olga', 'Hernández', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('1997-01-01', 'YYYY-MM-DD'), 'Carrer RR, 13', '08019', 'Barcelona', 2025, 'ES2221000418401293', '64556789H');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, IBAN, idLegal) 
+VALUES ('Sandra', 'López', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('1998-01-01', 'YYYY-MM-DD'), 'Carrer SS, 2', '08020', 'Barcelona', 2025, 'ES1121000418401294', '74556789I');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, IBAN, idLegal) 
+VALUES ('Raquel', 'Pérez', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('2000-01-01', 'YYYY-MM-DD'), 'Carrer TT, 4', '08021', 'Barcelona', 2025, 'ES0021000418401295', '84556789J');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, IBAN, idLegal) 
+VALUES ('Marta', 'Gómez', 'D', 'C:\Users\isard\Pictures\noia.jpg', TO_DATE('1999-01-01', 'YYYY-MM-DD'), 'Carrer UU, 9', '08022', 'Barcelona', 2025, 'ES9921000418401296', '94556789K');
 
 
 
 
 -- Jugadors Convidats
-INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, any_fi_revisio_medica, IBAN, idLegal) 
-VALUES ('Roc', 'Lopez', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2009-01-01', 'YYYY-MM-DD'), 'Carrer Joan M, 15', 2025, 'ES9921000418404721', '55656789K');
+INSERT INTO JUGADOR (nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, IBAN, idLegal) 
+VALUES ('Roc', 'Lopez', 'H', 'C:\Users\isard\Pictures\noi.jpg', TO_DATE('2009-01-01', 'YYYY-MM-DD'), 'Carrer Joan M, 15', '08023', 'Barcelona', 2025, 'ES9921000418404721', '55656789K');
 
 
 

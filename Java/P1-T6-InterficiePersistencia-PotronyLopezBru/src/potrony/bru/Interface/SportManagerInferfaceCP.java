@@ -31,10 +31,10 @@ public interface SportManagerInferfaceCP {
     Usuari loadUsuariLogin(String login)throws GestorSportManagerException;
     List<Usuari> loadUsuaris()throws GestorSportManagerException;
     
-    /*Li passem el login d'un usuari, i un 
-    usuari, buscara l'usuari pel login i
+    /*Li passem el login d'un usuari, i una nova contrassenya
+    , buscara l'usuari pel login i
     el cambiara*/
-    void modificarUsuari(String login, Usuari usuari)throws GestorSportManagerException;
+    void modificarContrassenya(String login, String pswd)throws GestorSportManagerException;
     
     /*Li passem un usuari, el busca pel Login i el
     borra, retorna true si l'ha borrat o false si no*/

@@ -40,6 +40,8 @@ import potrony.bru.SportManager.Usuari;
 public class SportManagerOracle implements SportManagerInferfaceCP {
 
     private Connection conn;
+
+    
     
     private PreparedStatement psSaveUsuaris;
     private PreparedStatement psLoadUsuari;
@@ -224,20 +226,18 @@ public class SportManagerOracle implements SportManagerInferfaceCP {
     
 
     @Override
-    public void modificarUsuari(String login, Usuari usuari) throws GestorSportManagerException {
+    public void modificarContrassenya(String login, String pswd) throws GestorSportManagerException {
         
             if (psUpdateUsuari==null){
                 try {
-                    psUpdateUsuari = conn.prepareStatement("UPDATE usuari SET nom = ?, password = ?, login=? WHERE login = ?");
+                    psUpdateUsuari = conn.prepareStatement("UPDATE usuari SET password = ? WHERE login = ?");
                 } catch (Exception ex) {
                     throw new GestorSportManagerException("Error en preparar la sentencia psUpdateUsuari", ex);
                 }
             }
             
             try {
-                psUpdateUsuari.setString(1, usuari.getNom());
-                psUpdateUsuari.setString(2, usuari.getPassword());
-                psUpdateUsuari.setString(3, usuari.getLogin());
+                psUpdateUsuari.setString(1, pswd);
                 psUpdateUsuari.setString(4, login);
 
                 int rowUpdated = psUpdateUsuari.executeUpdate();
@@ -559,8 +559,8 @@ public class SportManagerOracle implements SportManagerInferfaceCP {
     public boolean saveJugador(Jugador jugador) throws GestorSportManagerException {
         if (psSaveJugador==null){
             try {
-                psSaveJugador = conn.prepareStatement("INSERT INTO jugador (nom, cognom,sexe,foto,data_naix,adreca,any_fi_revisio_medica,iban,idlegal)\n" +
-                                                      "VALUES (?,?,?,?,?,?,?,?,?)");
+                psSaveJugador = conn.prepareStatement("INSERT INTO jugador (nom, cognom,sexe,foto,data_naix,adreca,codiPostal,poblacio,any_fi_revisio_medica,iban,idlegal)\n" +
+                                                      "VALUES (?,?,?,?,?,?,?,?,?,?,?)");
             } catch (Exception ex) {
                 throw new GestorSportManagerException("Error en preparar la sentencia psSaveJugador", ex);
             }
@@ -573,9 +573,11 @@ public class SportManagerOracle implements SportManagerInferfaceCP {
             psSaveJugador.setString(4, jugador.getFoto());
             psSaveJugador.setDate(5, java.sql.Date.valueOf(jugador.getData_naix()));
             psSaveJugador.setString(6, jugador.getAdreca());
-            psSaveJugador.setInt(7, jugador.getAny_fi_revisio_medica());
-            psSaveJugador.setString(8, jugador.getIban());
-            psSaveJugador.setString(9, jugador.getId_Legal());
+            psSaveJugador.setString(7, jugador.getCodiPostal());
+            psSaveJugador.setString(8, jugador.getPoblacio());
+            psSaveJugador.setInt(9, jugador.getAny_fi_revisio_medica());
+            psSaveJugador.setString(10, jugador.getIban());
+            psSaveJugador.setString(11, jugador.getId_Legal());
             
             boolean rowUpdated = psSaveJugador.executeUpdate()>0;
             
@@ -602,7 +604,7 @@ public class SportManagerOracle implements SportManagerInferfaceCP {
         
         if (psLoadJugadors==null){
             try {
-                psLoadJugadors = conn.prepareStatement("select id, nom, cognom,sexe,foto,data_naix,adreca,any_fi_revisio_medica,iban,idlegal from jugador");
+                psLoadJugadors = conn.prepareStatement("select id, nom, cognom,sexe,foto,data_naix,adreca,codiPostal,poblacio,any_fi_revisio_medica,iban,idlegal from jugador");
             } catch (Exception ex) {
                 throw new GestorSportManagerException("Error en preparar la sentencia psLoadJugadors", ex);
             }
@@ -633,7 +635,7 @@ public class SportManagerOracle implements SportManagerInferfaceCP {
 
         if (psLoadJugadorId == null) {
             try {
-                psLoadJugadorId = conn.prepareStatement("select id, nom, cognom,sexe,foto,data_naix,adreca,any_fi_revisio_medica,iban,idlegal from jugador where id = ?");
+                psLoadJugadorId = conn.prepareStatement("select id, nom, cognom,sexe,foto,data_naix,adreca,codiPostal,poblacio,any_fi_revisio_medica,iban,idlegal from jugador where id = ?");
             } catch (Exception ex) {
                 throw new GestorSportManagerException("Error en preparar la sentencia psLoadJugadors", ex);
             }
@@ -664,7 +666,7 @@ public class SportManagerOracle implements SportManagerInferfaceCP {
 
         if (psLoadJugadorNomCognom == null) {
             try {
-                psLoadJugadorNomCognom = conn.prepareStatement("select id, nom, cognom,sexe,foto,data_naix,adreca,any_fi_revisio_medica,iban,idlegal from jugador where UPPER(nom) = ? OR UPPER(cognom)=?");
+                psLoadJugadorNomCognom = conn.prepareStatement("select id, nom, cognom,sexe,foto,data_naix,adreca,codiPostal,poblacio,any_fi_revisio_medica,iban,idlegal from jugador where UPPER(nom) = ? OR UPPER(cognom)=?");
             } catch (Exception ex) {
                 throw new GestorSportManagerException("Error en preparar la sentencia psLoadJugadors", ex);
             }
@@ -705,18 +707,20 @@ public class SportManagerOracle implements SportManagerInferfaceCP {
         LocalDate dataNaix = sqlDate.toLocalDate();
 
         String adreca = rs.getString("adreca");
+        String codiPostal = rs.getString("codiPostal");
+        String poblacio = rs.getString("poblacio");
         int anyFiRevisioMedica = rs.getInt("any_fi_revisio_medica");
         String iban = rs.getString("iban");
         String idLegal = rs.getString("idlegal");
         
-        return new Jugador (id, nom, cognom, sexe, dataNaix, foto, adreca, iban, idLegal, anyFiRevisioMedica);
+        return new Jugador (id, nom, cognom, sexe, dataNaix, foto, adreca, codiPostal, poblacio, iban, idLegal, anyFiRevisioMedica);
     }
     
     @Override
     public boolean modificarJugador(String idLegal, Jugador jugador) throws GestorSportManagerException {
         if (psUpdateJugador == null) {
             try {
-                psUpdateJugador = conn.prepareStatement("UPDATE jugador SET nom = ?, cognom = ?,sexe=?,foto=?,data_naix=?,adreca=?,any_fi_revisio_medica=?,iban=?,idLegal=?  WHERE idlegal = ?");
+                psUpdateJugador = conn.prepareStatement("UPDATE jugador SET nom = ?, cognom = ?,sexe=?,foto=?,data_naix=?,adreca=?,codiPostal=?,poblacio=?,any_fi_revisio_medica=?,iban=?,idLegal=?  WHERE idlegal = ?");
             } catch (Exception ex) {
                 throw new GestorSportManagerException("Error en preparar la sentencia psUpdateJugador", ex);
             }
@@ -729,10 +733,12 @@ public class SportManagerOracle implements SportManagerInferfaceCP {
             psUpdateJugador.setString(4, jugador.getFoto());
             psUpdateJugador.setDate(5, java.sql.Date.valueOf(jugador.getData_naix()));
             psUpdateJugador.setString(6, jugador.getAdreca());
-            psUpdateJugador.setInt(7, jugador.getAny_fi_revisio_medica());
-            psUpdateJugador.setString(8, jugador.getIban());
-            psUpdateJugador.setString(9, jugador.getId_Legal());
-            psUpdateJugador.setString(10, idLegal);
+            psUpdateJugador.setString(7, jugador.getCodiPostal());
+            psUpdateJugador.setString(8, jugador.getPoblacio());
+            psUpdateJugador.setInt(9, jugador.getAny_fi_revisio_medica());
+            psUpdateJugador.setString(10, jugador.getIban());
+            psUpdateJugador.setString(11, jugador.getId_Legal());
+            psUpdateJugador.setString(12, idLegal);
 
             int rowUpdated = psUpdateJugador.executeUpdate();
             

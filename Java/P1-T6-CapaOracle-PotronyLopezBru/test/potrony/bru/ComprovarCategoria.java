@@ -4,6 +4,7 @@
  */
 package potrony.bru;
 
+import java.util.ArrayList;
 import potrony.bru.CapaPersistencia.SportManagerOracle;
 import java.util.List;
 import potrony.bru.Interface.GestorSportManagerException;
@@ -20,44 +21,54 @@ public class ComprovarCategoria {
         try {
             SportManagerOracle gestor = new SportManagerOracle();
 
-            /**
-             * Cargar categoria amb id 1
-             */
-            try{
-                Categoria categoria = gestor.loadCategoriaId(1);
+            
+            
+            
+            
+            
+            /////Comprobar carregar categories correctes i erronies
+            
+            
+            System.out.println("\n\n\n\nCarregar categories");
+            try {
+                
+                List<Integer> ids = List.of(1, 2, 3, 4, 10);
 
-                if (categoria != null) {
-                    System.out.println("Categoría cargada:");
-                    System.out.println("ID: " + categoria.getId());
-                    System.out.println("Nom: " + categoria.getNom());
-                    System.out.println("Edad mínima: " + categoria.getEdat_min());
-                    System.out.println("Edad màxima: " + categoria.getEdat_max());
+                List<Categoria> categorias = new ArrayList<>();
+
+                for (int id : ids) {
+                    try {
+                        Categoria categoria = gestor.loadCategoriaId(id);
+
+                    
+                        if (categoria != null) {
+                            categorias.add(categoria);
+                            System.out.println("\nCategoría cargada:");
+                            System.out.println("ID: " + categoria.getId());
+                            System.out.println("Nom: " + categoria.getNom());
+                            System.out.println("Edad mínima: " + categoria.getEdat_min());
+                            System.out.println("Edad màxima: " + categoria.getEdat_max());
+                        }
+                    } catch (Exception e) {
+                        System.out.println("\nError en cargar categoria amb id "+id);
+
+                    } 
                 }
 
-            }catch (Exception e){
-            System.out.println("Error en cargar la categoria"+e.getMessage());
+            } catch (Exception e) {
+                System.out.println("\nError en carregar categories "+e.getMessage());
             }
             
-            /**
-             * Cargar categoria amb id 9
-             */
-            try{
-                Categoria categoria = gestor.loadCategoriaId(9);
 
-                if (categoria != null) {
-                    System.out.println("Categoría cargada:");
-                    System.out.println("ID: " + categoria.getId());
-                    System.out.println("Nom: " + categoria.getNom());
-                    System.out.println("Edad mínima: " + categoria.getEdat_min());
-                    System.out.println("Edad màxima: " + categoria.getEdat_max());
-                }
-
-            }catch (Exception e){
-            System.out.println("Error en cargar la categoria Erronia"+e.getMessage());
-            }
             
             
-            System.out.println("\nCargar totes les categories");
+            
+            
+            
+            /////Comprovar cargar totes les categories que hi han a la bd
+            
+            
+            System.out.println("\n\n\n\nCargar totes les categories");
             List <Categoria> categories = gestor.loadCategories();
             
             for (Categoria category : categories) {
