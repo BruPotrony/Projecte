@@ -33,6 +33,9 @@ public class Usuari {
         this.setNom(nom);
     }
 
+    public Usuari() {
+    }
+
     
     
     public String getLogin() {
@@ -100,15 +103,13 @@ public class Usuari {
     //Aquí la contrassenya encara no esta encriptada
     public boolean isPasswordValid(String password){
         if (password==null){
-            throw new SportModelException("El password no pot ser null");
+            throw new SportModelException("El password no pot ser buit");
         }
-        
+                
         boolean llargada = password.length()>7;
         boolean majuscula = password.matches(".*[A-Z].*");
         boolean numero = password.matches(".*[0-9].*");
-        
-        
-        
+                
         if (!llargada){
             throw new SportModelException("La llargada del password ha de ser major a 7");
         }
@@ -125,7 +126,7 @@ public class Usuari {
     
     //Valida que el login tingui entre 4 i 30 caracters o numeros
     public boolean isLoginValid(String login){
-        if (login == null) throw new SportModelException("S'ha passat un login null");
+        if (login == null) throw new SportModelException("Login no pot ser buit");
         
         boolean llargada = login.length() >= 4 && login.length() <= 30;
         

@@ -42,7 +42,7 @@ public interface SportManagerInferfaceCP {
     
     /*Per saber si un usuari esta registrat
     i la contrassenya es correcte*/
-    boolean estaRegistrat (String login, String contrassenya)throws GestorSportManagerException;
+    boolean estaRegistrat (Usuari usuari)throws GestorSportManagerException;
     
     /*Per saber si el login ja esta registrat
     ja que ha de ser unic*/
@@ -61,7 +61,9 @@ public interface SportManagerInferfaceCP {
     o false si s'ha guardat*/
     boolean saveTemporada(Temporada temporada)throws GestorSportManagerException;
     
-    /*Per carregar totes les temporades*/
+    /*Per carregar totes les temporades
+    retorna una llista buida si no hi han
+    temporades*/
     List<Temporada> loadTemporades()throws GestorSportManagerException;
     
     /*Eliminar una temporada retorna cert o fals

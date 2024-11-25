@@ -238,7 +238,7 @@ public class SportManagerOracle implements SportManagerInferfaceCP {
             
             try {
                 psUpdateUsuari.setString(1, pswd);
-                psUpdateUsuari.setString(4, login);
+                psUpdateUsuari.setString(2, login);
 
                 int rowUpdated = psUpdateUsuari.executeUpdate();
                 
@@ -281,7 +281,7 @@ public class SportManagerOracle implements SportManagerInferfaceCP {
     }
 
     @Override
-    public boolean estaRegistrat(String login, String contrassenya) throws GestorSportManagerException {
+    public boolean estaRegistrat(Usuari usuari) throws GestorSportManagerException {
         if (psLoginCorrecte==null){
             try {
                 psLoginCorrecte = conn.prepareStatement("SELECT login, password FROM usuari WHERE login=?");
@@ -289,17 +289,17 @@ public class SportManagerOracle implements SportManagerInferfaceCP {
                 throw new GestorSportManagerException("Error en preparar statememtnt psLoginCorrecte", ex);
             }
         }
-        
+                
         try {
-            psLoginCorrecte.setString(1, login);
+            psLoginCorrecte.setString(1, usuari.getLogin());
             
             ResultSet rs = psLoginCorrecte.executeQuery();
             
             if (!rs.next()) {
-                throw new GestorSportManagerException("No hi ha cap usuari registrat amb el login: " + login);
+                return false;
             } else {
                 
-                return contrassenya.equals(rs.getString("password"));
+                return usuari.getPassword().equals(rs.getString("password"));
 
             }
             
@@ -387,6 +387,10 @@ public class SportManagerOracle implements SportManagerInferfaceCP {
         }
     }
 
+    
+    /*
+    Retorna una llista buida si no hi han temporades
+    */
     @Override
     public List<Temporada> loadTemporades() throws GestorSportManagerException {
         List<Temporada> temporades = new ArrayList<>();
