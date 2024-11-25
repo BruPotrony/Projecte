@@ -128,22 +128,22 @@ public class SwingFrameUsuari{
             @Override
             public void actionPerformed(ActionEvent e) {
                 
-//                Usuari usuTemp;
-//                try {
-//                    usuTemp = new Usuari(textFieldUsuari.getText(), new String(textFieldpwd.getPassword()),textFieldNom.getText(), false);
-//                } catch (Exception ex) {
-//                    controlador.missatgeError(ex.getMessage());
-//                    return;
-//                }
-//                
-//                try {
-//                    if (!bd.estaRegistrat(usuTemp)){
-//                        bd.saveUsuari(usuTemp);
-//                    }
-//                } catch (GestorSportManagerException ex) {
-//                    controlador.missatgeError("Error en guardar usuari");
-//                    return;
-//                }
+                Usuari usuTemp;
+                try {
+                    usuTemp = new Usuari(textFieldUsuari.getText(), new String(textFieldpwd.getPassword()),textFieldNom.getText(), false);
+                } catch (Exception ex) {
+                    controlador.missatgeError(ex.getMessage());
+                    return;
+                }
+                
+                try {
+                    if (!bd.estaRegistrat(usuTemp)){
+                        bd.saveUsuari(usuTemp);
+                    }
+                } catch (GestorSportManagerException ex) {
+                    controlador.missatgeError("Error en guardar usuari");
+                    return;
+                }
                 
                 controlador.moveToMenu(frameUsuari);
                 buidarCapmps();

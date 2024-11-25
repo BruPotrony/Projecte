@@ -67,14 +67,14 @@ public class SwingFrameEliminarTemporada{
         JMenuBar menuBar = new JMenuBar();
 
         menuCrear = new JMenu("Crear");
-        JMenu eliminar = new JMenu("Eliminar");
+        JMenu menuEliminar = new JMenu("Eliminar");
         menu = new JMenu("Menú");
         tancarSessio = new JMenu("Tancar Sessió");
 
-        eliminar.setEnabled(false);
+        menuEliminar.setEnabled(false);
         
         menuBar.add(menuCrear);
-        menuBar.add(eliminar);
+        menuBar.add(menuEliminar);
         menuBar.add(menu);
         menuBar.add(tancarSessio);
 

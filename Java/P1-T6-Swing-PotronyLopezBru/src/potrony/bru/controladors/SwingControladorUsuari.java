@@ -26,6 +26,7 @@ import javax.swing.event.MenuListener;
 import javax.swing.plaf.multi.MultiLookAndFeel;
 import potrony.bru.CapaPersistencia.SportManagerOracle;
 import potrony.bru.SportManager.Usuari;
+import potrony.bru.grafics.SwingFrameCrearJugador;
 import potrony.bru.grafics.SwingFrameCrearTemporada;
 import potrony.bru.grafics.SwingFrameEliminarTemporada;
 import potrony.bru.grafics.SwingFrameForgetPassword;
@@ -44,13 +45,16 @@ public class SwingControladorUsuari{
     private SwingFrameMenu frameMenu;
     private SwingFrameCrearTemporada frameCrearTemporada;
     private SwingFrameEliminarTemporada frameEliminarTemporada;
+    private SwingFrameCrearJugador frameCrearJugador;
     
-    public SwingControladorUsuari(SportManagerOracle manager) {
+    public SwingControladorUsuari(SportManagerOracle manager, JFrame frameCarga) {
+        frameCarga.dispose();
         frameUsuari = new SwingFrameUsuari(this, manager);
         frameForgetPassword = new SwingFrameForgetPassword(this,manager);
         frameMenu = new SwingFrameMenu(this,manager);
         frameCrearTemporada = new SwingFrameCrearTemporada(this,manager);
         frameEliminarTemporada = new SwingFrameEliminarTemporada(this,manager);
+        frameCrearJugador = new SwingFrameCrearJugador(this, manager);
     }
     
     
@@ -82,6 +86,12 @@ public class SwingControladorUsuari{
     
     public void actualitzarTemporades(){
         frameEliminarTemporada.actualitzarTemporades();
+    }
+    
+    public void moveToCrearJugador(JFrame frame){
+        frame.setVisible(false);
+        frameCrearJugador.getFrame().setVisible(true);
+        
     }
 
 

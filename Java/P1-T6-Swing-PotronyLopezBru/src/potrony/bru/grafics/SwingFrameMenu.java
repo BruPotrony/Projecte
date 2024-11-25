@@ -31,6 +31,8 @@ public class SwingFrameMenu {
     SportManagerOracle bd;
 
     JButton btnTemporada;
+    JButton btnJugadors;
+    JButton btnEquips;
 
     public SwingFrameMenu(SwingControladorUsuari controlador, SportManagerOracle bd) {
         frameMenu = new JFrame();
@@ -48,15 +50,17 @@ public class SwingFrameMenu {
         panel.setLayout(null); 
         panel.setBounds(0, 0, AMPLADA, ALTURA); 
 
-        JButton btnEquips = new JButton();
+        btnEquips = new JButton();
         btnEquips.setText("Gestió Equips");
         btnEquips.setBounds(180,70,200,40);
         panel.add(btnEquips);
+        configurarBotoEquip();
         
-        JButton btnJugadors = new JButton();
+        btnJugadors = new JButton();
         btnJugadors.setText("Gestió Jugadors");
         btnJugadors.setBounds(180,150,200,40);
         panel.add(btnJugadors);
+        configurarBotoJugador();
         
         btnTemporada = new JButton();
         btnTemporada.setText("Gestió Temporada");
@@ -80,6 +84,19 @@ public class SwingFrameMenu {
                 
             }
         });
+    }
+
+    private void configurarBotoJugador() {
+        btnJugadors.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controlador.moveToCrearJugador(frameMenu);
+            }
+        });
+    }
+
+    private void configurarBotoEquip() {
+        //Equip
     }
     
 }
