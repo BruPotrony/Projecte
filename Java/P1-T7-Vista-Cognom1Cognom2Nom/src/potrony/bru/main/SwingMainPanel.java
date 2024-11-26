@@ -6,6 +6,12 @@ package potrony.bru.main;
  */
 
 
+import com.formdev.flatlaf.FlatDarculaLaf;
+import com.formdev.flatlaf.FlatLightLaf;
+import com.formdev.flatlaf.intellijthemes.FlatCarbonIJTheme;
+import com.formdev.flatlaf.intellijthemes.FlatCobalt2IJTheme;
+import com.formdev.flatlaf.intellijthemes.FlatDarkFlatIJTheme;
+import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import java.awt.BorderLayout;
 import potrony.bru.controladors.SwingControladorUsuari;
 import java.awt.CardLayout;
@@ -37,9 +43,9 @@ public class SwingMainPanel {
         mostrarFrameCarga();
         
         try {
-            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            System.err.println("Error al configurar el Look and Feel: " + ex.getMessage());
+            UIManager.setLookAndFeel(new FlatMacDarkLaf());
+        } catch (Exception e) {
+            System.err.println("Error al configurar el Look and Feel: " + e.getMessage());
         }
         
         SportManagerOracle manager;

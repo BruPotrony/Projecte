@@ -24,6 +24,7 @@ public class ComprobarConnexio {
 
             
         } catch (GestorSportManagerException e) {
+            e.printStackTrace();
             System.err.println("Error a l'establir la connexió: " + e.getMessage());
         } finally {
             if (sportManager != null) {

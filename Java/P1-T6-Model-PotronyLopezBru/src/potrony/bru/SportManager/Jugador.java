@@ -241,11 +241,13 @@ public class Jugador {
         this.poblacio = poblacio;
     }
 
+    //No valida que l'any sigui mes gran que l'any actual ja que sinó no es podrien
+    //recuperar jugadors de temporades anteriors desde la base de dades
     public void setAny_fi_revisio_medica(int any_fi_revisio_medica) {
         int anyActual = Year.now().getValue();
         
-        if (any_fi_revisio_medica < anyActual) {
-            throw new SportModelException("L'any de fi de revisió mèdica ha de ser igual o major a l'any actual");
+        if (any_fi_revisio_medica < 1900 || any_fi_revisio_medica > anyActual+5) {
+            throw new SportModelException("S'ha passat una anyFiRevisióMèdica erroni");
         }
 
         this.any_fi_revisio_medica = any_fi_revisio_medica;

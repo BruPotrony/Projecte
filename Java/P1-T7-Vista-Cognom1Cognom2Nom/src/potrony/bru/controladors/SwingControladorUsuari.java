@@ -5,18 +5,23 @@
 package potrony.bru.controladors;
 
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
@@ -25,9 +30,13 @@ import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import javax.swing.plaf.multi.MultiLookAndFeel;
 import potrony.bru.CapaPersistencia.SportManagerOracle;
+import potrony.bru.SportManager.Equip;
+import potrony.bru.SportManager.Jugador;
+import potrony.bru.SportManager.Temporada;
 import potrony.bru.SportManager.Usuari;
 import potrony.bru.grafics.SwingFrameCrearJugador;
 import potrony.bru.grafics.SwingFrameCrearTemporada;
+import potrony.bru.grafics.SwingFrameEditarJugador;
 import potrony.bru.grafics.SwingFrameEliminarTemporada;
 import potrony.bru.grafics.SwingFrameForgetPassword;
 import potrony.bru.grafics.SwingFrameMenu;
@@ -39,6 +48,9 @@ import potrony.bru.grafics.SwingFrameUsuari;
  */
 public class SwingControladorUsuari{
 
+    List<Jugador> jugadorsCarregats;
+    List<Equip> equipsCarregats;
+    List<Temporada> temporadesCarregades;
         
     private SwingFrameUsuari frameUsuari;
     private SwingFrameForgetPassword frameForgetPassword;
@@ -46,15 +58,24 @@ public class SwingControladorUsuari{
     private SwingFrameCrearTemporada frameCrearTemporada;
     private SwingFrameEliminarTemporada frameEliminarTemporada;
     private SwingFrameCrearJugador frameCrearJugador;
+    private SwingFrameEditarJugador frameEditarJugador;
     
     public SwingControladorUsuari(SportManagerOracle manager, JFrame frameCarga) {
-        frameCarga.dispose();
+        
+        jugadorsCarregats = new ArrayList<>();
+        equipsCarregats = new ArrayList<>();
+        temporadesCarregades = new ArrayList<>();
+        
         frameUsuari = new SwingFrameUsuari(this, manager);
         frameForgetPassword = new SwingFrameForgetPassword(this,manager);
         frameMenu = new SwingFrameMenu(this,manager);
         frameCrearTemporada = new SwingFrameCrearTemporada(this,manager);
         frameEliminarTemporada = new SwingFrameEliminarTemporada(this,manager);
         frameCrearJugador = new SwingFrameCrearJugador(this, manager);
+        frameEditarJugador = new SwingFrameEditarJugador(this, manager);
+        
+        frameCarga.dispose();
+        frameUsuari.getFrame().setVisible(true);
     }
     
     
@@ -91,7 +112,11 @@ public class SwingControladorUsuari{
     public void moveToCrearJugador(JFrame frame){
         frame.setVisible(false);
         frameCrearJugador.getFrame().setVisible(true);
-        
+    }
+    
+    public void moveToEditarJugador(JFrame frame){
+        frame.setVisible(false);
+        frameEditarJugador.getFrame().setVisible(true);
     }
 
 
@@ -204,6 +229,37 @@ public class SwingControladorUsuari{
     }
     
     
+    
+        public JLabel afegirImatgeUrl(String url, int x, int y, int width, int height) {
+            try {
+                if (url.isEmpty()){
+                    url = "https://cdn.pixabay.com/photo/2017/11/10/05/48/user-2935527_1280.png";
+                }
+                // Carregar l'imatge desde Ufl
+                ImageIcon imageIcon = new ImageIcon(new URL(url));
+                // Afegir les dimensions de la imatge
+                Image image = imageIcon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
+                JLabel labelImatge = new JLabel(new ImageIcon(image));
+                labelImatge.setBounds(x, y, width, height);
+                return labelImatge;
+            } catch (Exception e) {
+                missatgeError("Error en cargar l'imatge");
+                url = "https://cdn.pixabay.com/photo/2017/11/10/05/48/user-2935527_1280.png";
+                ImageIcon imageIcon = null;
+                try {
+                    imageIcon = new ImageIcon(new URL(url));
+                } catch (MalformedURLException ex) {
+                    missatgeError("ERROR\nConsultar amb l'administrador");
+                }
+                Image image = imageIcon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
+                JLabel labelImatge = new JLabel(new ImageIcon(image));
+                labelImatge.setBounds(x, y, width, height);
+                return labelImatge;
+            }
+        }
+    
+    
+    
     private static void infoError(Throwable aux){
         do{
             if (aux.getMessage()!=null){
@@ -212,4 +268,5 @@ public class SwingControladorUsuari{
             aux=aux.getCause();
         }while(aux!=null);
     }
+
 }

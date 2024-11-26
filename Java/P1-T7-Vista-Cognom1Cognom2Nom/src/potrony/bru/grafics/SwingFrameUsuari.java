@@ -4,28 +4,18 @@
  */
 package potrony.bru.grafics;
 
-import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.border.EmptyBorder;
 import potrony.bru.CapaPersistencia.SportManagerOracle;
 import potrony.bru.Interface.GestorSportManagerException;
 import potrony.bru.SportManager.Usuari;
@@ -59,7 +49,7 @@ public class SwingFrameUsuari{
         frameUsuari.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frameUsuari.setLocationRelativeTo(null);
         frameUsuari.setTitle("Login");
-        frameUsuari.setVisible(true);
+        frameUsuari.setVisible(false);
         frameUsuari.setResizable(false);
         
         this.controlador = controlador;
@@ -100,7 +90,7 @@ public class SwingFrameUsuari{
         panel.add(textFieldpwd);
         
         
-        labelForgetPwd = new JLabel("<html><u><font color='blue'>He oblidat la contrassenya</font></u></html>");
+        labelForgetPwd = new JLabel("<html><u><font color='#ADD8E6'>He oblidat la contrassenya</font></u></html>");
         labelForgetPwd.setCursor(new Cursor(Cursor.HAND_CURSOR));
         labelForgetPwd.setFont(new Font("Arial", Font.PLAIN, 15));
         labelForgetPwd.setBounds(230, 200, 200, 30); 
@@ -128,22 +118,23 @@ public class SwingFrameUsuari{
             @Override
             public void actionPerformed(ActionEvent e) {
                 
-                Usuari usuTemp;
-                try {
-                    usuTemp = new Usuari(textFieldUsuari.getText(), new String(textFieldpwd.getPassword()),textFieldNom.getText(), false);
-                } catch (Exception ex) {
-                    controlador.missatgeError(ex.getMessage());
-                    return;
-                }
-                
-                try {
-                    if (!bd.estaRegistrat(usuTemp)){
-                        bd.saveUsuari(usuTemp);
-                    }
-                } catch (GestorSportManagerException ex) {
-                    controlador.missatgeError("Error en guardar usuari");
-                    return;
-                }
+//                Usuari usuTemp;
+//                try {
+//                    usuTemp = new Usuari(textFieldUsuari.getText(), new String(textFieldpwd.getPassword()),textFieldNom.getText(), false);
+//                } catch (Exception ex) {
+//                    controlador.missatgeError(ex.getMessage());
+//                    return;
+//                }
+//                
+//                try {
+//                    if (!bd.estaRegistrat(usuTemp)){
+//                        controlador.missatgeError("Usuari no registrat");
+//                        return;
+//                    }
+//                } catch (GestorSportManagerException ex) {
+//                    controlador.missatgeError("Error en guardar usuari");
+//                    return;
+//                }
                 
                 controlador.moveToMenu(frameUsuari);
                 buidarCapmps();

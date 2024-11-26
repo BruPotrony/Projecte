@@ -952,7 +952,6 @@ public class SportManagerOracle implements SportManagerInferfaceCP {
                 Equip equip = new Equip(id, idCategoria, temporada, nom, tipus);
                 equips.add(equip);
             }
-
             return equips;
 
         } catch (Exception ex) {
