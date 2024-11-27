@@ -16,6 +16,7 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -67,6 +68,7 @@ public class SportManagerOracle implements SportManagerInferfaceCP {
     private PreparedStatement psUpdateJugador;
     private PreparedStatement psDeleteJugador;
     private PreparedStatement psGetGeneratedJugadorId;
+    private PreparedStatement psLoadJugadorIdLegal;
     
     private PreparedStatement psLoadEquipNom;
     private PreparedStatement psLoadEquipId;
@@ -531,7 +533,7 @@ public class SportManagerOracle implements SportManagerInferfaceCP {
             while (rs.next()){
                 try{
                     categories.add(new Categoria(rs.getLong("id"),rs.getString("nom"),rs.getInt("edat_min"),rs.getInt("edat_max")));
-                }catch(Exception ex){
+                }catch(SQLException ex){
                     throw new GestorSportManagerException("Error en inserir categoria a l'array amb nom: "+rs.getString("nom"), ex);
                 }
             }
@@ -661,6 +663,37 @@ public class SportManagerOracle implements SportManagerInferfaceCP {
             
         } catch (Exception ex) {
             throw new GestorSportManagerException("Error en recuperar jugadors ", ex);
+        }
+    }
+    
+    @Override
+    public Jugador loadJugadorIdLegal(String dni) throws GestorSportManagerException {
+        Jugador jugador =null;
+
+        if (psLoadJugadorIdLegal == null) {
+            try {
+                psLoadJugadorIdLegal = conn.prepareStatement("select id, nom, cognom,sexe,foto,data_naix,adreca,codiPostal,poblacio,any_fi_revisio_medica,iban,idlegal from jugador where idLegal = ?");
+            } catch (Exception ex) {
+                throw new GestorSportManagerException("Error en preparar la sentencia psLoadJugadors", ex);
+            }
+        }
+
+        
+        
+        try {
+            psLoadJugadorIdLegal.setString(1, dni);
+            ResultSet rs = psLoadJugadorIdLegal.executeQuery();
+
+            if (rs.next()) {
+                jugador = recuperarJugador(rs);
+            }else{
+                throw new GestorSportManagerException("no hi ha cap jugador amb DNI "+dni);
+            }
+
+            return jugador;
+            
+        } catch (Exception ex) {
+            throw new GestorSportManagerException("Error en recuperar jugador ", ex);
         }
     }
 
@@ -1270,6 +1303,8 @@ public class SportManagerOracle implements SportManagerInferfaceCP {
             throw new GestorSportManagerException("Error en fer rollback", ex);
         }
     }
+
+    
 
     
     

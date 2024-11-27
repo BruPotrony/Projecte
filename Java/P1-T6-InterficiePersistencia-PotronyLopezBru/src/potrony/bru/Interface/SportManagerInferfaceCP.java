@@ -101,6 +101,10 @@ public interface SportManagerInferfaceCP {
     un ja que id es unic*/
     Jugador loadJugadorId(Long id)throws GestorSportManagerException;
     
+    /*Cargar jugador per id Legal nomes en pot cargar
+    un ja que idLegal es unic*/
+    Jugador loadJugadorIdLegal(String dni)throws GestorSportManagerException;
+    
     /*Carga una llista dels jugadors que tinguin el 
     nom o cognom que passem*/
     List<Jugador> loadJugadorNomCognom(String nom, String cognom)throws GestorSportManagerException;

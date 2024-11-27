@@ -5,6 +5,7 @@
 package potrony.bru.grafics;
 
 import java.awt.Font;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -15,8 +16,11 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -27,6 +31,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import potrony.bru.CapaPersistencia.SportManagerOracle;
@@ -62,20 +67,20 @@ public class SwingFrameEditarJugador {
     JTextField txtfIban;
     JTextField txtfPoblacio;
     JTextField txtfDataNaix;
+    JTextField txtfBuscarIdLegal;
     JTextField txtfCodiPostal;
     JTextField txtfIdAdreca;
-    JTextField txtfBuscarIdLegal;
     JRadioButton rbMasculi = new JRadioButton("Masculí");
     JRadioButton rbFemeni = new JRadioButton("Femení");
     JButton btnCancelar;
-    JButton btnCrear;
+    JButton btnGuardar;
     JComboBox<String> comboBoxAnys;
     JLabel labelImatge;
     
     
     
 
-    public SwingFrameEditarJugador(SwingControladorUsuari controlador, SportManagerOracle bd) {
+    public SwingFrameEditarJugador(SwingControladorUsuari controlador, SportManagerOracle bd, HashMap<String,Jugador> jugadorsCarregats) {
         frameEditarJugador = new JFrame();
         frameEditarJugador.setSize(AMPLADA, ALTURA);
         frameEditarJugador.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -108,12 +113,6 @@ public class SwingFrameEditarJugador {
         
         frameEditarJugador.setJMenuBar(menuBar);
         configurarMenu();
-        
-        txtfBuscarIdLegal = new JTextField();
-        txtfBuscarIdLegal.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 15));
-        txtfBuscarIdLegal.setBounds(50, 20, 200, 40);
-        panel.add(txtfBuscarIdLegal);
-        configurarTextFieldIdLegal();
         
         labelImatge = controlador.afegirImatgeUrl("", 50, 70, 250, 250);
         panel.add(labelImatge);
@@ -156,6 +155,12 @@ public class SwingFrameEditarJugador {
         txtfNom.setBounds(450, 45, 200, 40);
         panel.add(txtfNom);
         
+        txtfBuscarIdLegal = new JTextField();
+        txtfBuscarIdLegal.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 15));
+        txtfBuscarIdLegal.setBounds(50, 20, 200, 40);
+        panel.add(txtfBuscarIdLegal);
+        configurarTextFieldIdLegal(jugadorsCarregats);
+        
         JLabel labelCogNom = new JLabel("Cognom:");
         labelCogNom.setFont(new Font("Arial", Font.PLAIN, 20));
         labelCogNom.setBounds(350, 125, 100, 30); 
@@ -174,6 +179,7 @@ public class SwingFrameEditarJugador {
         txtfIdLegal = new JTextField();
         txtfIdLegal.setFont(new Font("Arial", Font.PLAIN, 20));
         txtfIdLegal.setBounds(450, 195, 200, 40);
+        txtfIdLegal.setEditable(false);
         panel.add(txtfIdLegal);
         
         JLabel labelIban = new JLabel("IBAN:");
@@ -232,12 +238,12 @@ public class SwingFrameEditarJugador {
         panel.add(btnCancelar);
         configurarBotoCancelar();
         
-        btnCrear = new JButton();
-        btnCrear.setText("Crear");
-        btnCrear.setBounds(600,450,120,40);
-        panel.add(btnCrear);
-        configurarBotoCrear();
-        
+        btnGuardar = new JButton();
+        btnGuardar.setText("Guardar");
+        btnGuardar.setBounds(600,450,120,40);
+        panel.add(btnGuardar);
+        configurarBotoGuardar(jugadorsCarregats);
+                
         frameEditarJugador.add(panel);
     }
     
@@ -266,7 +272,7 @@ public class SwingFrameEditarJugador {
         menuConsultar.addMenuListener(new MenuListener() {
             @Override
             public void menuSelected(MenuEvent e) {
-                //controlador.moveToEliminarTemporada(frameCrearJugador);
+                controlador.moveToConsultarJugador(frameEditarJugador);
             }
 
             @Override
@@ -288,8 +294,20 @@ public class SwingFrameEditarJugador {
     private void configurarImatge() {
         txtfImatge.addFocusListener(new java.awt.event.FocusAdapter() {
             @Override
-            public void focusLost(java.awt.event.FocusEvent e) {
-                actualitzarImatge();
+            public void focusGained(FocusEvent e) {
+                if (txtfImatge.getText().equals("URL Imatge")) {
+                    txtfImatge.setText("");
+
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (txtfImatge.getText().isEmpty()) {
+                    txtfImatge.setText("URL Imatge");
+                }else {
+                    actualitzarImatge();
+                }
             }
         });
     }
@@ -298,7 +316,7 @@ public class SwingFrameEditarJugador {
     private void actualitzarImatge() {
                 
         String urlImatge = txtfImatge.getText();
-        JLabel novaImg = controlador.afegirImatgeUrl(urlImatge, 50, 50, 250, 250);
+        JLabel novaImg = controlador.afegirImatgeUrl(urlImatge, 50, 70, 250, 250);
 
         if (labelImatge != null) {
             panel.remove(labelImatge);
@@ -309,8 +327,6 @@ public class SwingFrameEditarJugador {
             panel.add(labelImatge);
         }
         
-        //faig això ja que sinó el comboBox em desapareixia fins que no tornes a passar el 
-        //ratolí per sobre
         panel.remove(comboBoxAnys);
         panel.add(comboBoxAnys);
 
@@ -328,8 +344,8 @@ public class SwingFrameEditarJugador {
     }
     
     
-    public void configurarBotoCrear(){
-        btnCrear.addActionListener(new ActionListener() {
+    public void configurarBotoGuardar(HashMap<String,Jugador>jugadorsCarregats){
+        btnGuardar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Jugador jugador = null;
@@ -364,12 +380,10 @@ public class SwingFrameEditarJugador {
                     String poblacio = txtfPoblacio.getText();
                     String iban = txtfIban.getText();
                     String idLegal = txtfIdLegal.getText();
-                    
-                    if (!esURLValida(foto)){
-                        controlador.missatgeError("URL de l'imatge no valida");
-                    }
+
                     
                     jugador = new Jugador(nom,cognom,sexe,dataNaix,foto,adreca,codiPostal,poblacio,iban,idLegal,any);
+                    
                 } catch (ParseException ex) {
                     controlador.missatgeError("la Data no esta en un format correcte, Format correcte: dd/MM/yyyy");
                     return;
@@ -382,8 +396,9 @@ public class SwingFrameEditarJugador {
                     
                    
                 try {
-                    bd.saveJugador(jugador);
-                    controlador.missatgeConfirmacio("Jugador creat correctament.");
+                    jugadorsCarregats.put(jugador.getId_Legal(), jugador);
+                    bd.modificarJugador(jugador.getId_Legal(), jugador);
+                    controlador.missatgeConfirmacio("Jugador modificat correctament.");
                 } catch (Exception ex) {
 
                     controlador.missatgeError("Ja existeix jugador amb idLegal "+jugador.getId_Legal());
@@ -406,12 +421,13 @@ public class SwingFrameEditarJugador {
         }
     }
 
-    private void configurarTextFieldIdLegal() {
+    private void configurarTextFieldIdLegal(HashMap<String,Jugador>jugadorsCarregats) {
         txtfBuscarIdLegal.addFocusListener(new FocusListener() {
         @Override
         public void focusGained(FocusEvent e) {
             if (txtfBuscarIdLegal.getText().equals("🔎IdLegal")) {
-                txtfBuscarIdLegal.setText(""); // Borra el texto
+                txtfBuscarIdLegal.setText("");
+                
             }
         }
 
@@ -420,8 +436,71 @@ public class SwingFrameEditarJugador {
             if (txtfBuscarIdLegal.getText().isEmpty()) {
                 txtfBuscarIdLegal.setText("🔎IdLegal");
             }
+            else {
+                    Jugador jug;
+                    String idLegal = txtfBuscarIdLegal.getText();
+                    try {
+                        
+                        boolean isDniValid = idLegal.matches("\\d{8}[A-Za-z]");
+                        if (isDniValid){
+                            jug = bd.loadJugadorIdLegal(idLegal);
+                            if (jug !=null){
+                                carregarDadesJugador(jug);
+                                jugadorsCarregats.put(jug.getId_Legal(),jug);
+                            }
+                        }else{
+                            controlador.missatgeError("DNI entrat no valid");
+                            txtfBuscarIdLegal.setText("");
+                            return;
+                        }
+                    } catch (Exception ex) {
+                        controlador.missatgeError("Jugador amb DNI "+idLegal+" no existeix");
+                    }
+            }
         }
-    });
+        });
+    }
+    
+    public void carregarDadesJugador(Jugador jugador){
+        
+        txtfNom.setText(jugador.getNom());
+        txtfCognom.setText(jugador.getCognom());
+        txtfIdLegal.setText(jugador.getId_Legal());
+        txtfIban.setText(jugador.getIban());
+        txtfPoblacio.setText(jugador.getPoblacio());
+        txtfImatge.setText(jugador.getFoto());
+        
+        LocalDate localDate = jugador.getData_naix(); 
+        Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        txtfDataNaix.setText(sdf.format(date));
+        
+        txtfIdAdreca.setText(jugador.getAdreca());
+        txtfCodiPostal.setText(jugador.getCodiPostal());
+
+        if (jugador.getSexe() == EnumSexe.H) {
+            rbMasculi.setSelected(true);
+        } else if (jugador.getSexe() == EnumSexe.D) {
+            rbFemeni.setSelected(true);
+        }
+        
+        panel.remove(comboBoxAnys);
+        panel.add(comboBoxAnys);
+        
+        int currentYear = LocalDate.now().getYear();
+        
+        int anyFiRevisioMedica = jugador.getAny_fi_revisio_medica();
+        if (anyFiRevisioMedica>=currentYear) {
+            comboBoxAnys.setSelectedItem(Integer.toString(anyFiRevisioMedica));
+        }else{
+            comboBoxAnys.addItem(Integer.toString(jugador.getAny_fi_revisio_medica()));
+            comboBoxAnys.setSelectedItem(Integer.toString(jugador.getAny_fi_revisio_medica()));
+        }
+        
+        actualitzarImatge();
+        
+        panel.revalidate();
+        panel.repaint();
+        
     }
 
 }

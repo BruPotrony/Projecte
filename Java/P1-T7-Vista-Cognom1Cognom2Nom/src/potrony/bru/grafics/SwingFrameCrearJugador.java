@@ -7,6 +7,7 @@ package potrony.bru.grafics;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -15,6 +16,8 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
@@ -76,7 +79,7 @@ public class SwingFrameCrearJugador {
     
 
 
-    public SwingFrameCrearJugador(SwingControladorUsuari controlador, SportManagerOracle bd) {
+    public SwingFrameCrearJugador(SwingControladorUsuari controlador, SportManagerOracle bd, HashMap<String,Jugador>jugadorsCarregats) {
         frameCrearJugador = new JFrame();
         frameCrearJugador.setSize(AMPLADA, ALTURA);
         frameCrearJugador.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -232,7 +235,7 @@ public class SwingFrameCrearJugador {
         btnCrear.setText("Crear");
         btnCrear.setBounds(600,450,120,40);
         panel.add(btnCrear);
-        configurarBotoCrear();
+        configurarBotoCrear(jugadorsCarregats);
         
         frameCrearJugador.add(panel);
     }
@@ -262,7 +265,7 @@ public class SwingFrameCrearJugador {
         menuConsultar.addMenuListener(new MenuListener() {
             @Override
             public void menuSelected(MenuEvent e) {
-                
+                controlador.moveToConsultarJugador(frameCrearJugador);
             }
 
             @Override
@@ -284,8 +287,20 @@ public class SwingFrameCrearJugador {
     private void configurarImatge() {
         txtfImatge.addFocusListener(new java.awt.event.FocusAdapter() {
             @Override
-            public void focusLost(java.awt.event.FocusEvent e) {
-                actualitzarImatge();
+            public void focusGained(FocusEvent e) {
+                if (txtfImatge.getText().equals("URL Imatge")) {
+                    txtfImatge.setText("");
+
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (txtfImatge.getText().isEmpty()) {
+                    txtfImatge.setText("URL Imatge");
+                }else {
+                    actualitzarImatge();
+                }
             }
         });
     }
@@ -324,19 +339,20 @@ public class SwingFrameCrearJugador {
     }
     
     
-    public void configurarBotoCrear(){
+    public void configurarBotoCrear(HashMap<String,Jugador>jugadorsCarregats){
         btnCrear.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Jugador jugador = null;
-                
-                Object selectedItem = comboBoxAnys.getSelectedItem();
-                if (selectedItem == null || comboBoxAnys.getSelectedIndex()==0) {
-                    controlador.missatgeError("Selecciona un any de la revisió mèdica");
-                    return;
-                }
-
+ 
                 try {
+                    
+                    Object selectedItem = comboBoxAnys.getSelectedItem();
+                    if (selectedItem == null || comboBoxAnys.getSelectedIndex()==0) {
+                        controlador.missatgeError("Selecciona un any de la revisió mèdica");
+                        return;
+                    }
+                    
                     int any = Integer.parseInt(selectedItem.toString());
                     String nom = txtfNom.getText();
                     String cognom = txtfCognom.getText();
@@ -378,10 +394,15 @@ public class SwingFrameCrearJugador {
 
                    
                 try {
-                    bd.saveJugador(jugador);
-                    controlador.missatgeConfirmacio("Jugador creat correctament.");
+                    if (!jugadorsCarregats.containsKey(jugador.getId_Legal())){
+                        bd.saveJugador(jugador);
+                        jugadorsCarregats.put(jugador.getId_Legal(),jugador);
+                        controlador.missatgeConfirmacio("Jugador creat correctament.");
+                    }else{
+                        controlador.missatgeError("Ja existeix jugador amb idLegal "+jugador.getId_Legal());
+                    }
+                    
                 } catch (Exception ex) {
-
                     controlador.missatgeError("Ja existeix jugador amb idLegal "+jugador.getId_Legal());
                 }
             }

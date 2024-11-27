@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,6 +35,7 @@ import potrony.bru.SportManager.Equip;
 import potrony.bru.SportManager.Jugador;
 import potrony.bru.SportManager.Temporada;
 import potrony.bru.SportManager.Usuari;
+import potrony.bru.grafics.SwingFrameConsultarJugador;
 import potrony.bru.grafics.SwingFrameCrearJugador;
 import potrony.bru.grafics.SwingFrameCrearTemporada;
 import potrony.bru.grafics.SwingFrameEditarJugador;
@@ -48,7 +50,7 @@ import potrony.bru.grafics.SwingFrameUsuari;
  */
 public class SwingControladorUsuari{
 
-    List<Jugador> jugadorsCarregats;
+    HashMap<String,Jugador>jugadorsCarregats;
     List<Equip> equipsCarregats;
     List<Temporada> temporadesCarregades;
         
@@ -59,10 +61,11 @@ public class SwingControladorUsuari{
     private SwingFrameEliminarTemporada frameEliminarTemporada;
     private SwingFrameCrearJugador frameCrearJugador;
     private SwingFrameEditarJugador frameEditarJugador;
+    private SwingFrameConsultarJugador frameConsultarJugador;
     
     public SwingControladorUsuari(SportManagerOracle manager, JFrame frameCarga) {
         
-        jugadorsCarregats = new ArrayList<>();
+        jugadorsCarregats = new HashMap<String,Jugador>();
         equipsCarregats = new ArrayList<>();
         temporadesCarregades = new ArrayList<>();
         
@@ -71,8 +74,9 @@ public class SwingControladorUsuari{
         frameMenu = new SwingFrameMenu(this,manager);
         frameCrearTemporada = new SwingFrameCrearTemporada(this,manager);
         frameEliminarTemporada = new SwingFrameEliminarTemporada(this,manager);
-        frameCrearJugador = new SwingFrameCrearJugador(this, manager);
-        frameEditarJugador = new SwingFrameEditarJugador(this, manager);
+        frameCrearJugador = new SwingFrameCrearJugador(this, manager, jugadorsCarregats);
+        frameEditarJugador = new SwingFrameEditarJugador(this, manager, jugadorsCarregats);
+        frameConsultarJugador = new SwingFrameConsultarJugador(this,manager,jugadorsCarregats);
         
         frameCarga.dispose();
         frameUsuari.getFrame().setVisible(true);
@@ -117,6 +121,11 @@ public class SwingControladorUsuari{
     public void moveToEditarJugador(JFrame frame){
         frame.setVisible(false);
         frameEditarJugador.getFrame().setVisible(true);
+    }
+    
+    public void moveToConsultarJugador(JFrame frame){
+        frame.setVisible(false);
+        frameConsultarJugador.getFrame().setVisible(true);
     }
 
 

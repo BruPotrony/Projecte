@@ -271,8 +271,11 @@ public class Jugador {
         if (id_Legal.isEmpty()) {
         throw new SportModelException("L'ID legal no pot ser null");
         }
-        if (id_Legal.length() > 40) {
-            throw new SportModelException("La longitud de l'ID legal no pot ser superior a 40 caràcters");
+
+        boolean isDniValid = id_Legal.matches("\\d{8}[A-Za-z]");
+
+        if (!isDniValid) {
+            throw new SportModelException("L'ID legal ha de ser un DNI vàlid amb 8 dígits seguits d'una lletra");
         }
 
         this.idLegal = id_Legal;
