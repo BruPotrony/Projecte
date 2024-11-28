@@ -49,10 +49,6 @@ import potrony.bru.grafics.SwingFrameUsuari;
  * @author Vago
  */
 public class SwingControladorUsuari{
-
-    HashMap<String,Jugador>jugadorsCarregats;
-    List<Equip> equipsCarregats;
-    List<Temporada> temporadesCarregades;
         
     private SwingFrameUsuari frameUsuari;
     private SwingFrameForgetPassword frameForgetPassword;
@@ -65,18 +61,14 @@ public class SwingControladorUsuari{
     
     public SwingControladorUsuari(SportManagerOracle manager, JFrame frameCarga) {
         
-        jugadorsCarregats = new HashMap<String,Jugador>();
-        equipsCarregats = new ArrayList<>();
-        temporadesCarregades = new ArrayList<>();
-        
         frameUsuari = new SwingFrameUsuari(this, manager);
         frameForgetPassword = new SwingFrameForgetPassword(this,manager);
         frameMenu = new SwingFrameMenu(this,manager);
         frameCrearTemporada = new SwingFrameCrearTemporada(this,manager);
         frameEliminarTemporada = new SwingFrameEliminarTemporada(this,manager);
-        frameCrearJugador = new SwingFrameCrearJugador(this, manager, jugadorsCarregats);
-        frameEditarJugador = new SwingFrameEditarJugador(this, manager, jugadorsCarregats);
-        frameConsultarJugador = new SwingFrameConsultarJugador(this,manager,jugadorsCarregats);
+        frameCrearJugador = new SwingFrameCrearJugador(this, manager);
+        frameEditarJugador = new SwingFrameEditarJugador(this, manager);
+        frameConsultarJugador = new SwingFrameConsultarJugador(this,manager);
         
         frameCarga.dispose();
         frameUsuari.getFrame().setVisible(true);

@@ -4,6 +4,7 @@
  */
 package potrony.bru.Interface;
 
+import java.util.Date;
 import java.util.List;
 import potrony.bru.SportManager.Categoria;
 import potrony.bru.SportManager.EnumTitular;
@@ -83,7 +84,6 @@ public interface SportManagerInferfaceCP {
     Categoria loadCategoriaId(long id)throws GestorSportManagerException;
     List<Categoria> loadCategories()throws GestorSportManagerException;
     
-    
     /********************************Jugadors**************************************************/  
 
     
@@ -104,6 +104,12 @@ public interface SportManagerInferfaceCP {
     /*Cargar jugador per id Legal nomes en pot cargar
     un ja que idLegal es unic*/
     Jugador loadJugadorIdLegal(String dni)throws GestorSportManagerException;
+    
+    /*
+    Carrega una llista de tots els jugadors que concordin
+    amb els parametres passats
+    */
+    public List<Jugador> loadJugadorNomNifDatanaix(String nom, String idLegal,java.util.Date dataNaix) throws GestorSportManagerException;
     
     /*Carga una llista dels jugadors que tinguin el 
     nom o cognom que passem*/

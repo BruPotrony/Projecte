@@ -285,9 +285,5 @@ public class Jugador {
     public String toString() {
         return "Jugador{" + "id=" + id + ", nom=" + nom + ", cognom=" + cognom + ", sexe=" + sexe + ", data_naix=" + data_naix + ", foto=" + foto + ", adreca=" + adreca + ", iban=" + iban + ", idLegal=" + idLegal + ", any_fi_revisio_medica=" + any_fi_revisio_medica + '}';
     }
-
-    
-    
-    
     
 }

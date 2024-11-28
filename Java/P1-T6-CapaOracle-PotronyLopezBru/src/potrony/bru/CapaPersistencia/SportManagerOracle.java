@@ -64,6 +64,7 @@ public class SportManagerOracle implements SportManagerInferfaceCP {
     private PreparedStatement psLoadJugadors;
     private PreparedStatement psLoadJugadorId;
     private PreparedStatement psLoadJugadorNomCognom;
+    private PreparedStatement psLoadJugadorNomNifDatanaix;
     private PreparedStatement psIdLegalRepetit;
     private PreparedStatement psUpdateJugador;
     private PreparedStatement psDeleteJugador;
@@ -511,9 +512,8 @@ public class SportManagerOracle implements SportManagerInferfaceCP {
         } catch (Exception ex) {
             throw new GestorSportManagerException("Error en recuperar categoria", ex);
         }
-        
-        
     }
+    
 
     @Override
     public List<Categoria> loadCategories() throws GestorSportManagerException {
@@ -666,6 +666,7 @@ public class SportManagerOracle implements SportManagerInferfaceCP {
         }
     }
     
+    
     @Override
     public Jugador loadJugadorIdLegal(String dni) throws GestorSportManagerException {
         Jugador jugador =null;
@@ -696,11 +697,83 @@ public class SportManagerOracle implements SportManagerInferfaceCP {
             throw new GestorSportManagerException("Error en recuperar jugador ", ex);
         }
     }
+    
+    
+    //Metode fet amb ajuda de ChatGpt i altres fonts
+    @Override
+    public List<Jugador> loadJugadorNomNifDatanaix(String nom, String idLegal, java.util.Date dataNaix) throws GestorSportManagerException {
+        List<Jugador> jugadors = new ArrayList<>();
+
+        if (nom == null) {
+            nom = "";
+        }
+        if (idLegal == null) {
+            idLegal = "";
+        }
+
+        StringBuilder query = new StringBuilder("SELECT id, nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, iban, idlegal FROM jugador Where 1=1");
+
+        if (!nom.isEmpty()) {
+            query.append(" AND UPPER(nom) LIKE ?");
+        }
+        if (!idLegal.isEmpty()) {
+            query.append(" AND idLegal LIKE ?");
+        }
+        if (dataNaix != null) {
+            query.append(" AND data_naix = ?");
+        }        
+
+        System.out.println(query.toString());
+        
+        try {
+            psLoadJugadorNomNifDatanaix = conn.prepareStatement(query.toString());
+        } catch (Exception ex) {
+            throw new GestorSportManagerException("Error al preparar la sentencia psLoadJugadorNomNifDatanaix", ex);
+        }
+
+
+        try {
+            int paramIndex = 1;
+
+            if (!nom.isEmpty()) {
+                psLoadJugadorNomNifDatanaix.setString(paramIndex++, "%" + nom.toUpperCase() + "%");
+            }
+            if (!idLegal.isEmpty()) {
+                psLoadJugadorNomNifDatanaix.setString(paramIndex++, "%" + idLegal + "%");
+            }
+            if (dataNaix != null) {
+                psLoadJugadorNomNifDatanaix.setDate(paramIndex++, new java.sql.Date(dataNaix.getTime()));
+            }
+            
+            ResultSet rs = psLoadJugadorNomNifDatanaix.executeQuery();
+
+            while (rs.next()) {
+                try {
+                    jugadors.add(recuperarJugador(rs));
+                } catch (Exception ex) {
+                    throw new GestorSportManagerException("Error al recuperar els jugadores amb els filtres proporcionats", ex);
+                }
+            }
+
+            return jugadors;
+
+        } catch (Exception ex) {
+            throw new GestorSportManagerException("Error al recuperar els jugadores amb els filtres proporcionats", ex);
+        }
+    }
 
     @Override
     public List<Jugador> loadJugadorNomCognom(String nom, String cognom) throws GestorSportManagerException {
         List<Jugador> jugadors=new ArrayList<>();
 
+        if (nom==null){
+            nom = "";
+        }else if (cognom==null){
+            cognom="";
+        }else{
+            throw new GestorSportManagerException("S'ha passat nom i cognom null");
+        }
+        
         if (psLoadJugadorNomCognom == null) {
             try {
                 psLoadJugadorNomCognom = conn.prepareStatement("select id, nom, cognom,sexe,foto,data_naix,adreca,codiPostal,poblacio,any_fi_revisio_medica,iban,idlegal from jugador where UPPER(nom) = ? OR UPPER(cognom)=?");

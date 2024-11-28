@@ -80,7 +80,7 @@ public class SwingFrameEditarJugador {
     
     
 
-    public SwingFrameEditarJugador(SwingControladorUsuari controlador, SportManagerOracle bd, HashMap<String,Jugador> jugadorsCarregats) {
+    public SwingFrameEditarJugador(SwingControladorUsuari controlador, SportManagerOracle bd) {
         frameEditarJugador = new JFrame();
         frameEditarJugador.setSize(AMPLADA, ALTURA);
         frameEditarJugador.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -158,8 +158,9 @@ public class SwingFrameEditarJugador {
         txtfBuscarIdLegal = new JTextField();
         txtfBuscarIdLegal.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 15));
         txtfBuscarIdLegal.setBounds(50, 20, 200, 40);
+        txtfBuscarIdLegal.setText("🔎IdLegal");
         panel.add(txtfBuscarIdLegal);
-        configurarTextFieldIdLegal(jugadorsCarregats);
+        configurarTextFieldIdLegal();
         
         JLabel labelCogNom = new JLabel("Cognom:");
         labelCogNom.setFont(new Font("Arial", Font.PLAIN, 20));
@@ -242,8 +243,8 @@ public class SwingFrameEditarJugador {
         btnGuardar.setText("Guardar");
         btnGuardar.setBounds(600,450,120,40);
         panel.add(btnGuardar);
-        configurarBotoGuardar(jugadorsCarregats);
-                
+        configurarBotoGuardar();
+                        
         frameEditarJugador.add(panel);
     }
     
@@ -329,7 +330,7 @@ public class SwingFrameEditarJugador {
         
         panel.remove(comboBoxAnys);
         panel.add(comboBoxAnys);
-
+        
         panel.revalidate();
         panel.repaint();
     }
@@ -344,7 +345,7 @@ public class SwingFrameEditarJugador {
     }
     
     
-    public void configurarBotoGuardar(HashMap<String,Jugador>jugadorsCarregats){
+    public void configurarBotoGuardar(){
         btnGuardar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -396,7 +397,6 @@ public class SwingFrameEditarJugador {
                     
                    
                 try {
-                    jugadorsCarregats.put(jugador.getId_Legal(), jugador);
                     bd.modificarJugador(jugador.getId_Legal(), jugador);
                     controlador.missatgeConfirmacio("Jugador modificat correctament.");
                 } catch (Exception ex) {
@@ -421,7 +421,7 @@ public class SwingFrameEditarJugador {
         }
     }
 
-    private void configurarTextFieldIdLegal(HashMap<String,Jugador>jugadorsCarregats) {
+    private void configurarTextFieldIdLegal() {
         txtfBuscarIdLegal.addFocusListener(new FocusListener() {
         @Override
         public void focusGained(FocusEvent e) {
@@ -446,7 +446,6 @@ public class SwingFrameEditarJugador {
                             jug = bd.loadJugadorIdLegal(idLegal);
                             if (jug !=null){
                                 carregarDadesJugador(jug);
-                                jugadorsCarregats.put(jug.getId_Legal(),jug);
                             }
                         }else{
                             controlador.missatgeError("DNI entrat no valid");

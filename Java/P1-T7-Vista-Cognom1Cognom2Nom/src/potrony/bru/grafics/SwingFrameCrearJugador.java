@@ -79,7 +79,7 @@ public class SwingFrameCrearJugador {
     
 
 
-    public SwingFrameCrearJugador(SwingControladorUsuari controlador, SportManagerOracle bd, HashMap<String,Jugador>jugadorsCarregats) {
+    public SwingFrameCrearJugador(SwingControladorUsuari controlador, SportManagerOracle bd) {
         frameCrearJugador = new JFrame();
         frameCrearJugador.setSize(AMPLADA, ALTURA);
         frameCrearJugador.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -235,7 +235,7 @@ public class SwingFrameCrearJugador {
         btnCrear.setText("Crear");
         btnCrear.setBounds(600,450,120,40);
         panel.add(btnCrear);
-        configurarBotoCrear(jugadorsCarregats);
+        configurarBotoCrear();
         
         frameCrearJugador.add(panel);
     }
@@ -339,7 +339,7 @@ public class SwingFrameCrearJugador {
     }
     
     
-    public void configurarBotoCrear(HashMap<String,Jugador>jugadorsCarregats){
+    public void configurarBotoCrear(){
         btnCrear.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -394,14 +394,8 @@ public class SwingFrameCrearJugador {
 
                    
                 try {
-                    if (!jugadorsCarregats.containsKey(jugador.getId_Legal())){
                         bd.saveJugador(jugador);
-                        jugadorsCarregats.put(jugador.getId_Legal(),jugador);
-                        controlador.missatgeConfirmacio("Jugador creat correctament.");
-                    }else{
-                        controlador.missatgeError("Ja existeix jugador amb idLegal "+jugador.getId_Legal());
-                    }
-                    
+                        controlador.missatgeConfirmacio("Jugador creat correctament.");                    
                 } catch (Exception ex) {
                     controlador.missatgeError("Ja existeix jugador amb idLegal "+jugador.getId_Legal());
                 }
