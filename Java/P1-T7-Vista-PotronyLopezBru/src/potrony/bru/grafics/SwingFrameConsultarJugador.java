@@ -13,6 +13,8 @@ import java.awt.event.ItemListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -310,19 +312,28 @@ public class SwingFrameConsultarJugador {
     
     private void inserirJugadorsTaula(List<Jugador> jugadors){
 
-        try {
-            
+       try {
             tableModel.setRowCount(0);
+
+            String selectedCategory = (cbxCategoria.getSelectedIndex() != 0) ? cbxCategoria.getSelectedItem().toString().trim() : "";
             
+            if(filtre.getSelectedIndex()!=0){
+                ordenarJugadors(jugadors);
+            }
+
             for (Jugador jugador : jugadors) {
+                String categoriaJugador = calcularCategoria(jugador.calcularEdatIniciAnyActual(jugador.getData_naix())).toString();
+
+                if (!selectedCategory.isEmpty() && !categoriaJugador.equals(selectedCategory)) {
+                    continue;
+                }
+
                 Object[] row = {
                     jugador.getNom(),
                     jugador.getCognom(),
                     jugador.getId_Legal(),
                     jugador.calcularEdatIniciAnyActual(jugador.getData_naix()),
-                    
-                    calcularCategoria(jugador.calcularEdatIniciAnyActual(jugador.getData_naix())),
-                    
+                    categoriaJugador,
                     jugador.getFoto() != null ? "📷" : "Sense foto"
                 };
                 tableModel.addRow(row);
@@ -351,21 +362,21 @@ public class SwingFrameConsultarJugador {
 
                     if (!dataNaixStr.isEmpty()) {
                         try {
-                            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                            SimpleDateFormat sdf    = new SimpleDateFormat("dd/MM/yyyy");
                             dataNaix = sdf.parse(dataNaixStr);
                         } catch (ParseException ex) {
                             controlador.missatgeError("Data no valida");
                             return;
                         }
                     }
+                    
+                    List<Jugador> jugadors;
 
                     if (nom.isEmpty() && idLegal.isEmpty() && dataNaix == null) {
-                        controlador.missatgeError("No hi ha cap parametre de busca");
-                        tableModel.setRowCount(0);
-                        return;
+                        jugadors = bd.loadJugadors();
                     }
 
-                    List<Jugador> jugadors;
+                    
 
                     if (!nom.isEmpty() && idLegal.isEmpty() && dataNaix == null) {
                         jugadors = bd.loadJugadorNomNifDatanaix(nom, null, null);
@@ -391,6 +402,33 @@ public class SwingFrameConsultarJugador {
                 }
             }
         });
+    }
+
+    private void ordenarJugadors(List<Jugador> jugadors) {
+        int selectedIndex = filtre.getSelectedIndex();
+        boolean esOrdreDescendent = btnFiltre.getText().equals("🔽");
+
+        Comparator<Jugador> comparator = null;
+
+        switch (selectedIndex) {
+            case 1: // Ordenar per cognom
+                comparator = (j1, j2) -> j1.getCognom().compareToIgnoreCase(j2.getCognom());
+                break;
+
+            case 2: // Ordenar per data de naixement
+                comparator = (j1, j2) -> j1.getData_naix().compareTo(j2.getData_naix());
+                break;
+        }
+
+        // Si l'ordre és descendent, inverteix la comparació
+        if (esOrdreDescendent && comparator != null) {
+            comparator = comparator.reversed();
+        }
+
+        if (comparator != null) {
+            Collections.sort(jugadors, comparator);
+        }
+        
     }
 
 }

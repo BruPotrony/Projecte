@@ -722,8 +722,6 @@ public class SportManagerOracle implements SportManagerInferfaceCP {
         if (dataNaix != null) {
             query.append(" AND data_naix = ?");
         }        
-
-        System.out.println(query.toString());
         
         try {
             psLoadJugadorNomNifDatanaix = conn.prepareStatement(query.toString());
