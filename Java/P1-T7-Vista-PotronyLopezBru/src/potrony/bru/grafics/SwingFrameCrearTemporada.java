@@ -20,6 +20,7 @@ import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import potrony.bru.CapaPersistencia.SportManagerOracle;
 import potrony.bru.Interface.GestorSportManagerException;
+import potrony.bru.Interface.SportManagerInterfaceCP;
 import potrony.bru.SportManager.Temporada;
 import potrony.bru.controladors.SwingControladorUsuari;
 
@@ -35,7 +36,7 @@ public class SwingFrameCrearTemporada{
     private static JFrame frameTemporada;
     
     SwingControladorUsuari controlador;
-    private SportManagerOracle bd;
+    private SportManagerInterfaceCP bd;
     
     JButton btnCancelar;
     JButton btnCrear;
@@ -44,7 +45,7 @@ public class SwingFrameCrearTemporada{
     JMenu tancarSessio;
     JComboBox<String> comboBoxAnys;
 
-    public SwingFrameCrearTemporada(SwingControladorUsuari controlador, SportManagerOracle bd) {
+    public SwingFrameCrearTemporada(SwingControladorUsuari controlador, SportManagerInterfaceCP bd) {
         frameTemporada = new JFrame();
         frameTemporada.setSize(AMPLADA, ALTURA);
         frameTemporada.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

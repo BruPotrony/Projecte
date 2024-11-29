@@ -15,6 +15,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import potrony.bru.CapaPersistencia.SportManagerOracle;
 import potrony.bru.Interface.GestorSportManagerException;
+import potrony.bru.Interface.SportManagerInterfaceCP;
 import potrony.bru.SportManager.Usuari;
 import potrony.bru.controladors.SwingControladorUsuari;
 
@@ -30,7 +31,7 @@ public class SwingFrameForgetPassword {
     private static JFrame framePassword;
     
     SwingControladorUsuari controlador;
-    SportManagerOracle bd;
+    SportManagerInterfaceCP bd;
     
     JButton btnGuardar;
     JButton btnCancelar;
@@ -38,7 +39,7 @@ public class SwingFrameForgetPassword {
     JPasswordField textFieldpwd;
     JTextField textFieldUsuari;
 
-    public SwingFrameForgetPassword(SwingControladorUsuari controlador, SportManagerOracle bd) {
+    public SwingFrameForgetPassword(SwingControladorUsuari controlador, SportManagerInterfaceCP bd) {
         framePassword = new JFrame();
         framePassword.setSize(AMPLADA, ALTURA);
         framePassword.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -10,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import potrony.bru.CapaPersistencia.SportManagerOracle;
+import potrony.bru.Interface.SportManagerInterfaceCP;
 import potrony.bru.controladors.SwingControladorUsuari;
 
 /**
@@ -24,13 +25,13 @@ public class SwingFrameMenu {
     private static JFrame frameMenu;
     
     SwingControladorUsuari controlador;
-    SportManagerOracle bd;
+    SportManagerInterfaceCP bd;
 
     JButton btnTemporada;
     JButton btnJugadors;
     JButton btnEquips;
 
-    public SwingFrameMenu(SwingControladorUsuari controlador, SportManagerOracle bd) {
+    public SwingFrameMenu(SwingControladorUsuari controlador, SportManagerInterfaceCP bd) {
         frameMenu = new JFrame();
         frameMenu.setSize(AMPLADA, ALTURA);
         frameMenu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -92,7 +93,12 @@ public class SwingFrameMenu {
     }
 
     private void configurarBotoEquip() {
-        //Equip
+        btnEquips.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controlador.moveToCrearEquip(frameMenu);
+            }
+        });
     }
     
 }

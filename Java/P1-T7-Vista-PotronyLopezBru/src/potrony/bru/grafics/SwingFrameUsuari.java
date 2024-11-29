@@ -18,6 +18,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import potrony.bru.CapaPersistencia.SportManagerOracle;
 import potrony.bru.Interface.GestorSportManagerException;
+import potrony.bru.Interface.SportManagerInterfaceCP;
 import potrony.bru.SportManager.Usuari;
 import potrony.bru.controladors.SwingControladorUsuari;
 
@@ -33,7 +34,7 @@ public class SwingFrameUsuari{
     private static JFrame frameUsuari;
 
     SwingControladorUsuari controlador;
-    SportManagerOracle bd; 
+    SportManagerInterfaceCP bd; 
     
     private JLabel labelForgetPwd;
     
@@ -43,7 +44,7 @@ public class SwingFrameUsuari{
     private JPasswordField textFieldpwd;
 
 
-    public SwingFrameUsuari(SwingControladorUsuari controlador, SportManagerOracle bd) {
+    public SwingFrameUsuari(SwingControladorUsuari controlador, SportManagerInterfaceCP bd) {
         frameUsuari = new JFrame();
         frameUsuari.setSize(AMPLADA, ALTURA);
         frameUsuari.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

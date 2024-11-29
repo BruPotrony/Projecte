@@ -34,6 +34,7 @@ import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import potrony.bru.CapaPersistencia.SportManagerOracle;
 import potrony.bru.Interface.GestorSportManagerException;
+import potrony.bru.Interface.SportManagerInterfaceCP;
 import potrony.bru.SportManager.EnumSexe;
 import potrony.bru.SportManager.Jugador;
 import potrony.bru.SportManager.Temporada;
@@ -50,7 +51,7 @@ public class SwingFrameCrearJugador {
     private static JFrame frameCrearJugador;
 
     SwingControladorUsuari controlador;
-    SportManagerOracle bd; 
+    SportManagerInterfaceCP bd; 
     
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     
@@ -79,7 +80,7 @@ public class SwingFrameCrearJugador {
     
 
 
-    public SwingFrameCrearJugador(SwingControladorUsuari controlador, SportManagerOracle bd) {
+    public SwingFrameCrearJugador(SwingControladorUsuari controlador, SportManagerInterfaceCP bd) {
         frameCrearJugador = new JFrame();
         frameCrearJugador.setSize(AMPLADA, ALTURA);
         frameCrearJugador.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

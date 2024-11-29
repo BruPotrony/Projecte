@@ -18,7 +18,7 @@ import potrony.bru.SportManager.Usuari;
  *
  * @author Vago
  */
-public interface SportManagerInferfaceCP {
+public interface SportManagerInterfaceCP {
     
     /********************************USUARI**************************************************/
     
@@ -125,7 +125,7 @@ public interface SportManagerInferfaceCP {
     
     /*Elimina un jugador retorna cert o fals
     si ho ha completat*/
-    boolean eliminarJugador (Jugador jugador)throws GestorSportManagerException;
+    boolean eliminarJugadorIdLegal (String idLegal)throws GestorSportManagerException;
     
     
     

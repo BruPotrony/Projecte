@@ -184,7 +184,7 @@ public class ComprovarJugadors {
         
         System.out.println("\nEliminar jugador(No s'hauria d'eliminar)");
         try {
-            gestor.eliminarJugador(gestor.loadJugadorId((long)3));
+            gestor.eliminarJugadorIdLegal(jugadors.get(1).getId_Legal());
         } catch (GestorSportManagerException ex) {
             System.out.println("Error en eliminar el jugador\n"+ ex.getMessage());
         }

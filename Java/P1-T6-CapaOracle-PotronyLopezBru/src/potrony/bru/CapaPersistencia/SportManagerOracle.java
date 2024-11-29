@@ -4,7 +4,6 @@
  */
 package potrony.bru.CapaPersistencia;
 
-import potrony.bru.Interface.SportManagerInferfaceCP;
 import potrony.bru.Interface.GestorSportManagerException;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
@@ -20,6 +19,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.FormatterClosedException;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -33,12 +33,13 @@ import potrony.bru.SportManager.Jugador;
 import potrony.bru.SportManager.Membre;
 import potrony.bru.SportManager.Temporada;
 import potrony.bru.SportManager.Usuari;
+import potrony.bru.Interface.SportManagerInterfaceCP;
 
 /**
  *
  * @author Vago
  */
-public class SportManagerOracle implements SportManagerInferfaceCP {
+public class SportManagerOracle implements SportManagerInterfaceCP {
 
     private Connection conn;
 
@@ -882,32 +883,31 @@ public class SportManagerOracle implements SportManagerInferfaceCP {
     
     
     @Override
-    public boolean eliminarJugador(Jugador jugador) throws GestorSportManagerException {
-        long id = jugador.getId();
+    public boolean eliminarJugadorIdLegal(String IdLegal) throws GestorSportManagerException {
+        
+        if (IdLegal.isEmpty()){
+            throw new GestorSportManagerException("S'ha passat un Id Legal buit");
+        }
         
         if (psDeleteJugador==null){
             try {
-                psDeleteJugador = conn.prepareStatement("DELETE FROM jugador WHERE id=?");
+                psDeleteJugador = conn.prepareStatement("DELETE FROM jugador WHERE idLegal=?");
             } catch (Exception ex) {
                 throw new GestorSportManagerException("Error en preparar statement psDeleteJugador", ex);
             }
         }
         
         try {
-            psDeleteJugador.setLong(1, id);
+            psDeleteJugador.setString(1, IdLegal);
         } catch (Exception ex) {
-            throw new GestorSportManagerException("Error en assignar valor a la sentencia psDeleteJugador "+id, ex);
+            throw new GestorSportManagerException("Error en assignar valor a la sentencia psDeleteJugador ", ex);
         }
         
         int rowsDeleted;
         try {
             rowsDeleted = psDeleteJugador.executeUpdate();
         } catch (Exception ex) {
-            throw new GestorSportManagerException("Error en eliminar jugador amb id: " + id, ex);
-        }
-        
-        if (rowsDeleted == 0) {
-            throw new GestorSportManagerException("No s'ha trobat jugador amb id: " + id);
+            throw new GestorSportManagerException("Error en eliminar jugador amb idLegal: " + IdLegal, ex);
         }
         
         return rowsDeleted != 0;

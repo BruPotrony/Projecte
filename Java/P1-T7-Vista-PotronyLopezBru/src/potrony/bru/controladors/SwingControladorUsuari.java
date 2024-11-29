@@ -8,34 +8,19 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
-import javax.swing.plaf.multi.MultiLookAndFeel;
-import potrony.bru.CapaPersistencia.SportManagerOracle;
-import potrony.bru.SportManager.Equip;
-import potrony.bru.SportManager.Jugador;
-import potrony.bru.SportManager.Temporada;
-import potrony.bru.SportManager.Usuari;
 import potrony.bru.grafics.SwingFrameConsultarJugador;
+import potrony.bru.grafics.SwingFrameCrearEquip;
 import potrony.bru.grafics.SwingFrameCrearJugador;
 import potrony.bru.grafics.SwingFrameCrearTemporada;
 import potrony.bru.grafics.SwingFrameEditarJugador;
@@ -43,6 +28,7 @@ import potrony.bru.grafics.SwingFrameEliminarTemporada;
 import potrony.bru.grafics.SwingFrameForgetPassword;
 import potrony.bru.grafics.SwingFrameMenu;
 import potrony.bru.grafics.SwingFrameUsuari;
+import potrony.bru.Interface.SportManagerInterfaceCP;
 
 /**
  *
@@ -58,8 +44,11 @@ public class SwingControladorUsuari{
     private SwingFrameCrearJugador frameCrearJugador;
     private SwingFrameEditarJugador frameEditarJugador;
     private SwingFrameConsultarJugador frameConsultarJugador;
+    private SwingFrameCrearEquip frameCrearEquip;
     
-    public SwingControladorUsuari(SportManagerOracle manager, JFrame frameCarga) {
+    private SportManagerInterfaceCP manager;
+    
+    public SwingControladorUsuari(SportManagerInterfaceCP manager, JFrame frameCarga) {
         
         frameUsuari = new SwingFrameUsuari(this, manager);
         frameForgetPassword = new SwingFrameForgetPassword(this,manager);
@@ -69,6 +58,9 @@ public class SwingControladorUsuari{
         frameCrearJugador = new SwingFrameCrearJugador(this, manager);
         frameEditarJugador = new SwingFrameEditarJugador(this, manager);
         frameConsultarJugador = new SwingFrameConsultarJugador(this,manager);
+        frameCrearEquip = new SwingFrameCrearEquip(this, manager);
+        
+        this.manager = manager;
         
         frameCarga.dispose();
         frameUsuari.getFrame().setVisible(true);
@@ -120,7 +112,10 @@ public class SwingControladorUsuari{
         frameConsultarJugador.getFrame().setVisible(true);
     }
 
-
+    public void moveToCrearEquip(JFrame frame){
+        frame.setVisible(false);
+        frameCrearEquip.getFrame().setVisible(true);
+    }
     
     
     

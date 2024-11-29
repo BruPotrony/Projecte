@@ -27,6 +27,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -37,6 +38,7 @@ import javax.swing.event.MenuListener;
 import javax.swing.table.DefaultTableModel;
 import potrony.bru.CapaPersistencia.SportManagerOracle;
 import potrony.bru.Interface.GestorSportManagerException;
+import potrony.bru.Interface.SportManagerInterfaceCP;
 import potrony.bru.SportManager.Categoria;
 import potrony.bru.SportManager.Jugador;
 import potrony.bru.controladors.SwingControladorUsuari;
@@ -52,7 +54,7 @@ public class SwingFrameConsultarJugador {
     private static JFrame frameConsultarJugador;
 
     SwingControladorUsuari controlador;
-    SportManagerOracle bd; 
+    SportManagerInterfaceCP bd; 
     
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     
@@ -73,9 +75,10 @@ public class SwingFrameConsultarJugador {
     
     JScrollPane jspTaula;
     DefaultTableModel tableModel;
+    JTable table;
 
 
-    public SwingFrameConsultarJugador(SwingControladorUsuari controlador, SportManagerOracle bd) {
+    public SwingFrameConsultarJugador(SwingControladorUsuari controlador, SportManagerInterfaceCP bd) {
         frameConsultarJugador = new JFrame();
         frameConsultarJugador.setSize(AMPLADA, ALTURA);
         frameConsultarJugador.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -285,7 +288,7 @@ public class SwingFrameConsultarJugador {
 
         tableModel = new DefaultTableModel(data, columnNames);
 
-        JTable table = new JTable(tableModel);
+        table = new JTable(tableModel);
 
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setBounds(50, 100, 1000, 300);
@@ -347,7 +350,39 @@ public class SwingFrameConsultarJugador {
     }
 
     private void configurarBotoEliminar() {
-        
+        btnEliminar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedRow = table.getSelectedRow();
+                if (selectedRow == -1) { 
+                    controlador.missatgeError("Selecciona un jugador abans d'eliminar.");
+                    return;
+                }
+
+                try {                  
+
+                    int respuesta = JOptionPane.showConfirmDialog(null, 
+                        "Estas segur de que vols eliminar el jugador?", 
+                        "Confirmar Eliminació",
+                        JOptionPane.YES_NO_OPTION, 
+                        JOptionPane.QUESTION_MESSAGE);
+
+                    if (respuesta == JOptionPane.YES_OPTION) {
+                        String idLegal = table.getValueAt(selectedRow, 2).toString();
+
+                        bd.eliminarJugadorIdLegal(idLegal);
+                        tableModel.removeRow(selectedRow);
+                        controlador.missatgeConfirmacio("Jugador eliminat correctament");
+                        panel.revalidate();
+                        panel.repaint();
+                    } else {
+                        controlador.missatgeConfirmacio("Operació cancelada.");
+                    }
+                } catch (Exception ex) {
+                    controlador.missatgeError("ERROR: El jugador esta en un equip");
+                }
+            }
+        });
     }
 
     private void configurarBotoBuscar() {

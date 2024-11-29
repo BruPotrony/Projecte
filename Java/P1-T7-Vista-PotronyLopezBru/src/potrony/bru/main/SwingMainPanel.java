@@ -8,6 +8,8 @@ package potrony.bru.main;
 
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import java.awt.BorderLayout;
+import java.io.FileInputStream;
+import java.util.Properties;
 import potrony.bru.controladors.SwingControladorUsuari;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -16,6 +18,7 @@ import javax.swing.JProgressBar;
 import javax.swing.UIManager;
 import potrony.bru.CapaPersistencia.SportManagerOracle;
 import potrony.bru.Interface.GestorSportManagerException;
+import potrony.bru.Interface.SportManagerInterfaceCP;
 
 /**
  *
@@ -25,6 +28,8 @@ import potrony.bru.Interface.GestorSportManagerException;
 public class SwingMainPanel {
     
     private static JFrame frameCarga;
+    private static SportManagerInterfaceCP gBD;
+    private String nomClasse;
     
     public static void main(String[] args) {
         
@@ -37,18 +42,36 @@ public class SwingMainPanel {
             System.err.println("Error al configurar el Look and Feel: " + e.getMessage());
         }
         
-        SportManagerOracle manager;
+        
+        
         try {
-            manager = new SportManagerOracle();
+            
+        } catch (Exception e) {
+            System.err.println("Error en connectar amb la cp "+e.getMessage());
+        }
+        
+        try {
+            FileInputStream fileInputStream = new FileInputStream("properties_CP_JRS.properties");
+            Properties p = new Properties();
+            p.load(fileInputStream);
+
+            String nomClasse = p.getProperty("nomClasse");
+
+            if (nomClasse.isEmpty()) {
+                System.out.println("Propietat no recuperada no recuperada");
+                System.exit(1);
+            }
+            
+            gBD = (SportManagerInterfaceCP) Class.forName(nomClasse).newInstance();
         } catch (Exception ex) {
             System.out.println("Error en conectar amb la bd "+ ex.getMessage());
             return;
         }
         
-        new SwingControladorUsuari(manager, frameCarga);
+        new SwingControladorUsuari(gBD, frameCarga);
         
         try {
-            manager.desferCanvis();
+            gBD.desferCanvis();
         } catch (GestorSportManagerException ex) {
             System.out.println("Error en tancar la connexió amb la bd "+ex.getMessage());
         }
