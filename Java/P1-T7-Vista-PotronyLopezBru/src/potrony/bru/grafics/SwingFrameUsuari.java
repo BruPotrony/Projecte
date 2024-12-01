@@ -42,6 +42,10 @@ public class SwingFrameUsuari{
     private JTextField textFieldNom;
     private JTextField textFieldUsuari;
     private JPasswordField textFieldpwd;
+    
+    //Aquesta variable es per a que al fer el dispose del frame
+    //No crei confusions, explicat mes endevant
+    private boolean isProcessingMenu = false;
 
 
     public SwingFrameUsuari(SwingControladorUsuari controlador, SportManagerInterfaceCP bd) {
@@ -50,7 +54,7 @@ public class SwingFrameUsuari{
         frameUsuari.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frameUsuari.setLocationRelativeTo(null);
         frameUsuari.setTitle("Login");
-        frameUsuari.setVisible(false);
+        frameUsuari.setVisible(true);
         frameUsuari.setResizable(false);
         
         this.controlador = controlador;

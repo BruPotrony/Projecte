@@ -30,6 +30,10 @@ public class SwingFrameMenu {
     JButton btnTemporada;
     JButton btnJugadors;
     JButton btnEquips;
+    
+    //Aquesta variable es per a que al fer el dispose del frame
+    //No crei confusions, explicat mes endevant
+    private boolean isProcessingMenu = false;
 
     public SwingFrameMenu(SwingControladorUsuari controlador, SportManagerInterfaceCP bd) {
         frameMenu = new JFrame();
@@ -37,6 +41,7 @@ public class SwingFrameMenu {
         frameMenu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frameMenu.setLocationRelativeTo(null);
         frameMenu.setTitle("Menu");
+        frameMenu.setVisible(true);
         frameMenu.setResizable(false);
         
         this.controlador = controlador;

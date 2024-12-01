@@ -60,6 +60,7 @@ public class SportManagerOracle implements SportManagerInterfaceCP {
     
     private PreparedStatement psLoadCategoria;
     private PreparedStatement psLoadCategories;
+    private PreparedStatement psGetIdCategoria;
     
     private PreparedStatement psSaveJugador;
     private PreparedStatement psLoadJugadors;
@@ -545,6 +546,37 @@ public class SportManagerOracle implements SportManagerInterfaceCP {
         return categories;
     }
 
+    
+    public long getIdCategoria(String nomCategoria)throws GestorSportManagerException{
+        long id;
+                
+        if (nomCategoria.isEmpty()){
+            throw new GestorSportManagerException("S'ha passat una categoria buida ");
+        }
+        
+        if (psGetIdCategoria==null){
+            try {
+                psGetIdCategoria = conn.prepareStatement("select id from categoria where nom = ?");
+            } catch (Exception ex) {
+                throw new GestorSportManagerException("Error en preparar la sentencia psGetIdCategoria", ex);
+            }
+        }
+        try {
+            psGetIdCategoria.setString(1, nomCategoria);
+            ResultSet rs = psGetIdCategoria.executeQuery();
+            if (rs.next()) {
+                return rs.getLong("id");
+            } else {
+                throw new GestorSportManagerException("No s'ha trobat categoria amb nom: "+nomCategoria);
+            }
+        } catch (Exception ex) {
+            throw new GestorSportManagerException("Error en recuperar categoria "+nomCategoria, ex);
+        }
+    }
+    
+    
+    
+    
     
     
     

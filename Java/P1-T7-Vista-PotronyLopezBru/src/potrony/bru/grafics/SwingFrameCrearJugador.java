@@ -8,6 +8,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -78,6 +79,9 @@ public class SwingFrameCrearJugador {
     JLabel labelImatge;
     
     
+    //Aquesta variable es per a que al fer el dispose del frame
+    //No crei confusions, explicat mes endevant
+    private boolean isProcessingMenu = false;
 
 
     public SwingFrameCrearJugador(SwingControladorUsuari controlador, SportManagerInterfaceCP bd) {
@@ -86,6 +90,7 @@ public class SwingFrameCrearJugador {
         frameCrearJugador.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frameCrearJugador.setLocationRelativeTo(null);
         frameCrearJugador.setTitle("Crear Jugador");
+        frameCrearJugador.setVisible(true);
         frameCrearJugador.setResizable(false);
         
         this.controlador = controlador;
@@ -249,7 +254,14 @@ public class SwingFrameCrearJugador {
         menuEditar.addMenuListener(new MenuListener() {
             @Override
             public void menuSelected(MenuEvent e) {
-                controlador.moveToEditarJugador(frameCrearJugador);
+                //Faig el seguent metode de isProcessingMenu, ja que sinó al fer el dispose
+                //del frame provoca que es generin events adicionals al lliberar els recursos
+                //i aquest listener es crida dues vegades
+                if (!isProcessingMenu) {
+                    isProcessingMenu = true;
+                    controlador.moveToEditarJugador(frameCrearJugador);
+                    isProcessingMenu = false;
+                }
             }
 
             @Override
@@ -266,7 +278,11 @@ public class SwingFrameCrearJugador {
         menuConsultar.addMenuListener(new MenuListener() {
             @Override
             public void menuSelected(MenuEvent e) {
-                controlador.moveToConsultarJugador(frameCrearJugador);
+                if (!isProcessingMenu) {
+                    isProcessingMenu = true;
+                    controlador.moveToConsultarJugador(frameCrearJugador);
+                    isProcessingMenu = false;
+                }
             }
 
             @Override
@@ -378,7 +394,7 @@ public class SwingFrameCrearJugador {
                     String iban = txtfIban.getText();
                     String idLegal = txtfIdLegal.getText();
                     
-                    if (!esURLValida(foto)){
+                    if (!controlador.esURLValida(foto)){
                         controlador.missatgeError("URL de l'imatge no valida");
                         return;
                     }
@@ -405,17 +421,6 @@ public class SwingFrameCrearJugador {
     }
     
     
-    public static boolean esURLValida(String url) {
-        if (url == null || url.isEmpty()) {
-            return false;
-        }
-        
-        try {
-            new URL(url).toURI();
-            return true;
-        } catch (MalformedURLException | URISyntaxException e) {
-            return false; 
-        }
-    }
+    
 
 }

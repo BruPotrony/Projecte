@@ -18,7 +18,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
-import potrony.bru.CapaPersistencia.SportManagerOracle;
 import potrony.bru.Interface.GestorSportManagerException;
 import potrony.bru.Interface.SportManagerInterfaceCP;
 import potrony.bru.SportManager.Temporada;
@@ -45,6 +44,10 @@ public class SwingFrameEliminarTemporada{
     JMenu menu;
     JMenu tancarSessio;
     JComboBox<String> comboBoxAnys;
+    
+    //Aquesta variable es per a que al fer el dispose del frame
+    //No crei confusions, explicat mes endevant
+    private boolean isProcessingMenu = false;
 
     public SwingFrameEliminarTemporada(SwingControladorUsuari controlador, SportManagerInterfaceCP bd) {
         frameTemporada = new JFrame();
@@ -52,6 +55,7 @@ public class SwingFrameEliminarTemporada{
         frameTemporada.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frameTemporada.setLocationRelativeTo(null);
         frameTemporada.setTitle("Eliminar Temporada");
+        frameTemporada.setVisible(true);
         frameTemporada.setResizable(false);
 
         this.controlador = controlador;
@@ -115,7 +119,14 @@ public class SwingFrameEliminarTemporada{
         menuCrear.addMenuListener(new MenuListener() {
             @Override
             public void menuSelected(MenuEvent e) {
-                controlador.moveToCrearTemporada(frameTemporada);
+                //Faig el seguent metode de isProcessingMenu, ja que sinó al fer el dispose
+                //del frame provoca que es generin events adicionals al lliberar els recursos
+                //i aquest listener es crida dues vegades
+                if (!isProcessingMenu) {
+                    isProcessingMenu = true;
+                    controlador.moveToCrearTemporada(frameTemporada);
+                    isProcessingMenu = false;
+                }
             }
 
             @Override

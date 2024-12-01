@@ -76,6 +76,10 @@ public class SwingFrameConsultarJugador {
     JScrollPane jspTaula;
     DefaultTableModel tableModel;
     JTable table;
+    
+    //Aquesta variable es per a que al fer el dispose del frame
+    //No crei confusions, explicat mes endevant
+    private boolean isProcessingMenu = false;
 
 
     public SwingFrameConsultarJugador(SwingControladorUsuari controlador, SportManagerInterfaceCP bd) {
@@ -84,6 +88,7 @@ public class SwingFrameConsultarJugador {
         frameConsultarJugador.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frameConsultarJugador.setLocationRelativeTo(null);
         frameConsultarJugador.setTitle("Crear Jugador");
+        frameConsultarJugador.setVisible(true);
         frameConsultarJugador.setResizable(false);
         
         this.controlador = controlador;
@@ -178,7 +183,11 @@ public class SwingFrameConsultarJugador {
         menuEditar.addMenuListener(new MenuListener() {
             @Override
             public void menuSelected(MenuEvent e) {
-                controlador.moveToEditarJugador(frameConsultarJugador);
+                if (!isProcessingMenu) {
+                    isProcessingMenu = true;
+                    controlador.moveToEditarJugador(frameConsultarJugador);
+                    isProcessingMenu = false;
+                }
             }
 
             @Override
@@ -195,7 +204,14 @@ public class SwingFrameConsultarJugador {
         menuCrear.addMenuListener(new MenuListener() {
             @Override
             public void menuSelected(MenuEvent e) {
-                controlador.moveToCrearJugador(frameConsultarJugador);
+                //Faig el seguent metode de isProcessingMenu, ja que sinó al fer el dispose
+                //del frame provoca que es generin events adicionals al lliberar els recursos
+                //i aquest listener es crida dues vegades
+                if (!isProcessingMenu) {
+                    isProcessingMenu = true;
+                    controlador.moveToCrearJugador(frameConsultarJugador);
+                    isProcessingMenu = false;
+                }
             }
 
             @Override
@@ -227,17 +243,6 @@ public class SwingFrameConsultarJugador {
             controlador.moveToMenu(frameConsultarJugador);
         }
         
-        
-        cbxCategoria.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    if(cbxCategoria.getSelectedIndex()!=0){
-                        //bd.getJugadorsCategoria()
-                    }
-                }
-            }
-        });
         
     }
 
@@ -282,7 +287,7 @@ public class SwingFrameConsultarJugador {
     }
 
     private void inicialitzarTaula() {
-        String[] columnNames = {"Nom", "Cognom", "NIF", "Edat", "Categoria", "Foto"};
+        String[] columnNames = {"Nom", "Cognom", "NIF", "Edat", "Categoria"};
 
         Object[][] data = {};
 
@@ -337,7 +342,6 @@ public class SwingFrameConsultarJugador {
                     jugador.getId_Legal(),
                     jugador.calcularEdatIniciAnyActual(jugador.getData_naix()),
                     categoriaJugador,
-                    jugador.getFoto() != null ? "📷" : "Sense foto"
                 };
                 tableModel.addRow(row);
             }

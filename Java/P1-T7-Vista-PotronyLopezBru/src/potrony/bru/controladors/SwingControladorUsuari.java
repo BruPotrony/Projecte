@@ -8,7 +8,9 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -29,6 +31,7 @@ import potrony.bru.grafics.SwingFrameForgetPassword;
 import potrony.bru.grafics.SwingFrameMenu;
 import potrony.bru.grafics.SwingFrameUsuari;
 import potrony.bru.Interface.SportManagerInterfaceCP;
+import potrony.bru.grafics.SwingFrameConsultarEquip;
 
 /**
  *
@@ -45,76 +48,69 @@ public class SwingControladorUsuari{
     private SwingFrameEditarJugador frameEditarJugador;
     private SwingFrameConsultarJugador frameConsultarJugador;
     private SwingFrameCrearEquip frameCrearEquip;
+    private SwingFrameConsultarEquip frameConsultarEquip;
     
     private SportManagerInterfaceCP manager;
     
     public SwingControladorUsuari(SportManagerInterfaceCP manager, JFrame frameCarga) {
         
-        frameUsuari = new SwingFrameUsuari(this, manager);
-        frameForgetPassword = new SwingFrameForgetPassword(this,manager);
-        frameMenu = new SwingFrameMenu(this,manager);
-        frameCrearTemporada = new SwingFrameCrearTemporada(this,manager);
-        frameEliminarTemporada = new SwingFrameEliminarTemporada(this,manager);
-        frameCrearJugador = new SwingFrameCrearJugador(this, manager);
-        frameEditarJugador = new SwingFrameEditarJugador(this, manager);
-        frameConsultarJugador = new SwingFrameConsultarJugador(this,manager);
-        frameCrearEquip = new SwingFrameCrearEquip(this, manager);
+        moveToLogin(frameCarga);
         
         this.manager = manager;
         
-        frameCarga.dispose();
         frameUsuari.getFrame().setVisible(true);
     }
     
     
     
     public void moveToMenu(JFrame frame){
-        frame.setVisible(false);
-        frameMenu.getFrame().setVisible(true);
+        frame.dispose();
+        frameMenu = new SwingFrameMenu(this,manager);
     }
     
     public void moveToForgetPwd(JFrame frame){
-        frame.setVisible(false);
-        frameForgetPassword.getFrame().setVisible(true);
+        frame.dispose();
+        frameForgetPassword = new SwingFrameForgetPassword(this,manager);
     }
     
     public void moveToLogin(JFrame frame){
-        frame.setVisible(false);
-        frameUsuari.getFrame().setVisible(true);
+        frame.dispose();
+        frameUsuari = new SwingFrameUsuari(this, manager);
     }
 
     public void moveToCrearTemporada(JFrame frame){
-        frame.setVisible(false);
-        frameCrearTemporada.getFrame().setVisible(true);
+        frame.dispose();
+        frameCrearTemporada = new SwingFrameCrearTemporada(this,manager);
     }
     
     public void moveToEliminarTemporada(JFrame frame){
-        frame.setVisible(false);
-        frameEliminarTemporada.getFrame().setVisible(true);
-    }
-    
-    public void actualitzarTemporades(){
-        frameEliminarTemporada.actualitzarTemporades();
+        frame.dispose();
+        frameEliminarTemporada = new SwingFrameEliminarTemporada(this,manager);
     }
     
     public void moveToCrearJugador(JFrame frame){
-        frame.setVisible(false);
-        frameCrearJugador.getFrame().setVisible(true);
+        frame.dispose();
+        frameCrearJugador = new SwingFrameCrearJugador(this, manager);
     }
     
     public void moveToEditarJugador(JFrame frame){
-        frame.setVisible(false);
-        frameEditarJugador.getFrame().setVisible(true);
+        frame.dispose();
+        frameEditarJugador = new SwingFrameEditarJugador(this, manager);
     }
     
     public void moveToConsultarJugador(JFrame frame){
-        frame.setVisible(false);
-        frameConsultarJugador.getFrame().setVisible(true);
+        frame.dispose();
+        frameConsultarJugador = new SwingFrameConsultarJugador(this,manager);
     }
 
     public void moveToCrearEquip(JFrame frame){
-        frame.setVisible(false);
-        frameCrearEquip.getFrame().setVisible(true);
+        frame.dispose();
+        frameCrearEquip = new SwingFrameCrearEquip(this, manager);
+    }
+    
+    public void moveToConsultarEquip(JFrame frame){
+        frame.dispose();
+        frameConsultarEquip = new SwingFrameConsultarEquip(this,manager);
     }
     
     
@@ -228,31 +224,52 @@ public class SwingControladorUsuari{
     
         public JLabel afegirImatgeUrl(String url, int x, int y, int width, int height) {
             try {
-                if (url.isEmpty()){
+                ImageIcon imageIcon;
+
+                // Verificar si es una URL remota o una ruta local
+                if (url.isEmpty()) {
                     url = "https://cdn.pixabay.com/photo/2017/11/10/05/48/user-2935527_1280.png";
                 }
-                // Carregar l'imatge desde Ufl
-                ImageIcon imageIcon = new ImageIcon(new URL(url));
-                // Afegir les dimensions de la imatge
+
+                if (url.startsWith("http://") || url.startsWith("https://")) {
+                    imageIcon = new ImageIcon(new URL(url));
+                } else {
+                    imageIcon = new ImageIcon(url);
+                }
+
                 Image image = imageIcon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
                 JLabel labelImatge = new JLabel(new ImageIcon(image));
                 labelImatge.setBounds(x, y, width, height);
                 return labelImatge;
+
             } catch (Exception e) {
                 missatgeError("Error en cargar l'imatge");
-                url = "https://cdn.pixabay.com/photo/2017/11/10/05/48/user-2935527_1280.png";
-                ImageIcon imageIcon = null;
                 try {
-                    imageIcon = new ImageIcon(new URL(url));
+                    ImageIcon fallbackIcon = new ImageIcon(new URL("https://cdn.pixabay.com/photo/2017/11/10/05/48/user-2935527_1280.png"));
+                    Image fallbackImage = fallbackIcon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
+                    JLabel fallbackLabel = new JLabel(new ImageIcon(fallbackImage));
+                    fallbackLabel.setBounds(x, y, width, height);
+                    return fallbackLabel;
                 } catch (MalformedURLException ex) {
                     missatgeError("ERROR\nConsultar amb l'administrador");
+                    return null;
                 }
-                Image image = imageIcon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
-                JLabel labelImatge = new JLabel(new ImageIcon(image));
-                labelImatge.setBounds(x, y, width, height);
-                return labelImatge;
             }
         }
+        
+    public boolean esURLValida(String url) {
+        if (url == null || url.isEmpty()) {
+        return false;
+        }
+
+        try {
+            new URL(url).toURI();
+            return true;
+        } catch (MalformedURLException | URISyntaxException e) {
+            File file = new File(url);
+            return file.exists();
+        }
+    }
     
     
     

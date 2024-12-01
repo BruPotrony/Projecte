@@ -38,6 +38,10 @@ public class SwingFrameForgetPassword {
     JPasswordField textFieldpwd1;
     JPasswordField textFieldpwd;
     JTextField textFieldUsuari;
+    
+    //Aquesta variable es per a que al fer el dispose del frame
+    //No crei confusions, explicat mes endevant
+    private boolean isProcessingMenu = false;
 
     public SwingFrameForgetPassword(SwingControladorUsuari controlador, SportManagerInterfaceCP bd) {
         framePassword = new JFrame();
@@ -45,6 +49,7 @@ public class SwingFrameForgetPassword {
         framePassword.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         framePassword.setLocationRelativeTo(null);
         framePassword.setTitle("Resetejar contrassenya");
+        framePassword.setVisible(true);
         framePassword.setResizable(false);
         
         this.controlador = controlador;

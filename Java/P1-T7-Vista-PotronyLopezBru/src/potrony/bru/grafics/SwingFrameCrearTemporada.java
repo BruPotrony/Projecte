@@ -8,7 +8,6 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Calendar;
-import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -18,7 +17,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
-import potrony.bru.CapaPersistencia.SportManagerOracle;
 import potrony.bru.Interface.GestorSportManagerException;
 import potrony.bru.Interface.SportManagerInterfaceCP;
 import potrony.bru.SportManager.Temporada;
@@ -44,6 +42,10 @@ public class SwingFrameCrearTemporada{
     JMenu menu;
     JMenu tancarSessio;
     JComboBox<String> comboBoxAnys;
+    
+    //Aquesta variable es per a que al fer el dispose del frame
+    //No crei confusions, explicat mes endevant
+    private boolean isProcessingMenu = false;
 
     public SwingFrameCrearTemporada(SwingControladorUsuari controlador, SportManagerInterfaceCP bd) {
         frameTemporada = new JFrame();
@@ -51,6 +53,7 @@ public class SwingFrameCrearTemporada{
         frameTemporada.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frameTemporada.setLocationRelativeTo(null);
         frameTemporada.setTitle("Crear Temporada");
+        frameTemporada.setVisible(true);
         frameTemporada.setResizable(false);
         
         this.controlador = controlador;
@@ -123,7 +126,14 @@ public class SwingFrameCrearTemporada{
         menuEliminar.addMenuListener(new MenuListener() {
             @Override
             public void menuSelected(MenuEvent e) {
-                controlador.moveToEliminarTemporada(frameTemporada);
+                //Faig el seguent metode de isProcessingMenu, ja que sinó al fer el dispose
+                //del frame provoca que es generin events adicionals al lliberar els recursos
+                //i aquest listener es crida dues vegades
+                if (!isProcessingMenu) {
+                    isProcessingMenu = true;
+                    controlador.moveToEliminarTemporada(frameTemporada);
+                    isProcessingMenu = false;
+                }
             }
 
             @Override
@@ -166,7 +176,6 @@ public class SwingFrameCrearTemporada{
                     comboBoxAnys.addItem(selectedItem.toString());
                     controlador.missatgeConfirmacio("Temporada creada correctament.");
                     
-                    controlador.actualitzarTemporades();
                 } catch (GestorSportManagerException ex) {
 
                     controlador.missatgeError("Ja existeix temporada amb any "+selectedItem.toString());

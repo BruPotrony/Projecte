@@ -84,6 +84,12 @@ public interface SportManagerInterfaceCP {
     Categoria loadCategoriaId(long id)throws GestorSportManagerException;
     List<Categoria> loadCategories()throws GestorSportManagerException;
     
+    /**
+     * Metode que retorna id de la categoria 
+     * passant-li el nom d'aquesta
+     */
+    long getIdCategoria(String nomCategoria)throws GestorSportManagerException;
+    
     /********************************Jugadors**************************************************/  
 
     

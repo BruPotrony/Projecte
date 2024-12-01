@@ -5,7 +5,6 @@
 package potrony.bru.grafics;
 
 import java.awt.Font;
-import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -19,8 +18,6 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -31,10 +28,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
-import potrony.bru.CapaPersistencia.SportManagerOracle;
 import potrony.bru.Interface.SportManagerInterfaceCP;
 import potrony.bru.SportManager.EnumSexe;
 import potrony.bru.SportManager.Jugador;
@@ -79,6 +74,10 @@ public class SwingFrameEditarJugador {
     JLabel labelImatge;
     
     
+    //Aquesta variable es per a que al fer el dispose del frame
+    //No crei confusions, explicat mes endevant
+    private boolean isProcessingMenu = false;
+    
     
 
     public SwingFrameEditarJugador(SwingControladorUsuari controlador, SportManagerInterfaceCP bd) {
@@ -87,6 +86,7 @@ public class SwingFrameEditarJugador {
         frameEditarJugador.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frameEditarJugador.setLocationRelativeTo(null);
         frameEditarJugador.setTitle("Editar Jugador");
+        frameEditarJugador.setVisible(true);
         frameEditarJugador.setResizable(false);
         
         this.controlador = controlador;
@@ -257,7 +257,14 @@ public class SwingFrameEditarJugador {
         menuCrear.addMenuListener(new MenuListener() {
             @Override
             public void menuSelected(MenuEvent e) {
-                controlador.moveToCrearJugador(frameEditarJugador);
+                //Faig el seguent metode de isProcessingMenu, ja que sinó al fer el dispose
+                //del frame provoca que es generin events adicionals al lliberar els recursos
+                //i aquest listener es crida dues vegades
+                if (!isProcessingMenu) {
+                    isProcessingMenu = true;
+                    controlador.moveToCrearJugador(frameEditarJugador);
+                    isProcessingMenu = false;
+                }
             }
 
             @Override
@@ -274,7 +281,11 @@ public class SwingFrameEditarJugador {
         menuConsultar.addMenuListener(new MenuListener() {
             @Override
             public void menuSelected(MenuEvent e) {
-                controlador.moveToConsultarJugador(frameEditarJugador);
+                if (!isProcessingMenu) {
+                    isProcessingMenu = true;
+                    controlador.moveToConsultarJugador(frameEditarJugador);
+                    isProcessingMenu = false;
+                }
             }
 
             @Override
@@ -377,6 +388,10 @@ public class SwingFrameEditarJugador {
                     Date date = sdf.parse(dataNaixStr);
                     LocalDate dataNaix = date.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
                     String foto = txtfImatge.getText();
+                    if (!controlador.esURLValida(foto)){
+                        controlador.missatgeError("Ruta imatge no valida");
+                        return;
+                    }
                     String adreca = txtfIdAdreca.getText();
                     String codiPostal = txtfCodiPostal.getText();
                     String poblacio = txtfPoblacio.getText();
