@@ -49,10 +49,13 @@ public class SwingControladorUsuari{
     private SwingFrameConsultarJugador frameConsultarJugador;
     private SwingFrameCrearEquip frameCrearEquip;
     private SwingFrameConsultarEquip frameConsultarEquip;
+
+    
     
     private SportManagerInterfaceCP manager;
     
     public SwingControladorUsuari(SportManagerInterfaceCP manager, JFrame frameCarga) {
+
         
         moveToLogin(frameCarga);
         

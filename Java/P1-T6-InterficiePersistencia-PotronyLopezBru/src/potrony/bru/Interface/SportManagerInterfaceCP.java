@@ -161,7 +161,23 @@ public interface SportManagerInterfaceCP {
     boolean modificarEquip (String nom, int any, Equip equip)throws GestorSportManagerException;
     
     /*eliminar un Equip, passem l'equip sencer*/
-    boolean eliminarEquip (Equip equip)throws GestorSportManagerException;
+    boolean eliminarEquip (String nom, int temporada)throws GestorSportManagerException;
+    
+    /**
+     * Elimina un equip el qual te jugadors i tots els jugadors
+     * que estaven en aquell equip es desassignen d'aquest
+     */
+    void eliminarEquipAmbJugadors(String nom, int temporada)throws GestorSportManagerException;
+    
+    /**
+     * recupera id de l'equip amb nom i temporada que li passem
+     */
+    long getGeneratedEquipId(String nom, int any) throws GestorSportManagerException;
+    
+    /**
+     * retorna cert si l'equip te algun jugador
+     */
+    boolean equipTeJugadors(String nom, int any)throws GestorSportManagerException;
     
     
     /********************************MEMBRE**************************************************/ 

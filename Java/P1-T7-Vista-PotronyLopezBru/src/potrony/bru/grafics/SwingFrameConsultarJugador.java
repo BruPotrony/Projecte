@@ -290,8 +290,13 @@ public class SwingFrameConsultarJugador {
         String[] columnNames = {"Nom", "Cognom", "NIF", "Edat", "Categoria"};
 
         Object[][] data = {};
-
-        tableModel = new DefaultTableModel(data, columnNames);
+        
+        tableModel = new DefaultTableModel(data, columnNames) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
 
         table = new JTable(tableModel);
 
@@ -365,13 +370,13 @@ public class SwingFrameConsultarJugador {
 
                 try {                  
 
-                    int respuesta = JOptionPane.showConfirmDialog(null, 
+                    int resposta = JOptionPane.showConfirmDialog(null, 
                         "Estas segur de que vols eliminar el jugador?", 
                         "Confirmar Eliminació",
                         JOptionPane.YES_NO_OPTION, 
                         JOptionPane.QUESTION_MESSAGE);
 
-                    if (respuesta == JOptionPane.YES_OPTION) {
+                    if (resposta == JOptionPane.YES_OPTION) {
                         String idLegal = table.getValueAt(selectedRow, 2).toString();
 
                         bd.eliminarJugadorIdLegal(idLegal);

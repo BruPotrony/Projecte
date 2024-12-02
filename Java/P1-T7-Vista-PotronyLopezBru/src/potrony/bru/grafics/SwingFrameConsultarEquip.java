@@ -4,18 +4,32 @@
  */
 package potrony.bru.grafics;
 
+import java.awt.Cursor;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import javax.swing.table.DefaultTableModel;
+import potrony.bru.Interface.GestorSportManagerException;
 import potrony.bru.Interface.SportManagerInterfaceCP;
+import potrony.bru.SportManager.Categoria;
+import potrony.bru.SportManager.EnumTipus;
+import potrony.bru.SportManager.Equip;
 import potrony.bru.controladors.SwingControladorUsuari;
 
 /**
@@ -39,6 +53,8 @@ public class SwingFrameConsultarEquip {
     JMenu tancarSessio;
     JPanel panel;
 
+    JLabel labelJRS;
+    JButton btnEliminar;
     
     JScrollPane jspTaula;
     DefaultTableModel tableModel;
@@ -47,6 +63,7 @@ public class SwingFrameConsultarEquip {
     //Aquesta variable es per a que al fer el dispose del frame
     //No crei confusions, explicat mes endevant
     private boolean isProcessingMenu = false;
+    
 
 
     public SwingFrameConsultarEquip(SwingControladorUsuari controlador, SportManagerInterfaceCP bd) {
@@ -79,6 +96,7 @@ public class SwingFrameConsultarEquip {
         menuBar.add(menuCrear);
         menuBar.add(menuConsultar);
         menuBar.add(menuEditar);
+        menuBar.add(menuAfegirJugador);
         menuBar.add(menu);
         menuBar.add(tancarSessio);
         
@@ -86,8 +104,22 @@ public class SwingFrameConsultarEquip {
         configurarMenu();
         
         jspTaula = new JScrollPane();
+        configurarTaula();
         inicialitzarTaula();
         panel.add(jspTaula);
+        
+        labelJRS = new JLabel("<html><u><font color='#ADD8E6'>Crear informe Jasper Report Server</font></u></html>");
+        labelJRS.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        labelJRS.setFont(new Font("Arial", Font.PLAIN, 15));
+        labelJRS.setBounds(420, 400, 300, 30); 
+        panel.add(labelJRS);
+        configurarLabelJRS();
+        
+        btnEliminar = new JButton();
+        btnEliminar.setText("Eliminar");
+        btnEliminar.setBounds(480,450,120,40);
+        panel.add(btnEliminar);
+        configurarBotoEliminar();
                     
         frameConsultarEquip.add(panel);
     }
@@ -114,27 +146,11 @@ public class SwingFrameConsultarEquip {
             }
         });
         
-        menuConsultar.addMenuListener(new MenuListener() {
-            @Override
-            public void menuSelected(MenuEvent e) {
-                //controlador.moveToConsultarJugador(frameCrearEquip);
-            }
-
-            @Override
-            public void menuDeselected(MenuEvent e) {
-                // Metode buit
-            }
-
-            @Override
-            public void menuCanceled(MenuEvent e) {
-                // // Metode buit
-            }
-        });
         
         menuCrear.addMenuListener(new MenuListener() {
             @Override
             public void menuSelected(MenuEvent e) {
-                //controlador.moveToConsultarJugador(frameCrearEquip);
+                controlador.moveToCrearEquip(frameConsultarEquip);
             }
 
             @Override
@@ -153,12 +169,17 @@ public class SwingFrameConsultarEquip {
 
 
 
-    private void inicialitzarTaula() {
+    private void configurarTaula() {
         String[] columnNames = {"Categoria", "Nom Equip", "Temporada", "Tipus"};
 
         Object[][] taula = {};
 
-        tableModel = new DefaultTableModel(taula, columnNames);
+        tableModel = new DefaultTableModel(taula, columnNames) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
 
         table = new JTable(tableModel);
 
@@ -168,6 +189,126 @@ public class SwingFrameConsultarEquip {
         jspTaula.setViewportView(table);
 
         jspTaula.setBounds(100, 50, 900, 300);
+    }
+
+    private void inicialitzarTaula() {
+        try {
+            List<Equip> equips = bd.loadEquips();
+            Map<Long, Categoria> categoriasMap = new HashMap<>();
+
+            if (equips != null && !equips.isEmpty()) {
+                for (Equip equip : equips) {
+                    long idCategoria = equip.getIdCategoria();
+                    if (!categoriasMap.containsKey(idCategoria)) {
+                        Categoria categoria = bd.loadCategoriaId(idCategoria);
+                        categoriasMap.put(idCategoria, categoria);
+                    }
+                }
+
+                String nomCategoriaAnterior = categoriasMap.get(equips.get(0).getIdCategoria()).getNom();
+
+                for (Equip equip : equips) {
+                    String nomCategoriaActual = categoriasMap.get(equip.getIdCategoria()).getNom();
+
+                    if (nomCategoriaActual.equals(nomCategoriaAnterior)) {
+                        
+                        String tipusText;
+                        switch (equip.getTipus()) {
+                            case H:
+                                tipusText = "Masculí";
+                                break;
+                            case D:
+                                tipusText = "Femení";
+                                break;
+                            default:
+                                tipusText = "Mixt";
+                                break;
+                        }
+                        
+                        Object[] row = {
+                            nomCategoriaActual,
+                            equip.getNom(),
+                            equip.getIdTemporada(),
+                            tipusText
+                        };
+                        tableModel.addRow(row);
+                    } else {
+                        Object[] row = {"", "", "", ""};
+                        tableModel.addRow(row);
+                        nomCategoriaAnterior = nomCategoriaActual;
+                    }
+                }
+            }
+            
+        } catch (GestorSportManagerException ex) {
+            controlador.missatgeError(ex.getMessage());
+        }
+    }
+    
+    private void configurarBotoEliminar() {
+        btnEliminar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedRow = table.getSelectedRow();
+                if (selectedRow == -1 || table.getValueAt(selectedRow, 1).toString().isEmpty()) { 
+                    controlador.missatgeError("Selecciona un equip abans d'eliminar.");
+                    return;
+                }
+
+                try {                  
+
+                    int resposta = JOptionPane.showConfirmDialog(null, 
+                        "Estas segur de que vols eliminar l'Equip?", 
+                        "Confirmar Eliminació",
+                        JOptionPane.YES_NO_OPTION, 
+                        JOptionPane.QUESTION_MESSAGE);
+
+                    if (resposta == JOptionPane.YES_OPTION) {
+                        String nom = table.getValueAt(selectedRow, 1).toString();
+                        int temporada = Integer.parseInt(table.getValueAt(selectedRow, 2).toString());
+                    
+                        
+                        try{
+                            if (bd.equipTeJugadors(nom, temporada)){
+                                int resposta2 = JOptionPane.showConfirmDialog(null, 
+                                "L'equip conte jugadors, estas segur que el vols eliminar?", 
+                                "Confirmar Eliminació",
+                                JOptionPane.YES_NO_OPTION, 
+                                JOptionPane.QUESTION_MESSAGE);
+
+                                if (resposta2 == JOptionPane.YES_OPTION) {
+                                    bd.eliminarEquipAmbJugadors(nom, temporada);
+                                }else{
+                                    return;
+                                }
+                            }else{
+                                bd.eliminarEquip(nom,temporada);
+                            }
+                        }catch (Exception ex) {
+                            controlador.missatgeError(ex.getMessage());
+                            return;
+                        }
+                    
+                        
+                        tableModel.removeRow(selectedRow);
+                        controlador.missatgeConfirmacio("Equip "+nom+" eliminat correctament");
+                        panel.revalidate();
+                        panel.repaint();
+                        
+                        
+                    } else {
+                        controlador.missatgeConfirmacio("Operació cancelada.");
+                    }
+                } catch (Exception ex) {
+                    controlador.missatgeError(ex.getMessage());
+                    
+                }
+            }
+        });
+    }
+
+    private void configurarLabelJRS() {
+        //throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }

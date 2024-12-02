@@ -78,6 +78,7 @@ public class SportManagerOracle implements SportManagerInterfaceCP {
     private PreparedStatement psLoadEquips;
     private PreparedStatement psSaveEquip;
     private PreparedStatement psDeleteEquip;
+    private PreparedStatement psEquipTeJugadors;
     private PreparedStatement psGetGeneratedEquipId;
     private PreparedStatement psUpdateEquip;
     
@@ -1067,7 +1068,7 @@ public class SportManagerOracle implements SportManagerInterfaceCP {
         if (psLoadEquips == null) {
             try {
                 psLoadEquips = conn.prepareStatement(
-                    "SELECT id, id_categoria, any_temporada, nom, tipus FROM equip"
+                    "SELECT id, id_categoria, any_temporada, nom, tipus FROM equip order by id_categoria"
                 );
             } catch (Exception ex) {
                 throw new GestorSportManagerException("Error en preparar la sentencia psLoadEquips", ex);
@@ -1151,40 +1152,74 @@ public class SportManagerOracle implements SportManagerInterfaceCP {
     }
 
     @Override
-    public boolean eliminarEquip(Equip equip) throws GestorSportManagerException {
-        long id = equip.getId();
+    public boolean eliminarEquip(String nom, int temporada) throws GestorSportManagerException {
+        
+        if (nom.isEmpty()||temporada == 0){
+            throw new GestorSportManagerException("S'ha passat nom o temporada buida");
+        }
         
         if (psDeleteEquip==null){
             try {
-                psDeleteEquip = conn.prepareStatement("DELETE FROM equip WHERE id=?");
+                psDeleteEquip = conn.prepareStatement("DELETE FROM equip WHERE nom=? AND any_temporada=?");
             } catch (Exception ex) {
                 throw new GestorSportManagerException("Error en preparar statement psDeleteEquip", ex);
             }
         }
         
         try {
-            psDeleteEquip.setLong(1, id);
+            psDeleteEquip.setString(1, nom);
+            psDeleteEquip.setInt(2,temporada);
         } catch (Exception ex) {
-            throw new GestorSportManagerException("Error en assignar valor a la sentencia psDeleteEquip "+id, ex);
+            throw new GestorSportManagerException("Error en assignar valor a la sentencia psDeleteEquip "+nom, ex);
         }
         
         int rowsDeleted;
         try {
             rowsDeleted = psDeleteEquip.executeUpdate();
         } catch (Exception ex) {
-            throw new GestorSportManagerException("Error en eliminar equip amb id: " + id, ex);
-        }
-        
-        if (rowsDeleted == 0) {
-            throw new GestorSportManagerException("No s'ha trobat equip amb id: " + id);
+            throw new GestorSportManagerException("Error en eliminar equip amb nom: " + nom, ex);
         }
         
         return rowsDeleted != 0;
     }
     
+    public void eliminarEquipAmbJugadors(String nom, int temporada)throws GestorSportManagerException{
+        
+        if (nom.isEmpty()||temporada == 0){
+            throw new GestorSportManagerException("S'ha passat nom o temporada buida");
+        }
+        long idEquip;
+        try{
+            idEquip = this.getGeneratedEquipId(nom, temporada);
+        }catch(Exception e){
+            throw new GestorSportManagerException(e.getMessage());
+        }
+        
+        List <Jugador> jugadors = new ArrayList<>();
+        try{
+            jugadors = this.loadJugadorsIdEquip(idEquip);
+        }catch(Exception e){
+            throw new GestorSportManagerException(e.getMessage());
+        }
+        
+        if (!jugadors.isEmpty()){
+            for (Jugador jugador : jugadors) {
+                this.eliminarJugadorEquip(jugador.getId(), idEquip);
+            }
+        }
+        
+        try{
+            this.eliminarEquip(nom, temporada);
+        }catch(Exception e){
+            throw new GestorSportManagerException(e.getMessage());
+        }
+        
+    }
+
+    
     
     ///Aquest metode recupera id de l'equip que l'equip amb nom i any que li passem
-    private long getGeneratedEquipId(String nom, int any) throws GestorSportManagerException, Exception{
+    public long getGeneratedEquipId(String nom, int any) throws GestorSportManagerException{
         if (psGetGeneratedEquipId == null){
             try {
                 psGetGeneratedEquipId = conn.prepareStatement("Select id from equip where nom=? AND any_temporada=?");
@@ -1193,8 +1228,13 @@ public class SportManagerOracle implements SportManagerInterfaceCP {
             }
         }
         
-        psGetGeneratedEquipId.setString(1, nom);
-        psGetGeneratedEquipId.setInt(2, any);
+        try {
+            psGetGeneratedEquipId.setString(1, nom);
+            psGetGeneratedEquipId.setInt(2, any);
+        } catch (SQLException ex) {
+            Logger.getLogger(SportManagerOracle.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         
         try (ResultSet rs = psGetGeneratedEquipId.executeQuery()) {
             if (rs.next()) {
@@ -1206,6 +1246,50 @@ public class SportManagerOracle implements SportManagerInterfaceCP {
             throw new GestorSportManagerException("Error en executar la consulta per obtenir id a l'equip amb nom/any: " + nom+"/"+any, ex);
         }
     }
+    
+    @Override
+    public boolean equipTeJugadors(String nom, int any)throws GestorSportManagerException{
+        
+                
+        if (nom==null ||any == 0){
+            throw new GestorSportManagerException("S'ha passat nom o temporada buida");
+        }
+        
+        long idEquip;
+        try{
+            idEquip = this.getGeneratedEquipId(nom, any);
+        }catch(Exception e){
+            throw new GestorSportManagerException("Error en recuperar id de l'equip",e);
+        }
+        
+        if (psEquipTeJugadors==null){
+            try {
+                psEquipTeJugadors = conn.prepareStatement("select id_equip from membre where id_equip=?");
+            } catch (Exception ex) {
+                throw new GestorSportManagerException("Error en preparar statement psEquipTeJugadors", ex);
+            }
+        }
+        
+        ResultSet rs=null;
+        try {
+            psEquipTeJugadors.setLong(1, idEquip);
+            rs = psEquipTeJugadors.executeQuery();
+        } catch (Exception ex) {
+            throw new GestorSportManagerException("Error en assignar valor a la sentencia psEquipTeJugadors ", ex);
+        }
+        
+        try {
+            if (rs.next()){
+                return true;
+            }else{
+                return false;
+            }
+        } catch (SQLException ex) {
+            throw new GestorSportManagerException("Error en assignar recuperar jugadors", ex);
+        }
+        
+    }
+    
 
     
     

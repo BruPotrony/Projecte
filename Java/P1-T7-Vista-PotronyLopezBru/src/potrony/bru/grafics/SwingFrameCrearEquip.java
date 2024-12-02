@@ -256,13 +256,18 @@ public class SwingFrameCrearEquip {
     private void inicialitzarCbxTemporada() {
         try {
             List<Temporada> temporades = bd.loadTemporades();
-            cbxTemporada.addItem("Selecciona una temporada");
-            if (temporades!=null){
+            int anyActual = java.time.Year.now().getValue();
+
+            if (temporades != null) {
                 for (Temporada temporada : temporades) {
-                    cbxTemporada.addItem(String.valueOf(temporada.getAny()));
+                    int anyTemporada = temporada.getAny();
+                    cbxTemporada.addItem(String.valueOf(anyTemporada));
+                    if (anyTemporada == anyActual) {
+                        cbxTemporada.setSelectedItem(String.valueOf(anyActual));
+                    }
                 }
             }
-            
+
         } catch (Exception e) {
             controlador.missatgeError(e.getMessage());
             controlador.moveToMenu(frameCrearEquip);
@@ -295,7 +300,7 @@ public class SwingFrameCrearEquip {
                 try {
                     
                     Object selectedAny = cbxTemporada.getSelectedItem();
-                    if (selectedAny == null || cbxTemporada.getSelectedIndex()==0) {
+                    if (selectedAny == null) {
                         controlador.missatgeError("Selecciona una temporada");
                         return;
                     }
@@ -326,6 +331,7 @@ public class SwingFrameCrearEquip {
                     if (rbMixt.isSelected()){
                         if(cbxCategoria.getSelectedIndex()>=4){
                             controlador.missatgeError("La categoria no pot ser de tipus Mixte");
+                            return;
                         }
                     }
                     

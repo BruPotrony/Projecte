@@ -107,7 +107,7 @@ public class ComprovarEquips {
         }
 
         try {
-            boolean deleted = gestor.eliminarEquip(equip2);
+            boolean deleted = gestor.eliminarEquip(equip2.getNom(),equip2.getIdTemporada());
             if (deleted) {
                 System.out.println("\nEquip eliminat correctament: " + equip1.getNom());
             } else {
