@@ -47,8 +47,6 @@ public class SwingFrameConsultarEquip {
         
     JMenu menuCrear;
     JMenu menuConsultar;
-    JMenu menuEditar;
-    JMenu menuAfegirJugador;
     JMenu menu;
     JMenu tancarSessio;
     JPanel panel;
@@ -86,8 +84,6 @@ public class SwingFrameConsultarEquip {
         
         menuCrear = new JMenu("Crear");
         menuConsultar = new JMenu("Consulta");
-        menuEditar = new JMenu("Edita");
-        menuAfegirJugador = new JMenu("Afegir Jugadors");
         menu = new JMenu("Menú");
         tancarSessio = new JMenu("Tancar Sessió");
 
@@ -95,8 +91,6 @@ public class SwingFrameConsultarEquip {
         
         menuBar.add(menuCrear);
         menuBar.add(menuConsultar);
-        menuBar.add(menuEditar);
-        menuBar.add(menuAfegirJugador);
         menuBar.add(menu);
         menuBar.add(tancarSessio);
         
@@ -115,6 +109,13 @@ public class SwingFrameConsultarEquip {
         panel.add(labelJRS);
         configurarLabelJRS();
         
+        JLabel missatgeInfo = new JLabel(
+            "<html><span style='color:yellow;'>&#9888;</span> Doble clic sobre equip per a assignar Jugadors</html>"
+        );
+        missatgeInfo.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+        missatgeInfo.setBounds(100, 350, 400, 30);
+        panel.add(missatgeInfo);    
+        
         btnEliminar = new JButton();
         btnEliminar.setText("Eliminar");
         btnEliminar.setBounds(480,450,120,40);
@@ -129,24 +130,6 @@ public class SwingFrameConsultarEquip {
     }
     
     private void configurarMenu() {
-        menuEditar.addMenuListener(new MenuListener() {
-            @Override
-            public void menuSelected(MenuEvent e) {
-                //controlador.moveToEditarJugador(frameCrearEquip);
-            }
-
-            @Override
-            public void menuDeselected(MenuEvent e) {
-                // Metode buit
-            }
-
-            @Override
-            public void menuCanceled(MenuEvent e) {
-                // // Metode buit
-            }
-        });
-        
-        
         menuCrear.addMenuListener(new MenuListener() {
             @Override
             public void menuSelected(MenuEvent e) {
@@ -170,6 +153,8 @@ public class SwingFrameConsultarEquip {
 
 
     private void configurarTaula() {
+
+        
         String[] columnNames = {"Categoria", "Nom Equip", "Temporada", "Tipus"};
 
         Object[][] taula = {};
@@ -189,6 +174,21 @@ public class SwingFrameConsultarEquip {
         jspTaula.setViewportView(table);
 
         jspTaula.setBounds(100, 50, 900, 300);
+        
+        table.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    int selectedRow = table.rowAtPoint(e.getPoint());
+                    if (!table.getValueAt(selectedRow, 1).toString().isEmpty()) {
+                        String nomEquip = table.getValueAt(selectedRow, 1).toString();
+                        int temporada = Integer.parseInt(table.getValueAt(selectedRow, 2).toString());
+
+                        controlador.moveToEquipJugadors(frameConsultarEquip, nomEquip, temporada);
+                    }
+                }
+            }
+        });
     }
 
     private void inicialitzarTaula() {

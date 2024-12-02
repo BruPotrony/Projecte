@@ -58,7 +58,6 @@ public class SwingFrameCrearJugador {
     
     JMenu menuCrear;
     JMenu menuConsultar;
-    JMenu menuEditar;
     JMenu menu;
     JMenu tancarSessio;
     JPanel panel;
@@ -104,7 +103,6 @@ public class SwingFrameCrearJugador {
         
         menuCrear = new JMenu("Crear");
         menuConsultar = new JMenu("Consulta");
-        menuEditar = new JMenu("Edita");
         menu = new JMenu("Menú");
         tancarSessio = new JMenu("Tancar Sessió");
 
@@ -112,7 +110,6 @@ public class SwingFrameCrearJugador {
         
         menuBar.add(menuCrear);
         menuBar.add(menuConsultar);
-        menuBar.add(menuEditar);
         menuBar.add(menu);
         menuBar.add(tancarSessio);
         
@@ -251,30 +248,6 @@ public class SwingFrameCrearJugador {
     }
 
     private void configurarMenu() {
-        menuEditar.addMenuListener(new MenuListener() {
-            @Override
-            public void menuSelected(MenuEvent e) {
-                //Faig el seguent metode de isProcessingMenu, ja que sinó al fer el dispose
-                //del frame provoca que es generin events adicionals al lliberar els recursos
-                //i aquest listener es crida dues vegades
-                if (!isProcessingMenu) {
-                    isProcessingMenu = true;
-                    controlador.moveToEditarJugador(frameCrearJugador);
-                    isProcessingMenu = false;
-                }
-            }
-
-            @Override
-            public void menuDeselected(MenuEvent e) {
-                // Metode buit
-            }
-
-            @Override
-            public void menuCanceled(MenuEvent e) {
-                // // Metode buit
-            }
-        });
-        
         menuConsultar.addMenuListener(new MenuListener() {
             @Override
             public void menuSelected(MenuEvent e) {

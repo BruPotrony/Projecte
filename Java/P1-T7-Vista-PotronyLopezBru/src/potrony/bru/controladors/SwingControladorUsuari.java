@@ -32,6 +32,7 @@ import potrony.bru.grafics.SwingFrameMenu;
 import potrony.bru.grafics.SwingFrameUsuari;
 import potrony.bru.Interface.SportManagerInterfaceCP;
 import potrony.bru.grafics.SwingFrameConsultarEquip;
+import potrony.bru.grafics.SwingFrameEquipJugadors;
 
 /**
  *
@@ -49,6 +50,7 @@ public class SwingControladorUsuari{
     private SwingFrameConsultarJugador frameConsultarJugador;
     private SwingFrameCrearEquip frameCrearEquip;
     private SwingFrameConsultarEquip frameConsultarEquip;
+    private SwingFrameEquipJugadors frameEquipJugadors;
 
     
     
@@ -96,9 +98,9 @@ public class SwingControladorUsuari{
         frameCrearJugador = new SwingFrameCrearJugador(this, manager);
     }
     
-    public void moveToEditarJugador(JFrame frame){
+    public void moveToEditarJugador(JFrame frame, String idLegal){
         frame.dispose();
-        frameEditarJugador = new SwingFrameEditarJugador(this, manager);
+        frameEditarJugador = new SwingFrameEditarJugador(this, manager, idLegal);
     }
     
     public void moveToConsultarJugador(JFrame frame){
@@ -114,6 +116,11 @@ public class SwingControladorUsuari{
     public void moveToConsultarEquip(JFrame frame){
         frame.dispose();
         frameConsultarEquip = new SwingFrameConsultarEquip(this,manager);
+    }
+    
+    public void moveToEquipJugadors(JFrame frame,String nomEquip, int temporada){
+        frame.dispose();
+        frameEquipJugadors = new SwingFrameEquipJugadors(this,manager,nomEquip,temporada);
     }
     
     

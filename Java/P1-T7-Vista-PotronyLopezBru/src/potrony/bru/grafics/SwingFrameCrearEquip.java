@@ -48,8 +48,6 @@ public class SwingFrameCrearEquip {
         
     JMenu menuCrear;
     JMenu menuConsultar;
-    JMenu menuEditar;
-    JMenu menuAfegirJugadors;
     JMenu menu;
     JMenu tancarSessio;
     JPanel panel;
@@ -91,8 +89,6 @@ public class SwingFrameCrearEquip {
         
         menuCrear = new JMenu("Crear");
         menuConsultar = new JMenu("Consulta");
-        menuEditar = new JMenu("Edita");
-        menuAfegirJugadors = new JMenu("Afegir Jugadors");
         menu = new JMenu("Menú");
         tancarSessio = new JMenu("Tancar Sessió");
 
@@ -100,8 +96,6 @@ public class SwingFrameCrearEquip {
         
         menuBar.add(menuCrear);
         menuBar.add(menuConsultar);
-        menuBar.add(menuEditar);
-        menuBar.add(menuAfegirJugadors);
         menuBar.add(menu);
         menuBar.add(tancarSessio);
         
@@ -178,23 +172,6 @@ public class SwingFrameCrearEquip {
     }
 
     private void configurarMenu() {
-        menuEditar.addMenuListener(new MenuListener() {
-            @Override
-            public void menuSelected(MenuEvent e) {                
-                //controlador.moveToEditarJugador(frameCrearEquip);
-            }
-
-            @Override
-            public void menuDeselected(MenuEvent e) {
-                // Metode buit
-            }
-
-            @Override
-            public void menuCanceled(MenuEvent e) {
-                // // Metode buit
-            }
-        });
-        
         menuConsultar.addMenuListener(new MenuListener() {
             @Override
             public void menuSelected(MenuEvent e) {
@@ -207,23 +184,6 @@ public class SwingFrameCrearEquip {
                     controlador.moveToConsultarEquip(frameCrearEquip);
                     isProcessingMenu = false;
                 }
-            }
-
-            @Override
-            public void menuDeselected(MenuEvent e) {
-                // Metode buit
-            }
-
-            @Override
-            public void menuCanceled(MenuEvent e) {
-                // // Metode buit
-            }
-        });
-        
-        menuAfegirJugadors.addMenuListener(new MenuListener() {
-            @Override
-            public void menuSelected(MenuEvent e) {
-                //controlador.moveToConsultarJugador(frameCrearEquip);
             }
 
             @Override

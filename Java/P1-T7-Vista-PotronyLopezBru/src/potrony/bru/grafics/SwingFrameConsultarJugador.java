@@ -55,12 +55,9 @@ public class SwingFrameConsultarJugador {
 
     SwingControladorUsuari controlador;
     SportManagerInterfaceCP bd; 
-    
-    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-    
+        
     JMenu menuCrear;
     JMenu menuConsultar;
-    JMenu menuEditar;
     JMenu menu;
     JMenu tancarSessio;
     JPanel panel;
@@ -87,7 +84,7 @@ public class SwingFrameConsultarJugador {
         frameConsultarJugador.setSize(AMPLADA, ALTURA);
         frameConsultarJugador.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frameConsultarJugador.setLocationRelativeTo(null);
-        frameConsultarJugador.setTitle("Crear Jugador");
+        frameConsultarJugador.setTitle("Consultar Jugadors");
         frameConsultarJugador.setVisible(true);
         frameConsultarJugador.setResizable(false);
         
@@ -102,7 +99,6 @@ public class SwingFrameConsultarJugador {
         
         menuCrear = new JMenu("Crear");
         menuConsultar = new JMenu("Consulta");
-        menuEditar = new JMenu("Edita");
         menu = new JMenu("Menú");
         tancarSessio = new JMenu("Tancar Sessió");
 
@@ -110,7 +106,6 @@ public class SwingFrameConsultarJugador {
         
         menuBar.add(menuCrear);
         menuBar.add(menuConsultar);
-        menuBar.add(menuEditar);
         menuBar.add(menu);
         menuBar.add(tancarSessio);
         
@@ -160,6 +155,13 @@ public class SwingFrameConsultarJugador {
         inicialitzarTaula();
         panel.add(jspTaula);
         
+        JLabel missatgeInfo = new JLabel(
+            "<html><span style='color:yellow;'>&#9888;</span> Doble clic sobre jugador per a editar-lo</html>"
+        );
+        missatgeInfo.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+        missatgeInfo.setBounds(50, 400, 400, 30);
+        panel.add(missatgeInfo);    
+        
         btnEliminar = new JButton();
         btnEliminar.setText("Eliminar");
         btnEliminar.setBounds(400,450,120,40);
@@ -180,26 +182,6 @@ public class SwingFrameConsultarJugador {
     }
     
     private void configurarMenu() {
-        menuEditar.addMenuListener(new MenuListener() {
-            @Override
-            public void menuSelected(MenuEvent e) {
-                if (!isProcessingMenu) {
-                    isProcessingMenu = true;
-                    controlador.moveToEditarJugador(frameConsultarJugador);
-                    isProcessingMenu = false;
-                }
-            }
-
-            @Override
-            public void menuDeselected(MenuEvent e) {
-                // Metode buit
-            }
-
-            @Override
-            public void menuCanceled(MenuEvent e) {
-                // // Metode buit
-            }
-        });
         
         menuCrear.addMenuListener(new MenuListener() {
             @Override
@@ -306,6 +288,20 @@ public class SwingFrameConsultarJugador {
         jspTaula.setViewportView(table);
 
         jspTaula.setBounds(50, 100, 1000, 300);
+        
+        table.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    int selectedRow = table.rowAtPoint(e.getPoint());
+                    if (!table.getValueAt(selectedRow, 1).toString().isEmpty()) {
+                        String idLegal = table.getValueAt(selectedRow, 2).toString();
+
+                        controlador.moveToEditarJugador(frameConsultarJugador, idLegal);
+                    }
+                }
+            }
+        });
     }
     
     private Object calcularCategoria(int edat) {

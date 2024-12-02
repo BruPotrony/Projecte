@@ -63,7 +63,6 @@ public class SwingFrameEditarJugador {
     JTextField txtfIban;
     JTextField txtfPoblacio;
     JTextField txtfDataNaix;
-    JTextField txtfBuscarIdLegal;
     JTextField txtfCodiPostal;
     JTextField txtfIdAdreca;
     JRadioButton rbMasculi = new JRadioButton("Masculí");
@@ -73,6 +72,8 @@ public class SwingFrameEditarJugador {
     JComboBox<String> comboBoxAnys;
     JLabel labelImatge;
     
+    String idLegal;
+    
     
     //Aquesta variable es per a que al fer el dispose del frame
     //No crei confusions, explicat mes endevant
@@ -80,7 +81,7 @@ public class SwingFrameEditarJugador {
     
     
 
-    public SwingFrameEditarJugador(SwingControladorUsuari controlador, SportManagerInterfaceCP bd) {
+    public SwingFrameEditarJugador(SwingControladorUsuari controlador, SportManagerInterfaceCP bd, String idLegal) {
         frameEditarJugador = new JFrame();
         frameEditarJugador.setSize(AMPLADA, ALTURA);
         frameEditarJugador.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -89,6 +90,7 @@ public class SwingFrameEditarJugador {
         frameEditarJugador.setVisible(true);
         frameEditarJugador.setResizable(false);
         
+        this.idLegal=idLegal;
         this.controlador = controlador;
         this.bd = bd;
         
@@ -155,13 +157,6 @@ public class SwingFrameEditarJugador {
         txtfNom.setFont(new Font("Arial", Font.PLAIN, 20));
         txtfNom.setBounds(450, 45, 200, 40);
         panel.add(txtfNom);
-        
-        txtfBuscarIdLegal = new JTextField();
-        txtfBuscarIdLegal.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 15));
-        txtfBuscarIdLegal.setBounds(50, 20, 200, 40);
-        txtfBuscarIdLegal.setText("🔎IdLegal");
-        panel.add(txtfBuscarIdLegal);
-        configurarTextFieldIdLegal();
         
         JLabel labelCogNom = new JLabel("Cognom:");
         labelCogNom.setFont(new Font("Arial", Font.PLAIN, 20));
@@ -245,6 +240,8 @@ public class SwingFrameEditarJugador {
         btnGuardar.setBounds(600,450,120,40);
         panel.add(btnGuardar);
         configurarBotoGuardar();
+        
+        buscarJugador();
                         
         frameEditarJugador.add(panel);
     }
@@ -437,43 +434,26 @@ public class SwingFrameEditarJugador {
         }
     }
 
-    private void configurarTextFieldIdLegal() {
-        txtfBuscarIdLegal.addFocusListener(new FocusListener() {
-        @Override
-        public void focusGained(FocusEvent e) {
-            if (txtfBuscarIdLegal.getText().equals("🔎IdLegal")) {
-                txtfBuscarIdLegal.setText("");
-                
-            }
-        }
+    private void buscarJugador() {
+          
+        Jugador jug;
+        try {
 
-        @Override
-        public void focusLost(FocusEvent e) {
-            if (txtfBuscarIdLegal.getText().isEmpty()) {
-                txtfBuscarIdLegal.setText("🔎IdLegal");
+            boolean isDniValid = idLegal.matches("\\d{8}[A-Za-z]");
+            if (isDniValid){
+                jug = bd.loadJugadorIdLegal(idLegal);
+                if (jug !=null){
+                    carregarDadesJugador(jug);
+                }
+            }else{
+                controlador.missatgeError("DNI no valid");
             }
-            else {
-                    Jugador jug;
-                    String idLegal = txtfBuscarIdLegal.getText();
-                    try {
-                        
-                        boolean isDniValid = idLegal.matches("\\d{8}[A-Za-z]");
-                        if (isDniValid){
-                            jug = bd.loadJugadorIdLegal(idLegal);
-                            if (jug !=null){
-                                carregarDadesJugador(jug);
-                            }
-                        }else{
-                            controlador.missatgeError("DNI entrat no valid");
-                            txtfBuscarIdLegal.setText("");
-                            return;
-                        }
-                    } catch (Exception ex) {
-                        controlador.missatgeError("Jugador amb DNI "+idLegal+" no existeix");
-                    }
-            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            controlador.missatgeError("Jugador amb DNI "+idLegal+" no existeix");
         }
-        });
+            
+ 
     }
     
     public void carregarDadesJugador(Jugador jugador){
