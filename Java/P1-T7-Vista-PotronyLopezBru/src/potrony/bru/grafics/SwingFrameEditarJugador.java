@@ -348,7 +348,7 @@ public class SwingFrameEditarJugador {
         btnCancelar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controlador.moveToMenu(frameEditarJugador);
+                controlador.moveToConsultarJugador(frameEditarJugador);
             }
         });
     }

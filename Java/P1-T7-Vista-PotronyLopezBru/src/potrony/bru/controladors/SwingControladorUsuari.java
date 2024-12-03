@@ -58,10 +58,9 @@ public class SwingControladorUsuari{
     
     public SwingControladorUsuari(SportManagerInterfaceCP manager, JFrame frameCarga) {
 
+        this.manager = manager;
         
         moveToLogin(frameCarga);
-        
-        this.manager = manager;
         
         frameUsuari.getFrame().setVisible(true);
     }
@@ -236,8 +235,7 @@ public class SwingControladorUsuari{
             try {
                 ImageIcon imageIcon;
 
-                // Verificar si es una URL remota o una ruta local
-                if (url.isEmpty()) {
+                if (!esURLValida(url)) {
                     url = "https://cdn.pixabay.com/photo/2017/11/10/05/48/user-2935527_1280.png";
                 }
 
@@ -269,16 +267,26 @@ public class SwingControladorUsuari{
         
     public boolean esURLValida(String url) {
         if (url == null || url.isEmpty()) {
-        return false;
+            return false;
         }
 
         try {
-            new URL(url).toURI();
+            URL parsedUrl = new URL(url);
+
+            String protocol = parsedUrl.getProtocol();
+            if (!protocol.equals("http") && !protocol.equals("https") && !protocol.equals("ftp")) {
+                return false;
+            }
+            parsedUrl.toURI();
             return true;
+
         } catch (MalformedURLException | URISyntaxException e) {
             File file = new File(url);
-            return file.exists();
+            if (file.exists()) {
+                return file.isFile();
+            }
         }
+        return false;
     }
     
     

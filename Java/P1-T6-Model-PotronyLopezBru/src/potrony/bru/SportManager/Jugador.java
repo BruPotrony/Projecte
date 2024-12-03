@@ -27,6 +27,11 @@ public class Jugador {
     private String idLegal;
     private int any_fi_revisio_medica;
 
+    public Jugador() {
+    }
+
+    
+    
     public Jugador(String nom, String cognom, EnumSexe sexe, LocalDate data_naix, String foto, String adreca, String codiPostal, String poblacio, String iban, String id_Legal, int any_fi_revisio_medica) {
         setNom(nom);
         setCognom(cognom);
@@ -269,7 +274,7 @@ public class Jugador {
 
     public void setId_Legal(String id_Legal) {
         if (id_Legal.isEmpty()) {
-        throw new SportModelException("L'ID legal no pot ser null");
+        throw new SportModelException("L'ID legal no pot ser buit");
         }
 
         boolean isDniValid = id_Legal.matches("\\d{8}[A-Za-z]");

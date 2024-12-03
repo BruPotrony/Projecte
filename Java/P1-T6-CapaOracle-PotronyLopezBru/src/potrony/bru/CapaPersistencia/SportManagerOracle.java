@@ -20,6 +20,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.FormatterClosedException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -86,6 +87,7 @@ public class SportManagerOracle implements SportManagerInterfaceCP {
     private PreparedStatement psEsTitular;
     private PreparedStatement psDeleteJugadorEquip;
     private PreparedStatement psLoadJugadorsEquip;
+    private PreparedStatement psLoadJugadorsTitularEquip;
     private PreparedStatement psLoadEquipsJugador;
     
     
@@ -644,7 +646,7 @@ public class SportManagerOracle implements SportManagerInterfaceCP {
         
         if (psLoadJugadors==null){
             try {
-                psLoadJugadors = conn.prepareStatement("select id, nom, cognom,sexe,foto,data_naix,adreca,codiPostal,poblacio,any_fi_revisio_medica,iban,idlegal from jugador");
+                psLoadJugadors = conn.prepareStatement("select id, nom, cognom,sexe,foto,data_naix,adreca,codiPostal,poblacio,any_fi_revisio_medica,iban,idlegal from jugador order by data_naix");
             } catch (Exception ex) {
                 throw new GestorSportManagerException("Error en preparar la sentencia psLoadJugadors", ex);
             }
@@ -1219,11 +1221,12 @@ public class SportManagerOracle implements SportManagerInterfaceCP {
     
     
     ///Aquest metode recupera id de l'equip que l'equip amb nom i any que li passem
+    @Override
     public long getGeneratedEquipId(String nom, int any) throws GestorSportManagerException{
         if (psGetGeneratedEquipId == null){
             try {
                 psGetGeneratedEquipId = conn.prepareStatement("Select id from equip where nom=? AND any_temporada=?");
-            } catch (Exception ex) {
+            } catch (SQLException ex) {
                 throw new GestorSportManagerException("Error en preparar statement psGetGeneratedEquipId", ex);
             }
         }
@@ -1258,14 +1261,14 @@ public class SportManagerOracle implements SportManagerInterfaceCP {
         long idEquip;
         try{
             idEquip = this.getGeneratedEquipId(nom, any);
-        }catch(Exception e){
+        }catch(GestorSportManagerException e){
             throw new GestorSportManagerException("Error en recuperar id de l'equip",e);
         }
         
         if (psEquipTeJugadors==null){
             try {
                 psEquipTeJugadors = conn.prepareStatement("select id_equip from membre where id_equip=?");
-            } catch (Exception ex) {
+            } catch (SQLException ex) {
                 throw new GestorSportManagerException("Error en preparar statement psEquipTeJugadors", ex);
             }
         }
@@ -1274,16 +1277,12 @@ public class SportManagerOracle implements SportManagerInterfaceCP {
         try {
             psEquipTeJugadors.setLong(1, idEquip);
             rs = psEquipTeJugadors.executeQuery();
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             throw new GestorSportManagerException("Error en assignar valor a la sentencia psEquipTeJugadors ", ex);
         }
         
         try {
-            if (rs.next()){
-                return true;
-            }else{
-                return false;
-            }
+            return rs.next();
         } catch (SQLException ex) {
             throw new GestorSportManagerException("Error en assignar recuperar jugadors", ex);
         }
@@ -1313,7 +1312,7 @@ public class SportManagerOracle implements SportManagerInterfaceCP {
         if (psAddJugadorEquip == null){
             try {
                 psAddJugadorEquip = conn.prepareStatement("INSERT INTO membre (id_equip,id_jugador,Titular_convidat) VALUES (?, ?, ?)");
-            } catch (Exception ex) {
+            } catch (SQLException ex) {
                 throw new GestorSportManagerException("Error en preparar statement psAddJugadorEquip", ex);
             }
         }
@@ -1322,7 +1321,7 @@ public class SportManagerOracle implements SportManagerInterfaceCP {
             psAddJugadorEquip.setLong(1, membre.getIdEquip());
             psAddJugadorEquip.setLong(2, membre.getIdJugador());
             psAddJugadorEquip.setString(3, membre.getTitularitat().name());
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             throw new GestorSportManagerException("Error en assignar valors a psAddJugadorEquip\n", ex);
         }
         
@@ -1330,7 +1329,7 @@ public class SportManagerOracle implements SportManagerInterfaceCP {
             int rowUpdated = psAddJugadorEquip.executeUpdate();
             
             return rowUpdated>0;
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             throw new GestorSportManagerException("Error en executar la query\n", ex);
         }
     }
@@ -1340,7 +1339,7 @@ public class SportManagerOracle implements SportManagerInterfaceCP {
         if (psEsTitular == null){
             try {
                 psEsTitular = conn.prepareStatement("select id_jugador from membre where id_jugador = ? AND titular_convidat='T'");
-            } catch (Exception ex) {
+            } catch (SQLException ex) {
                 throw new GestorSportManagerException("Error en preparar statement psEsTitular", ex);
             }
         }
@@ -1351,7 +1350,7 @@ public class SportManagerOracle implements SportManagerInterfaceCP {
             try (ResultSet rs = psEsTitular.executeQuery()) {
                 return rs.next(); // Retorna true si existeix una fila, és a dir, el jugador és titular
             }
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             throw new GestorSportManagerException("Error en executar la query psEsTitular", ex);
         }
     }
@@ -1361,7 +1360,7 @@ public class SportManagerOracle implements SportManagerInterfaceCP {
         if (psDeleteJugadorEquip==null){
             try {
                 psDeleteJugadorEquip = conn.prepareStatement("DELETE FROM membre WHERE id_Jugador=? And id_Equip = ?");
-            } catch (Exception ex) {
+            } catch (SQLException ex) {
                 throw new GestorSportManagerException("Error en preparar statement psDeleteJugadorEquip", ex);
             }
         }
@@ -1369,7 +1368,7 @@ public class SportManagerOracle implements SportManagerInterfaceCP {
         try {
             psDeleteJugadorEquip.setLong(1, idJugador);
             psDeleteJugadorEquip.setLong(2, idEquip);
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             throw new GestorSportManagerException("Error en assignar valors a psDeleteJugadorEquip", ex);
         }
 
@@ -1379,18 +1378,19 @@ public class SportManagerOracle implements SportManagerInterfaceCP {
                 throw new GestorSportManagerException("No s'ha trobat cap jugador amb id: " + idJugador + " a l'equip amb id: " + idEquip);
             }
             return true;
-        } catch (Exception ex) {
+        } catch (SQLException | GestorSportManagerException ex) {
             throw new GestorSportManagerException("Error en executar la query psDeleteJugadorEquip", ex);
         }
     }
 
+    @Override
     public List<Jugador> loadJugadorsIdEquip(long idEquip)throws GestorSportManagerException{
         List<Jugador> jugadors=new ArrayList<>();
                 
         if (psLoadJugadorsEquip==null){
             try {
                 psLoadJugadorsEquip = conn.prepareStatement("select id_jugador from membre where id_equip = ?");
-            } catch (Exception ex) {
+            } catch (SQLException ex) {
                 throw new GestorSportManagerException("Error en preparar la sentencia psLoadJugadorsEquip", ex);
             }
         }
@@ -1407,18 +1407,49 @@ public class SportManagerOracle implements SportManagerInterfaceCP {
             }
 
             return jugadors;            
-        } catch (Exception ex) {
+        } catch (SQLException | GestorSportManagerException ex) {
             throw new GestorSportManagerException("Error en recuperar equip amb id "+idEquip, ex);
         }
     }
     
+    @Override
+    public HashMap<Long,Boolean> loadJugadorsTitularIdEquip(long idEquip)throws GestorSportManagerException{
+        HashMap<Long,Boolean> jugadors=new HashMap<>();
+                
+        if (psLoadJugadorsTitularEquip==null){
+            try {
+                psLoadJugadorsTitularEquip = conn.prepareStatement("select id_jugador,titular_convidat from membre where id_equip = ?");
+            } catch (SQLException ex) {
+                throw new GestorSportManagerException("Error en preparar la sentencia psLoadJugadorsEquip", ex);
+            }
+        }
+        try {
+            psLoadJugadorsTitularEquip.setLong(1, idEquip);
+            ResultSet rs = psLoadJugadorsTitularEquip.executeQuery();
+
+            if (!rs.next()) {
+                return null;
+            }
+
+            do {
+                Boolean esTitular = rs.getString("titular_convidat").equals("T");
+                jugadors.put(rs.getLong("id_jugador"), esTitular);
+            } while (rs.next());
+
+            return jugadors;            
+        } catch (SQLException ex) {
+            throw new GestorSportManagerException("Error en recuperar equip amb id "+idEquip, ex);
+        }
+    }
+    
+    @Override
     public List<Equip> loadEquipsIdJugador(long idJugador)throws GestorSportManagerException{
         List<Equip> equips=new ArrayList<>();
                 
         if (psLoadEquipsJugador==null){
             try {
                 psLoadEquipsJugador = conn.prepareStatement("select id_equip from membre where id_jugador = ?");
-            } catch (Exception ex) {
+            } catch (SQLException ex) {
                 throw new GestorSportManagerException("Error en preparar la sentencia psLoadEquipsJugador", ex);
             }
         }
@@ -1435,7 +1466,7 @@ public class SportManagerOracle implements SportManagerInterfaceCP {
             }
 
             return equips;            
-        } catch (Exception ex) {
+        } catch (SQLException | GestorSportManagerException ex) {
             throw new GestorSportManagerException("Error en recuperar equip amb jugador amb id: " + idJugador, ex);
         }
     }
@@ -1466,7 +1497,7 @@ public class SportManagerOracle implements SportManagerInterfaceCP {
             
             try {
                 conn.close();
-            } catch (Exception ex) {
+            } catch (SQLException ex) {
                 throw new GestorSportManagerException("Error en tancar la connexió.\n", ex);
             }
         }
@@ -1477,7 +1508,7 @@ public class SportManagerOracle implements SportManagerInterfaceCP {
     public void confirmarCanvis() throws GestorSportManagerException {
         try{
             conn.commit();
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             throw new GestorSportManagerException("Error en fer commit", ex);
         }
     }
@@ -1486,7 +1517,7 @@ public class SportManagerOracle implements SportManagerInterfaceCP {
     public void desferCanvis() throws GestorSportManagerException {
         try{
             conn.rollback();
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             throw new GestorSportManagerException("Error en fer rollback", ex);
         }
     }

@@ -5,6 +5,7 @@
 package potrony.bru.Interface;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import potrony.bru.SportManager.Categoria;
 import potrony.bru.SportManager.EnumTitular;
@@ -193,8 +194,14 @@ public interface SportManagerInterfaceCP {
     /*Eliminar jugador d'un equip*/
     boolean eliminarJugadorEquip(long idJugador, long idEquip)throws GestorSportManagerException;
     
-    /*Carrega tots els jugadors que estan en equip amb idEquip*/
+    /*Carrega tots els jugadors que estan en equip amb idEquip en un List*/
     List<Jugador> loadJugadorsIdEquip(long idEquip)throws GestorSportManagerException;
+    
+    /**
+     * Carrega tots els id dels jugadors i si es titular o no en un HashMap que
+     * entan en equip amb idEquip retorna null si no existeix l'equip
+     */
+    HashMap<Long,Boolean> loadJugadorsTitularIdEquip(long idEquip)throws GestorSportManagerException;
     
     /*Carrega tots els equips que hi ha el jugador amb idJugador*/
     List<Equip> loadEquipsIdJugador(long idJugador)throws GestorSportManagerException;

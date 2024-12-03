@@ -39,13 +39,9 @@ public class SwingFrameUsuari{
     private JLabel labelForgetPwd;
     
     private JButton btnEntrar;
-    private JTextField textFieldNom;
     private JTextField textFieldUsuari;
     private JPasswordField textFieldpwd;
-    
-    //Aquesta variable es per a que al fer el dispose del frame
-    //No crei confusions, explicat mes endevant
-    private boolean isProcessingMenu = false;
+
 
 
     public SwingFrameUsuari(SwingControladorUsuari controlador, SportManagerInterfaceCP bd) {
@@ -63,16 +59,6 @@ public class SwingFrameUsuari{
         JPanel panel = new JPanel();
         panel.setLayout(null); 
         panel.setBounds(0, 0, AMPLADA, ALTURA); 
-
-        JLabel labelNom = new JLabel("Nom:");
-        labelNom.setFont(new Font("Arial", Font.PLAIN, 20));
-        labelNom.setBounds(150, 50, 100, 30);
-        panel.add(labelNom);
-        
-        textFieldNom = new JTextField();
-        textFieldNom.setFont(new Font("Arial", Font.PLAIN, 20));
-        textFieldNom.setBounds(260, 45, 200, 40); 
-        panel.add(textFieldNom);
         
         JLabel labelUsuari = new JLabel("Usuari:");
         labelUsuari.setFont(new Font("Arial", Font.PLAIN, 20));
@@ -125,24 +111,24 @@ public class SwingFrameUsuari{
                 
 //                Usuari usuTemp;
 //                try {
-//                    usuTemp = new Usuari(textFieldUsuari.getText(), new String(textFieldpwd.getPassword()),textFieldNom.getText(), false);
+//                    usuTemp = new Usuari(textFieldUsuari.getText(), new String(textFieldpwd.getPassword()), false);
 //                } catch (Exception ex) {
-//                    controlador.missatgeError(ex.getMessage());
+//                    controlador.missatgeError("Usuari o contrassenya Incorrectes");
 //                    return;
 //                }
 //                
 //                try {
 //                    if (!bd.estaRegistrat(usuTemp)){
-//                        controlador.missatgeError("Usuari no registrat");
+//                        controlador.missatgeError("Usuari o contrassenya Incorrectes");
 //                        return;
 //                    }
+//                    
 //                } catch (GestorSportManagerException ex) {
-//                    controlador.missatgeError("Error en guardar usuari");
+//                    controlador.missatgeError("Usuari o contrassenya Incorrectes");
 //                    return;
 //                }
                 
                 controlador.moveToMenu(frameUsuari);
-                buidarCapmps();
             }
         });
     }
@@ -152,16 +138,8 @@ public class SwingFrameUsuari{
             @Override
             public void mouseClicked(MouseEvent e) {
                 controlador.moveToForgetPwd(frameUsuari);
-                buidarCapmps();
             }
         });
     }
     
-    
-    
-    private void buidarCapmps(){
-        textFieldUsuari.setText("");
-        textFieldpwd.setText("");
-        textFieldNom.setText("");
-    }
 }

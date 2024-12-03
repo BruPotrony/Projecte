@@ -4,23 +4,16 @@
  */
 package potrony.bru.grafics;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -33,12 +26,9 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
-import potrony.bru.CapaPersistencia.SportManagerOracle;
-import potrony.bru.Interface.GestorSportManagerException;
 import potrony.bru.Interface.SportManagerInterfaceCP;
 import potrony.bru.SportManager.EnumSexe;
 import potrony.bru.SportManager.Jugador;
-import potrony.bru.SportManager.Temporada;
 import potrony.bru.controladors.SwingControladorUsuari;
 
 /**
@@ -76,6 +66,7 @@ public class SwingFrameCrearJugador {
     JButton btnCrear;
     JComboBox<String> comboBoxAnys;
     JLabel labelImatge;
+    JLabel lblError;
     
     
     //Aquesta variable es per a que al fer el dispose del frame
@@ -94,6 +85,8 @@ public class SwingFrameCrearJugador {
         
         this.controlador = controlador;
         this.bd = bd;
+        
+        lblError = new JLabel();
         
         panel = new JPanel();
         panel.setLayout(null); 
@@ -310,6 +303,10 @@ public class SwingFrameCrearJugador {
             panel.add(labelImatge);
         }
         
+        actualitzarPanel();
+    }
+    
+    private void actualitzarPanel(){
         //faig això ja que sinó el comboBox em desapareixia fins que no tornes a passar el 
         //ratolí per sobre
         panel.remove(comboBoxAnys);
@@ -328,18 +325,24 @@ public class SwingFrameCrearJugador {
         });
     }
     
+    public void treureErrors(){
+        panel.remove(lblError);
+        actualitzarPanel();
+    }
+    
     
     public void configurarBotoCrear(){
         btnCrear.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Jugador jugador = null;
+                Jugador jugador = new Jugador();
  
+                treureErrors();
                 try {
                     
                     Object selectedItem = comboBoxAnys.getSelectedItem();
                     if (selectedItem == null || comboBoxAnys.getSelectedIndex()==0) {
-                        controlador.missatgeError("Selecciona un any de la revisió mèdica");
+                        mostrarMissatgeError(50,400,250,25,"Selecciona un any de la revisió mèdica");
                         return;
                     }
                     
@@ -353,7 +356,7 @@ public class SwingFrameCrearJugador {
                     } else if (rbFemeni.isSelected()) {
                         sexe = EnumSexe.D;
                     } else {
-                        controlador.missatgeError("Selecciona un sexe");
+                        mostrarMissatgeError(200,349,250,25,"Selecciona un sexe");
                         return;
                     }
                     
@@ -368,13 +371,69 @@ public class SwingFrameCrearJugador {
                     String idLegal = txtfIdLegal.getText();
                     
                     if (!controlador.esURLValida(foto)){
-                        controlador.missatgeError("URL de l'imatge no valida");
+                        mostrarMissatgeError(305,315,250,25,"URL imatge no valid");
+                        return;
+                    }
+                    
+                    try{
+                        jugador.setData_naix(dataNaix);
+                    }catch(Exception ex){
+                        mostrarMissatgeError(805,310,250,25,ex.getMessage());
+                        return;
+                    }
+                    
+                    try{
+                        jugador.setNom(nom);
+                    }catch(Exception ex){
+                        mostrarMissatgeError(452,80,250,25,ex.getMessage());
+                        return;
+                    }
+                    
+                    try{
+                        jugador.setCognom(cognom);
+                    }catch(Exception ex){
+                        mostrarMissatgeError(452,155,300,25,ex.getMessage());
+                        return;
+                    }
+                    
+                    try{
+                        jugador.setId_Legal(idLegal);
+                    }catch(Exception ex){
+                        mostrarMissatgeError(452,230,450,25,ex.getMessage());
+                        return;
+                    }
+                    
+                    try{
+                        jugador.setIban(iban);
+                    }catch(Exception ex){
+                        mostrarMissatgeError(452,305,450,25,ex.getMessage());
+                        return;
+                    }
+                    
+                    try{
+                        jugador.setCodiPostal(codiPostal);
+                    }catch(Exception ex){
+                        mostrarMissatgeError(800,80,450,25,ex.getMessage());
+                        return;
+                    }
+                    
+                    try{
+                        jugador.setAdreca(adreca);
+                    }catch(Exception ex){
+                        mostrarMissatgeError(800,155,450,25,ex.getMessage());
+                        return;
+                    }
+                    
+                    try{
+                        jugador.setPoblacio(poblacio);
+                    }catch(Exception ex){
+                        mostrarMissatgeError(800,230,450,25,ex.getMessage());
                         return;
                     }
                     
                     jugador = new Jugador(nom,cognom,sexe,dataNaix,foto,adreca,codiPostal,poblacio,iban,idLegal,any);
                 } catch (ParseException ex) {
-                    controlador.missatgeError("la Data no esta en un format correcte, Format correcte: dd/MM/yyyy");
+                    mostrarMissatgeError(805,310,250,25,"Data en format no vàlid");
                     return;
                 }catch (Exception ex) {
                     controlador.missatgeError(ex.getMessage());
@@ -391,6 +450,14 @@ public class SwingFrameCrearJugador {
                 }
             }
         });
+    }
+    
+    public void mostrarMissatgeError(int x, int y, int width, int height, String missatge){
+        lblError = new JLabel(missatge);
+        lblError.setForeground(Color.RED);
+        lblError .setBounds(x, y, width, height);
+        panel.add(lblError);
+        actualitzarPanel();
     }
     
     

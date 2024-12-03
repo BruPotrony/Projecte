@@ -32,6 +32,15 @@ public class Usuari {
         
         this.setNom(nom);
     }
+    
+    public Usuari(String login, String password, boolean estaEncriptada) {
+        this.setLogin(login);
+        if (estaEncriptada){
+            this.password=password;
+        }else{
+            this.setPassword(password);
+        }
+    }
 
     public Usuari() {
     }

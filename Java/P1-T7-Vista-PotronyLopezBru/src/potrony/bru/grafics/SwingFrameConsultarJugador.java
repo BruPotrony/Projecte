@@ -269,7 +269,7 @@ public class SwingFrameConsultarJugador {
     }
 
     private void inicialitzarTaula() {
-        String[] columnNames = {"Nom", "Cognom", "NIF", "Edat", "Categoria"};
+        String[] columnNames = {"Nom", "Cognom", "NIF", "Edat", "Categoria","Sexe"};
 
         Object[][] data = {};
         
@@ -343,6 +343,7 @@ public class SwingFrameConsultarJugador {
                     jugador.getId_Legal(),
                     jugador.calcularEdatIniciAnyActual(jugador.getData_naix()),
                     categoriaJugador,
+                    jugador.getSexe().toString()
                 };
                 tableModel.addRow(row);
             }
@@ -380,8 +381,6 @@ public class SwingFrameConsultarJugador {
                         controlador.missatgeConfirmacio("Jugador eliminat correctament");
                         panel.revalidate();
                         panel.repaint();
-                    } else {
-                        controlador.missatgeConfirmacio("Operació cancelada.");
                     }
                 } catch (Exception ex) {
                     controlador.missatgeError("ERROR: El jugador esta en un equip");
