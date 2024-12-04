@@ -11,8 +11,6 @@ import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -28,7 +26,6 @@ import javax.swing.table.DefaultTableModel;
 import potrony.bru.Interface.GestorSportManagerException;
 import potrony.bru.Interface.SportManagerInterfaceCP;
 import potrony.bru.SportManager.Categoria;
-import potrony.bru.SportManager.EnumTipus;
 import potrony.bru.SportManager.Equip;
 import potrony.bru.controladors.SwingControladorUsuari;
 
@@ -53,6 +50,7 @@ public class SwingFrameConsultarEquip {
 
     JLabel labelJRS;
     JButton btnEliminar;
+    JButton btnInforme;
     
     JScrollPane jspTaula;
     DefaultTableModel tableModel;
@@ -102,13 +100,6 @@ public class SwingFrameConsultarEquip {
         inicialitzarTaula();
         panel.add(jspTaula);
         
-        labelJRS = new JLabel("<html><u><font color='#ADD8E6'>Crear informe Jasper Report Server</font></u></html>");
-        labelJRS.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        labelJRS.setFont(new Font("Arial", Font.PLAIN, 15));
-        labelJRS.setBounds(420, 400, 300, 30); 
-        panel.add(labelJRS);
-        configurarLabelJRS();
-        
         JLabel missatgeInfo = new JLabel(
             "<html><span style='color:yellow;'>&#9888;</span> Doble clic sobre equip per a assignar Jugadors</html>"
         );
@@ -118,9 +109,15 @@ public class SwingFrameConsultarEquip {
         
         btnEliminar = new JButton();
         btnEliminar.setText("Eliminar");
-        btnEliminar.setBounds(480,450,120,40);
+        btnEliminar.setBounds(400,450,120,40);
         panel.add(btnEliminar);
         configurarBotoEliminar();
+        
+        btnInforme = new JButton();
+        btnInforme.setText("Crear Informe");
+        btnInforme.setBounds(580,450,120,40);
+        panel.add(btnInforme);
+        configurarBotobtnInforme();
                     
         frameConsultarEquip.add(panel);
     }
@@ -307,8 +304,15 @@ public class SwingFrameConsultarEquip {
         });
     }
 
-    private void configurarLabelJRS() {
-        //throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    private void configurarBotobtnInforme() {
+        btnEliminar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+            }
+        });
     }
+
+
 
 }

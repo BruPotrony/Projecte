@@ -1344,10 +1344,11 @@ public class SportManagerOracle implements SportManagerInterfaceCP {
     
     
     @Override
-    public boolean esTitular(long idJugador) throws GestorSportManagerException {
+    public boolean esTitular(long idJugador, int temporada) throws GestorSportManagerException {
         if (psEsTitular == null){
             try {
-                psEsTitular = conn.prepareStatement("select id_jugador from membre where id_jugador = ? AND titular_convidat='T'");
+                psEsTitular = conn.prepareStatement("select m.id_jugador from membre m join equip e ON e.id = m.id_equip " +
+                                                "where m.id_jugador = ? AND m.titular_convidat='T' AND e.any_temporada = ? ");
             } catch (SQLException ex) {
                 throw new GestorSportManagerException("Error en preparar statement psEsTitular", ex);
             }
@@ -1355,6 +1356,7 @@ public class SportManagerOracle implements SportManagerInterfaceCP {
         
         try {
             psEsTitular.setLong(1, idJugador);
+            psEsTitular.setInt(2, temporada);
 
             try (ResultSet rs = psEsTitular.executeQuery()) {
                 return rs.next(); // Retorna true si existeix una fila, és a dir, el jugador és titular
@@ -1543,7 +1545,6 @@ public class SportManagerOracle implements SportManagerInterfaceCP {
             psCanviarTitularitat.executeUpdate();
 
         } catch (SQLException ex) {
-            ex.printStackTrace();
             throw new GestorSportManagerException("Error en canviar la titularitat", ex);
         }
     }

@@ -195,7 +195,7 @@ public interface SportManagerInterfaceCP {
     boolean afegirJugadorEquip(Membre membre)throws GestorSportManagerException;
     
     /*Retorna cert si ja es titular en algun equip*/
-    boolean esTitular(long idJugador)throws GestorSportManagerException;
+    boolean esTitular(long idJugador, int temporada)throws GestorSportManagerException;
     
     /*Eliminar jugador d'un equip*/
     boolean eliminarJugadorEquip(long idJugador, long idEquip)throws GestorSportManagerException;

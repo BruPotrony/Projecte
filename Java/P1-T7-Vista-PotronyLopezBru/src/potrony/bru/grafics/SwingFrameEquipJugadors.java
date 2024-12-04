@@ -334,7 +334,7 @@ public class SwingFrameEquipJugadors {
                 try{
                     long idJugador = bd.getGeneratedJugadorId(idLegal);
                     boolean estaJugadorEnEquip = bd.estaJugadorEnEquip(idJugador,equip.getId());
-                    boolean esTitularAlgunEquip = bd.esTitular(idJugador);
+                    boolean esTitularAlgunEquip = bd.esTitular(idJugador, equip.getIdTemporada());
                     boolean estaCbxTitularApretat = (Boolean)table.getValueAt(row, 7);
                     
                     if ((Boolean)table.getValueAt(row, 6)){
