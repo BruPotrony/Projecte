@@ -218,6 +218,11 @@ END;
 
 
 
+/*
+
+Aquest ultim el comento ja que sino quan vull afegir un jugador com a titular, s'ha de guardar com a convidat en tots els altre equips
+i si tinc un trigger que comprova que la titularitat sigui unica i aquest comprova que no es pugui tenir un jugador sense titularitat enlloc
+dona error ja que no es pot executar cap abans que l'altre
 
 CREATE OR REPLACE TRIGGER trg_check_titularminim
 BEFORE INSERT OR UPDATE ON MEMBRE
@@ -235,6 +240,8 @@ BEGIN
         END IF;
 END;
 /
+*/
+
 
 
 

@@ -10,11 +10,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -35,8 +38,10 @@ import potrony.bru.Interface.SportManagerInterfaceCP;
 import potrony.bru.SportManager.Categoria;
 import potrony.bru.SportManager.EnumSexe;
 import potrony.bru.SportManager.EnumTipus;
+import potrony.bru.SportManager.EnumTitular;
 import potrony.bru.SportManager.Equip;
 import potrony.bru.SportManager.Jugador;
+import potrony.bru.SportManager.Membre;
 import potrony.bru.controladors.SwingControladorUsuari;
 
 /**
@@ -53,9 +58,7 @@ public class SwingFrameEquipJugadors {
     private static JFrame frameEquipJugadors;
 
     SwingControladorUsuari controlador;
-    SportManagerInterfaceCP bd; 
-    String nomEquip;
-    int temporada;
+    SportManagerInterfaceCP bd;
     
     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
     
@@ -79,12 +82,16 @@ public class SwingFrameEquipJugadors {
     DefaultTableModel tableModel;
     JTable table;
     
+    List<Integer> rowEditades;
+    Equip equip;
+    
     //Aquesta variable es per a que al fer el dispose del frame
     //No crei confusions, explicat mes endevant
     private boolean isProcessingMenu = false;
 
 
     public SwingFrameEquipJugadors(SwingControladorUsuari controlador, SportManagerInterfaceCP bd, String nomEquip, int any) {
+        
         frameEquipJugadors = new JFrame();
         frameEquipJugadors.setSize(AMPLADA, ALTURA);
         frameEquipJugadors.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -95,8 +102,14 @@ public class SwingFrameEquipJugadors {
         
         this.controlador = controlador;
         this.bd = bd;
-        this.nomEquip=nomEquip;
-        this.temporada=any;
+        this.rowEditades = new ArrayList<>();
+        
+        try {
+            equip = bd.loadEquipNom(nomEquip, any);
+        } catch (GestorSportManagerException ex) {
+            controlador.missatgeError("Error en cargar l'equip");
+            return;
+        }
         
         panel = new JPanel();
         panel.setLayout(null); 
@@ -121,7 +134,7 @@ public class SwingFrameEquipJugadors {
         frameEquipJugadors.setJMenuBar(menuBar);
         configurarMenu();
         
-        JLabel titol = new JLabel("Equip: "+nomEquip);
+        JLabel titol = new JLabel("Equip: "+equip.getNom());
         titol.setFont(new Font("Arial", Font.BOLD, 20));
         titol.setBounds(50, 30, 800, 30);
         panel.add(titol);
@@ -186,6 +199,7 @@ public class SwingFrameEquipJugadors {
         btnGuardar.setText("Guardar");
         btnGuardar.setBounds(650,450,120,40);
         panel.add(btnGuardar);
+        configurarBotoGuardar();
         
         btnBuscar = new JButton();
         btnBuscar.setText("Buscar");
@@ -307,66 +321,114 @@ public class SwingFrameEquipJugadors {
             }
         });
     }
+    
+    private void configurarBotoGuardar() {
+        btnGuardar.addActionListener((ActionEvent e) -> {
+            
+            if (rowEditades.isEmpty()){
+                controlador.missatgeError("No s'ha modificat cap jugador");
+                return;
+            }
+            
+            for (Integer row : rowEditades) {
+                String idLegal = table.getValueAt(row, 2).toString().trim();
+                Membre membre = null;
+                EnumTitular titularitat;
+                
+                try{
+                    long idJugador = bd.getGeneratedJugadorId(idLegal);
+                    boolean estaJugadorEnEquip = bd.estaJugadorEnEquip(idJugador,equip.getId());
+                    boolean esTitularAlgunEquip = bd.esTitular(idJugador);
+                    boolean estaCbxTitularApretat = (Boolean)table.getValueAt(row, 7);
+                    
+                    if ((Boolean)table.getValueAt(row, 6)){
+                        if (estaCbxTitularApretat) {
+
+                            if (esTitularAlgunEquip) {
+                                bd.remplacarTitularConvidat(idJugador);
+                            }
+                            System.out.println("Arribo");
+                            titularitat = EnumTitular.T;
+                        } else {
+                            titularitat = EnumTitular.C;
+                        }
+
+                        if (!estaJugadorEnEquip){
+                            membre = new Membre(equip.getId(), idJugador, titularitat);
+                            bd.afegirJugadorEquip(membre);
+                        }else{
+                            
+                            configurar aquest metode
+                            //bd.canviarTitularitat(idJugador,equip.getId(),titularitat.toString());
+                        }
+                        
+                    }else{
+                        if (estaJugadorEnEquip){
+                            bd.eliminarJugadorEquip(idJugador,equip.getId());
+                        }else{
+                            return;
+                        }
+                        
+                    }
+                    
+                }catch (Exception ex){
+                    controlador.missatgeError("Error: "+ex.getMessage());
+                    rowEditades.clear();
+                    return;
+                }                    
+            }
+            controlador.missatgeConfirmacio("Canvis guardats correctament");
+            
+            rowEditades.clear();
+        });
+    }
 
     private void configurarBotoCancelar() {
-        btnCancelar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controlador.moveToConsultarEquip(frameEquipJugadors);
-            }
+        btnCancelar.addActionListener((ActionEvent e) -> {
+            controlador.moveToConsultarEquip(frameEquipJugadors);
         });
     }
     
         private void configurarBotoBuscar() {
-        btnBuscar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    String nom = txtfNom.getText().equals("🔎Nom") ? "" : txtfNom.getText().trim();
-                    String idLegal = txtfNif.getText().equals("🔎DNI") ? "" :txtfNif.getText().trim();
-                    String dataNaixStr = txtfDataNaix.getText().equals("🔎Naix(dd/MM/yyyy)") ?"":txtfDataNaix.getText().trim();
-                    Date dataNaix = null;
-
-                    if (!dataNaixStr.isEmpty()) {
-                        try {
-                            SimpleDateFormat sdf    = new SimpleDateFormat("dd/MM/yyyy");
-                            dataNaix = sdf.parse(dataNaixStr);
-                        } catch (ParseException ex) {
-                            controlador.missatgeError("Data no valida");
-                            return;
-                        }
+        btnBuscar.addActionListener((ActionEvent e) -> {
+            try {
+                String nom = txtfNom.getText().equals("🔎Nom") ? "" : txtfNom.getText().trim();
+                String idLegal = txtfNif.getText().equals("🔎DNI") ? "" :txtfNif.getText().trim();
+                String dataNaixStr = txtfDataNaix.getText().equals("🔎Naix(dd/MM/yyyy)") ?"":txtfDataNaix.getText().trim();
+                Date dataNaix = null;
+                if (!dataNaixStr.isEmpty()) {
+                    try {
+                        SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy");
+                        dataNaix = sdf1.parse(dataNaixStr);
+                    }catch (ParseException ex) {
+                        controlador.missatgeError("Data no valida");
+                        return;
                     }
-                    
-                    List<Jugador> jugadors;
-
-                    if (nom.isEmpty() && idLegal.isEmpty() && dataNaix == null) {
-                        jugadors = bd.loadJugadors();
-                    }
-
-                    
-
-                    if (!nom.isEmpty() && idLegal.isEmpty() && dataNaix == null) {
-                        jugadors = bd.loadJugadorNomNifDatanaix(nom, null, null);
-                        
-                    } else if (nom.isEmpty() && !idLegal.isEmpty() && dataNaix == null) {
-                        jugadors = bd.loadJugadorNomNifDatanaix(null, idLegal, null);
-                        
-                    } else if (nom.isEmpty() && idLegal.isEmpty() && dataNaix != null) {
-                        jugadors = bd.loadJugadorNomNifDatanaix(null, null, dataNaix);
-                        
-                    } else {
-                        jugadors = bd.loadJugadorNomNifDatanaix(nom, idLegal, dataNaix);
-                    }
-
-                    if (!jugadors.isEmpty()) {
-                        inserirJugadorsTaula(jugadors);
-                    } else {
-                        controlador.missatgeError("No hi ha cap jugador amb els parametres especificats.");
-                        tableModel.setRowCount(0);
-                    }
-                } catch (GestorSportManagerException ex) {
-                    controlador.missatgeError(ex.getMessage());
                 }
+                List<Jugador> jugadors;
+                if (nom.isEmpty() && idLegal.isEmpty() && dataNaix == null) {
+                    jugadors = bd.loadJugadors();
+                }
+                if (!nom.isEmpty() && idLegal.isEmpty() && dataNaix == null) {
+                    jugadors = bd.loadJugadorNomNifDatanaix(nom, null, null);
+                    
+                } else if (nom.isEmpty() && !idLegal.isEmpty() && dataNaix == null) {
+                    jugadors = bd.loadJugadorNomNifDatanaix(null, idLegal, null);
+                    
+                } else if (nom.isEmpty() && idLegal.isEmpty() && dataNaix != null) {
+                    jugadors = bd.loadJugadorNomNifDatanaix(null, null, dataNaix);
+                    
+                } else {
+                    jugadors = bd.loadJugadorNomNifDatanaix(nom, idLegal, dataNaix);
+                }
+                if (!jugadors.isEmpty()) {
+                    inserirJugadorsTaula(jugadors);
+                } else {
+                    controlador.missatgeError("No hi ha cap jugador amb els parametres especificats.");
+                    tableModel.setRowCount(0);
+                }
+            }catch (GestorSportManagerException ex) {
+                controlador.missatgeError(ex.getMessage());
             }
         });
     }
@@ -435,6 +497,10 @@ public class SwingFrameEquipJugadors {
 
             if (column == 6) {
                 Object valueInColumn6 = tableModel.getValueAt(row, column);
+                
+                if (!rowEditades.contains(row)){
+                    rowEditades.add(row);
+                }
 
                 if (valueInColumn6 instanceof Boolean) {
                     boolean isChecked = (Boolean) valueInColumn6;
@@ -446,6 +512,10 @@ public class SwingFrameEquipJugadors {
                         }
                     }
                     table.repaint();
+                }
+            }else if (column==7){
+                if (!rowEditades.contains(row)){
+                    rowEditades.add(row);
                 }
             }
         });
@@ -485,11 +555,10 @@ public class SwingFrameEquipJugadors {
             if(filtre.getSelectedIndex()!=0){
                 ordenarJugadors(jugadors);
             }
-            
-            Equip equip = bd.loadEquipNom(nomEquip, temporada);
+
             Categoria cat = bd.loadCategoriaId(equip.getIdCategoria());
 
-            HashMap<Long,Boolean> jugadorsEnEquip = bd.loadJugadorsTitularIdEquip(bd.getGeneratedEquipId(nomEquip, temporada));
+            HashMap<Long,Boolean> jugadorsEnEquip = bd.loadJugadorsTitularIdEquip(equip.getId());
             
             for (Jugador jugador : jugadors) {
                 String categoriaJugador = calcularCategoria(jugador.calcularEdatIniciAnyActual(jugador.getData_naix())).toString();

@@ -134,6 +134,12 @@ public interface SportManagerInterfaceCP {
     si ho ha completat*/
     boolean eliminarJugadorIdLegal (String idLegal)throws GestorSportManagerException;
     
+    /**
+     * Retorna id del jugador el qual te idLegal
+     * que li passem
+     */
+    long getGeneratedJugadorId(String idLegal) throws GestorSportManagerException;
+    
     
     
 
@@ -206,8 +212,26 @@ public interface SportManagerInterfaceCP {
     /*Carrega tots els equips que hi ha el jugador amb idJugador*/
     List<Equip> loadEquipsIdJugador(long idJugador)throws GestorSportManagerException;
     
+    /**
+     * Comprova si el jugador esta en equip
+     */
+    boolean estaJugadorEnEquip(long idJugador,long idEquip)throws GestorSportManagerException;
+    
+    /**
+     * Si el jugador es titular en algun equip, el reemplaça com a 
+     * convidat
+     */
+    void remplacarTitularConvidat(long idJugador)throws GestorSportManagerException;
             
-            
+    /**
+     * Canvia la titularitat, si un jugador es Convidat, passa a ser titular i al reves
+     */
+    void canviarTitularitat(long idJugador, long idEquip, String titularitat)throws GestorSportManagerException;
+    
+    
+    
+    
+    
             
     
     /********************************OTHERS**************************************************/  
