@@ -91,7 +91,7 @@ public class SportManagerOracle implements SportManagerInterfaceCP {
     private PreparedStatement psLoadJugadorsTitularEquip;
     private PreparedStatement psLoadEquipsJugador;
     private PreparedStatement psTitularConvidat;
-    private PreparedStatement canviarTitularitat;
+    private PreparedStatement psCanviarTitularitat;
     
     
     public SportManagerOracle() throws GestorSportManagerException {
@@ -1337,7 +1337,6 @@ public class SportManagerOracle implements SportManagerInterfaceCP {
             
             return rowUpdated>0;
         } catch (SQLException ex) {
-            ex.printStackTrace();
             throw new GestorSportManagerException("Error en afegir jugador", ex);
         }
     }
@@ -1527,7 +1526,25 @@ public class SportManagerOracle implements SportManagerInterfaceCP {
     
     @Override
     public void canviarTitularitat(long idJugador, long idEquip, String titularitat)throws GestorSportManagerException{
-        
+        if (psCanviarTitularitat == null) {
+            try {
+                psCanviarTitularitat = conn.prepareStatement(
+                    "UPDATE membre SET titular_convidat = ? WHERE id_jugador = ? AND id_equip = ?");
+            } catch (SQLException ex) {
+                throw new GestorSportManagerException("Error en preparar la sentencia psCanviarTitularitat", ex);
+            }
+        }
+
+        try {
+            psCanviarTitularitat.setString(1, titularitat);
+            psCanviarTitularitat.setLong(2, idJugador);
+            psCanviarTitularitat.setLong(3, idEquip);
+
+            psCanviarTitularitat.executeUpdate();
+
+        } catch (SQLException ex) {
+            throw new GestorSportManagerException("Error en canviar la titularitat", ex);
+        }
     }
     
     

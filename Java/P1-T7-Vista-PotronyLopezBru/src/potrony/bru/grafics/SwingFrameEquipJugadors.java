@@ -347,7 +347,6 @@ public class SwingFrameEquipJugadors {
                             if (esTitularAlgunEquip) {
                                 bd.remplacarTitularConvidat(idJugador);
                             }
-                            System.out.println("Arribo");
                             titularitat = EnumTitular.T;
                         } else {
                             titularitat = EnumTitular.C;
@@ -358,8 +357,7 @@ public class SwingFrameEquipJugadors {
                             bd.afegirJugadorEquip(membre);
                         }else{
                             
-                            configurar aquest metode
-                            //bd.canviarTitularitat(idJugador,equip.getId(),titularitat.toString());
+                            bd.canviarTitularitat(idJugador,equip.getId(),titularitat.toString());
                         }
                         
                     }else{
