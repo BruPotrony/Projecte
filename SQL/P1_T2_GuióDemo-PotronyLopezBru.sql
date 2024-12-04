@@ -107,20 +107,22 @@ CREATE OR REPLACE TRIGGER trg_titular_unic
 BEFORE INSERT OR UPDATE ON MEMBRE
 FOR EACH ROW
 DECLARE
-	v_comptador NUMBER;
+    PRAGMA AUTONOMOUS_TRANSACTION; -- Utilitzo una transacció autonoma ja que sino em donava errors al modificar la titularitat
+    v_comptador NUMBER;
 BEGIN
-	IF :NEW.titular_convidat = 'T' THEN
-		
-		SELECT COUNT(*) 
-		INTO v_comptador 
-		FROM MEMBRE m JOIN EQUIP e ON m.id_equip = e.id
-		WHERE m.id_jugador = :NEW.id_jugador AND m.titular_convidat = 'T'
-		AND e.any_temporada = (SELECT any_temporada FROM EQUIP WHERE id = :NEW.id_equip);
-		
-		IF v_comptador > 0 THEN
-			RAISE_APPLICATION_ERROR(-20002, 'El jugador ja és titular en un altre equip aquesta temporada');
-		END IF;
-	END IF;
+    IF :NEW.titular_convidat = 'T' THEN
+        SELECT COUNT(*) 
+        INTO v_comptador
+        FROM MEMBRE m JOIN EQUIP e ON m.id_equip = e.id
+        WHERE m.id_jugador = :NEW.id_jugador 
+          AND m.titular_convidat = 'T'
+          AND e.any_temporada = (SELECT any_temporada FROM EQUIP WHERE id = :NEW.id_equip);
+
+        IF v_comptador > 0 THEN
+            RAISE_APPLICATION_ERROR(-20002, 'El jugador ja és titular en un altre equip aquesta temporada');
+        END IF;
+    END IF;
+    COMMIT;
 END;
 /
 

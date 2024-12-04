@@ -1543,6 +1543,7 @@ public class SportManagerOracle implements SportManagerInterfaceCP {
             psCanviarTitularitat.executeUpdate();
 
         } catch (SQLException ex) {
+            ex.printStackTrace();
             throw new GestorSportManagerException("Error en canviar la titularitat", ex);
         }
     }

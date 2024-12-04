@@ -16,11 +16,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -356,8 +352,9 @@ public class SwingFrameEquipJugadors {
                             membre = new Membre(equip.getId(), idJugador, titularitat);
                             bd.afegirJugadorEquip(membre);
                         }else{
-                            
+
                             bd.canviarTitularitat(idJugador,equip.getId(),titularitat.toString());
+                            bd.confirmarCanvis();
                         }
                         
                     }else{
