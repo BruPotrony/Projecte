@@ -34,7 +34,7 @@ public class ComprovarMembre {
             if (afegit) {
                 System.out.println("El jugador s'ha afegit correctament a l'equip.");
                 
-                boolean esTitular = gestor.esTitular(membre.getIdJugador());
+                boolean esTitular = gestor.esTitular(membre.getIdJugador(),2024);
                 if (esTitular) {
                     System.out.println("El jugador és titular.");
                 } else {

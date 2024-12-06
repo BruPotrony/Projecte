@@ -132,6 +132,7 @@ public class SwingFrameForgetPassword {
                         if (p1.equals(p2)){
                             try {
                                 bd.modificarContrassenya(textFieldUsuari.getText(),p1) ;
+                                bd.confirmarCanvis();
                             } catch (GestorSportManagerException ex) {
                                 controlador.missatgeError("No existeix cap usuari amb nom "+textFieldUsuari.getText());
                                 return;

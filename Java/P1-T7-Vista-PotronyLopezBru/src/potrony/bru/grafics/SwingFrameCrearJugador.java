@@ -191,7 +191,7 @@ public class SwingFrameCrearJugador {
         txtfCodiPostal.setBounds(800, 45, 200, 40);
         panel.add(txtfCodiPostal);
         
-        JLabel adreca = new JLabel("Adreca:");
+        JLabel adreca = new JLabel("Adreça:");
         adreca.setFont(new Font("Arial", Font.PLAIN, 20));
         adreca.setBounds(690, 125, 100, 30); 
         panel.add(adreca);    
@@ -444,7 +444,8 @@ public class SwingFrameCrearJugador {
                    
                 try {
                         bd.saveJugador(jugador);
-                        controlador.missatgeConfirmacio("Jugador creat correctament.");                    
+                        controlador.missatgeConfirmacio("Jugador creat correctament.");  
+                        bd.confirmarCanvis();
                 } catch (Exception ex) {
                     controlador.missatgeError("Ja existeix jugador amb idLegal "+jugador.getId_Legal());
                 }

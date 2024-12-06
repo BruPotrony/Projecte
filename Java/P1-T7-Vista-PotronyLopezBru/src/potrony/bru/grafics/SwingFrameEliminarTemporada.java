@@ -168,6 +168,7 @@ public class SwingFrameEliminarTemporada{
                     bd.eliminarTemporada(any);
                     comboBoxAnys.removeItem(selectedItem);
                     controlador.missatgeConfirmacio("Temporada eliminada correctament.");
+                    bd.confirmarCanvis();
                 } catch (GestorSportManagerException ex) {
 
                     controlador.missatgeError("No es pot eliminar una temporada que conté dades.");

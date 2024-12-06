@@ -8,7 +8,6 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -130,8 +129,10 @@ public class SwingFrameEditarJugador {
         
         rbMasculi.setBounds(50, 370, 70, 20);
         panel.add(rbMasculi);
+        rbMasculi.setEnabled(false);
         rbFemeni.setBounds(130, 370, 70, 20);
         panel.add(rbFemeni);
+        rbFemeni.setEnabled(false);
         ButtonGroup rbGroup = new ButtonGroup();
         rbGroup.add(rbMasculi);
         rbGroup.add(rbFemeni);
@@ -227,6 +228,7 @@ public class SwingFrameEditarJugador {
         txtfDataNaix = new JTextField();
         txtfDataNaix.setFont(new Font("Arial", Font.PLAIN, 20));
         txtfDataNaix.setBounds(800, 274, 200, 40);
+        txtfDataNaix.setEditable(false);
         panel.add(txtfDataNaix);
         
         btnCancelar = new JButton();
@@ -412,6 +414,7 @@ public class SwingFrameEditarJugador {
                 try {
                     bd.modificarJugador(jugador.getId_Legal(), jugador);
                     controlador.missatgeConfirmacio("Jugador modificat correctament.");
+                    bd.confirmarCanvis();
                 } catch (Exception ex) {
 
                     controlador.missatgeError("Ja existeix jugador amb idLegal "+jugador.getId_Legal());

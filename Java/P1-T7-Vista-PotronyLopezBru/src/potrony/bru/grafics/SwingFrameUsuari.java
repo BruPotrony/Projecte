@@ -16,10 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import potrony.bru.CapaPersistencia.SportManagerOracle;
-import potrony.bru.Interface.GestorSportManagerException;
 import potrony.bru.Interface.SportManagerInterfaceCP;
-import potrony.bru.SportManager.Usuari;
 import potrony.bru.controladors.SwingControladorUsuari;
 
 /**

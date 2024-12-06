@@ -175,6 +175,7 @@ public class SwingFrameCrearTemporada{
                     bd.saveTemporada(new Temporada(any));
                     comboBoxAnys.addItem(selectedItem.toString());
                     controlador.missatgeConfirmacio("Temporada creada correctament.");
+                    bd.confirmarCanvis();
                     
                 } catch (GestorSportManagerException ex) {
 

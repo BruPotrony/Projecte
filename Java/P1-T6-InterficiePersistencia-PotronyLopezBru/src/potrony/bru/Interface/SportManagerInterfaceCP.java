@@ -154,6 +154,11 @@ public interface SportManagerInterfaceCP {
     /*Cargar un equip pel seu id*/
     Equip loadEquipId(long id) throws GestorSportManagerException;
     
+    /**
+     * Carga els equips segons la temporada
+     */
+    List<Equip>loadEquipTemporada(int temporada) throws GestorSportManagerException;
+    
     /*Per a cargar tots els equips*/
     List<Equip> loadEquips()throws GestorSportManagerException;
     

@@ -9,7 +9,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import potrony.bru.CapaPersistencia.SportManagerOracle;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.*;
 import potrony.bru.Interface.SportManagerInterfaceCP;
 import potrony.bru.controladors.SwingControladorUsuari;
 
@@ -24,18 +26,22 @@ public class SwingFrameMenu {
     
     private static JFrame frameMenu;
     
-    SwingControladorUsuari controlador;
-    SportManagerInterfaceCP bd;
+    private static SwingControladorUsuari controlador;
+    private static SportManagerInterfaceCP bd;
 
-    JButton btnTemporada;
-    JButton btnJugadors;
-    JButton btnEquips;
+    private JButton btnTemporada;
+    private JButton btnJugadors;
+    private JButton btnEquips;
+    private JButton btnExportar;
+    
+    private static String urlOracle, pswdOracle,userOracle;
     
     //Aquesta variable es per a que al fer el dispose del frame
     //No crei confusions, explicat mes endevant
     private boolean isProcessingMenu = false;
 
-    public SwingFrameMenu(SwingControladorUsuari controlador, SportManagerInterfaceCP bd) {
+    public SwingFrameMenu(SwingControladorUsuari controlador, SportManagerInterfaceCP bd,
+                        String urlOracle, String pswdOracle, String userOracle) {
         frameMenu = new JFrame();
         frameMenu.setSize(AMPLADA, ALTURA);
         frameMenu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -46,6 +52,9 @@ public class SwingFrameMenu {
         
         this.controlador = controlador;
         this.bd=bd;
+        this.urlOracle=urlOracle;
+        this.userOracle=userOracle;
+        this.pswdOracle = pswdOracle;
         
         
         JPanel panel = new JPanel();
@@ -54,21 +63,27 @@ public class SwingFrameMenu {
 
         btnEquips = new JButton();
         btnEquips.setText("Gestió Equips");
-        btnEquips.setBounds(180,70,200,40);
+        btnEquips.setBounds(190,50,200,40);
         panel.add(btnEquips);
         configurarBotoEquip();
         
         btnJugadors = new JButton();
         btnJugadors.setText("Gestió Jugadors");
-        btnJugadors.setBounds(180,150,200,40);
+        btnJugadors.setBounds(190,120,200,40);
         panel.add(btnJugadors);
         configurarBotoJugador();
         
         btnTemporada = new JButton();
         btnTemporada.setText("Gestió Temporada");
-        btnTemporada.setBounds(180,230,200,40);
+        btnTemporada.setBounds(190,190,200,40);
         panel.add(btnTemporada);
         configurarBotoTemporada();
+        
+        btnExportar = new JButton();
+        btnExportar.setText("Exportar Dades");
+        btnExportar.setBounds(190,260,200,40);
+        panel.add(btnExportar);
+        configurarBotoExportar();
         
         
         frameMenu.add(panel);
@@ -104,6 +119,61 @@ public class SwingFrameMenu {
                 controlador.moveToCrearEquip(frameMenu);
             }
         });
+    }
+
+    private void configurarBotoExportar() {
+        btnExportar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                String[] tables = {"CATEGORIA", "EQUIP", "JUGADOR","MEMBRE","TEMPORADA","USUARI"};
+
+                for (String tableName : tables) {
+                    exportTableToCSV(tableName);
+                }
+                controlador.missatgeConfirmacio("dades exportades a la ruta:\nP1-T7-Vista-PotronyLopezBru\\exportacions");
+            }
+        });
+    }
+    
+    
+    public static void exportTableToCSV(String tableName) {
+        String csvFile = "exportacions/" + tableName + ".csv";
+
+        try (Connection conn = DriverManager.getConnection(urlOracle, userOracle, pswdOracle)) {
+            String sql = "SELECT * FROM " + tableName;
+            Statement stmt = conn.createStatement();
+            ResultSet resultSet = stmt.executeQuery(sql);
+
+            ResultSetMetaData metaData = resultSet.getMetaData();
+            int columnCount = metaData.getColumnCount();
+
+            FileWriter csvWriter = new FileWriter(csvFile);
+
+            for (int i = 1; i <= columnCount; i++) {
+                csvWriter.append(metaData.getColumnName(i));
+                if (i < columnCount) {
+                    csvWriter.append(",");
+                }
+            }
+            csvWriter.append("\n");
+
+            while (resultSet.next()) {
+                for (int i = 1; i <= columnCount; i++) {
+                    csvWriter.append(resultSet.getString(i));
+                    if (i < columnCount) {
+                        csvWriter.append(",");
+                    }
+                }
+                csvWriter.append("\n");
+            }
+
+            csvWriter.flush();
+            csvWriter.close();
+
+        } catch (SQLException | IOException e) {
+            controlador.missatgeError(e.getMessage());
+        }
     }
     
 }

@@ -12,6 +12,7 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Properties;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -33,6 +34,7 @@ import potrony.bru.grafics.SwingFrameUsuari;
 import potrony.bru.Interface.SportManagerInterfaceCP;
 import potrony.bru.grafics.SwingFrameConsultarEquip;
 import potrony.bru.grafics.SwingFrameEquipJugadors;
+import potrony.bru.grafics.SwingFrameJRS;
 
 /**
  *
@@ -51,14 +53,37 @@ public class SwingControladorUsuari{
     private SwingFrameCrearEquip frameCrearEquip;
     private SwingFrameConsultarEquip frameConsultarEquip;
     private SwingFrameEquipJugadors frameEquipJugadors;
+    private SwingFrameJRS frameJRS;
 
     
-    
+    public String urlJRS;
+    public String pswdJRS;
+    public String userJRS;
     private SportManagerInterfaceCP manager;
+    public String urlOracle;
+    public String pswdOracle;
+    public String userOracle;
     
-    public SwingControladorUsuari(SportManagerInterfaceCP manager, JFrame frameCarga) {
+    public SwingControladorUsuari(SportManagerInterfaceCP manager, JFrame frameCarga,
+                                    Properties propsJRS, Properties propsOracle) {
 
         this.manager = manager;
+        
+        try{
+            pswdJRS = propsJRS.getProperty("password");
+            urlJRS = propsJRS.getProperty("url");
+            userJRS = propsJRS.getProperty("user");
+        }catch (Exception ex){
+            this.missatgeError("Error en recuperar les dades del fitxer de propietats del JRS");
+        }
+        
+        try{
+            pswdOracle = propsOracle.getProperty("pwd");
+            urlOracle = propsOracle.getProperty("url");
+            userOracle = propsOracle.getProperty("user");
+        }catch (Exception ex){
+            this.missatgeError("Error en recuperar les dades del fitxer de propietats del Oracle");
+        }
         
         moveToLogin(frameCarga);
         
@@ -69,7 +94,7 @@ public class SwingControladorUsuari{
     
     public void moveToMenu(JFrame frame){
         frame.dispose();
-        frameMenu = new SwingFrameMenu(this,manager);
+        frameMenu = new SwingFrameMenu(this,manager, urlOracle, pswdOracle,userOracle);
     }
     
     public void moveToForgetPwd(JFrame frame){
@@ -120,6 +145,10 @@ public class SwingControladorUsuari{
     public void moveToEquipJugadors(JFrame frame,String nomEquip, int temporada){
         frame.dispose();
         frameEquipJugadors = new SwingFrameEquipJugadors(this,manager,nomEquip,temporada);
+    }
+    
+    public void moveToJRS(long idEquip){
+        frameJRS = new SwingFrameJRS(this,manager,idEquip, userJRS, pswdJRS, urlJRS);
     }
     
     
@@ -208,11 +237,11 @@ public class SwingControladorUsuari{
         JPanel panelError = new JPanel();
         panelError.setLayout(null);
 
-        JLabel labelError = new JLabel("<html><center>" + missatge + "</center></html>");
-        labelError.setBounds(50, 30, 300, 50);
-        labelError.setHorizontalAlignment(SwingConstants.CENTER);
-        labelError.setFont(new Font("Arial", Font.PLAIN, 16));
-        panelError.add(labelError);
+        JLabel labelConfiracio = new JLabel("<html><center>" + missatge + "</center></html>");
+        labelConfiracio.setBounds(50, 30, 300, 50);
+        labelConfiracio.setHorizontalAlignment(SwingConstants.CENTER);
+        labelConfiracio.setFont(new Font("Arial", Font.PLAIN, 15));
+        panelError.add(labelConfiracio);
 
         JButton btnAceptar = new JButton("Acceptar");
         btnAceptar.setBounds(150, 100, 100, 30);
@@ -287,17 +316,6 @@ public class SwingControladorUsuari{
             }
         }
         return false;
-    }
-    
-    
-    
-    private static void infoError(Throwable aux){
-        do{
-            if (aux.getMessage()!=null){
-                System.out.println("\t"+aux.getMessage());
-            }
-            aux=aux.getCause();
-        }while(aux!=null);
     }
 
 }

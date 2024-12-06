@@ -10,12 +10,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -342,6 +345,7 @@ public class SwingFrameEquipJugadors {
 
                             if (esTitularAlgunEquip) {
                                 bd.remplacarTitularConvidat(idJugador);
+                                bd.confirmarCanvis();
                             }
                             titularitat = EnumTitular.T;
                         } else {
@@ -352,9 +356,7 @@ public class SwingFrameEquipJugadors {
                             membre = new Membre(equip.getId(), idJugador, titularitat);
                             bd.afegirJugadorEquip(membre);
                         }else{
-
                             bd.canviarTitularitat(idJugador,equip.getId(),titularitat.toString());
-                            bd.confirmarCanvis();
                         }
                         
                     }else{
@@ -363,17 +365,28 @@ public class SwingFrameEquipJugadors {
                         }else{
                             return;
                         }
-                        
                     }
                     
                 }catch (Exception ex){
-                    controlador.missatgeError("Error: "+ex.getMessage());
+                    int anyEquip = equip.getIdTemporada();
+                    int anyActual = LocalDate.now().getYear();
+
+                    if (anyEquip > anyActual) {
+                        controlador.missatgeError("En la temporada: "+anyEquip+" el jugador sera d'una edat superior a la permesa en la categoria");
+                    }else{
+                        controlador.missatgeError("Error: "+ex.getMessage());
+                    }
+                    
                     rowEditades.clear();
                     return;
                 }                    
             }
             controlador.missatgeConfirmacio("Canvis guardats correctament");
-            
+            try {
+                bd.confirmarCanvis();
+            } catch (GestorSportManagerException ex) {
+                controlador.missatgeError(ex.getMessage());
+            }
             rowEditades.clear();
         });
     }

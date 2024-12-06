@@ -7,10 +7,6 @@ package potrony.bru.grafics;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -26,10 +22,8 @@ import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import potrony.bru.Interface.SportManagerInterfaceCP;
 import potrony.bru.SportManager.Categoria;
-import potrony.bru.SportManager.EnumSexe;
 import potrony.bru.SportManager.EnumTipus;
 import potrony.bru.SportManager.Equip;
-import potrony.bru.SportManager.Jugador;
 import potrony.bru.SportManager.Temporada;
 import potrony.bru.controladors.SwingControladorUsuari;
 
@@ -305,7 +299,8 @@ public class SwingFrameCrearEquip {
                    
                 try {
                         bd.saveEquip(equip);
-                        controlador.missatgeConfirmacio("Equip creat correctament.");                    
+                        controlador.missatgeConfirmacio("Equip creat correctament.");    
+                        bd.confirmarCanvis();
                 } catch (Exception ex) {
                     controlador.missatgeError("Ja existeix equip amb nom "+equip.getNom()+" en la temporada "+equip.getIdTemporada());
                 }

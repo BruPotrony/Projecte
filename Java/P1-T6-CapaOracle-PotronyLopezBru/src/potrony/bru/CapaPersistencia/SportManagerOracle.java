@@ -77,6 +77,7 @@ public class SportManagerOracle implements SportManagerInterfaceCP {
     
     private PreparedStatement psLoadEquipNom;
     private PreparedStatement psLoadEquipId;
+    private PreparedStatement psLoadEquipTemporada;
     private PreparedStatement psLoadEquips;
     private PreparedStatement psSaveEquip;
     private PreparedStatement psDeleteEquip;
@@ -753,14 +754,16 @@ public class SportManagerOracle implements SportManagerInterfaceCP {
         StringBuilder query = new StringBuilder("SELECT id, nom, cognom, sexe, foto, data_naix, adreca, codiPostal, poblacio, any_fi_revisio_medica, iban, idlegal FROM jugador Where 1=1");
 
         if (!nom.isEmpty()) {
-            query.append(" AND UPPER(nom) LIKE ? order by data_naix");
+            query.append(" AND UPPER(nom) LIKE ?");
         }
         if (!idLegal.isEmpty()) {
-            query.append(" AND idLegal LIKE ? order by data_naix");
+            query.append(" AND idLegal LIKE ?");
         }
         if (dataNaix != null) {
-            query.append(" AND data_naix = ? order by data_naix");
+            query.append(" AND data_naix = ?");
         }        
+        
+        query.append(" ORDER BY data_naix");
         
         try {
             psLoadJugadorNomNifDatanaix = conn.prepareStatement(query.toString());
@@ -1067,6 +1070,45 @@ public class SportManagerOracle implements SportManagerInterfaceCP {
 
         } catch (Exception ex) {
             throw new GestorSportManagerException("Error en recuperar equip amb id: " + id, ex);
+        }
+    }
+    
+    public List<Equip>loadEquipTemporada(int temporada) throws GestorSportManagerException{
+        List<Equip> equips = new ArrayList<>();
+
+        if (this.psLoadEquipTemporada == null) {
+            try {
+                psLoadEquipTemporada = conn.prepareStatement(
+                    "SELECT id, id_categoria, any_temporada, nom, tipus FROM equip where any_temporada = ? order by id_categoria"
+                );
+            } catch (Exception ex) {
+                throw new GestorSportManagerException("Error en preparar la sentencia psLoadEquipTemporada", ex);
+            }
+        }
+
+        try {
+            psLoadEquipTemporada.setInt(1, temporada);
+            ResultSet rs = psLoadEquipTemporada.executeQuery();
+
+            if (!rs.isBeforeFirst()) { 
+                return null;
+            }
+            
+            while (rs.next()) {
+                long id = rs.getLong("id");
+                long idCategoria = rs.getLong("id_categoria");
+                int getTemporada = rs.getInt("any_temporada");
+                String nom = rs.getString("nom");
+                String tipusStr = rs.getString("tipus");
+                EnumTipus tipus = tipusStr.equals("D") ? EnumTipus.D : tipusStr.equals("H") ? EnumTipus.H : EnumTipus.M;
+
+                Equip equip = new Equip(id, idCategoria, getTemporada, nom, tipus);
+                equips.add(equip);
+            }
+            return equips;
+
+        } catch (Exception ex) {
+            throw new GestorSportManagerException("Error en recuperar la llista d'equips", ex);
         }
     }
 
