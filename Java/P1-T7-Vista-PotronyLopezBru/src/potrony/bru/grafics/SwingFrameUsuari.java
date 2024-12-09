@@ -16,7 +16,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import potrony.bru.Interface.GestorSportManagerException;
 import potrony.bru.Interface.SportManagerInterfaceCP;
+import potrony.bru.SportManager.Usuari;
 import potrony.bru.controladors.SwingControladorUsuari;
 
 /**
@@ -36,6 +38,7 @@ public class SwingFrameUsuari{
     private JLabel labelForgetPwd;
     
     private JButton btnEntrar;
+    private JButton btnRegistrar;
     private JTextField textFieldUsuari;
     private JPasswordField textFieldpwd;
 
@@ -87,9 +90,15 @@ public class SwingFrameUsuari{
 
         btnEntrar = new JButton();
         btnEntrar.setText("Entrar");
-        btnEntrar.setBounds(235,300,120,40);
+        btnEntrar.setBounds(300,270,120,40);
         panel.add(btnEntrar);
         configurarBotoEntrar();
+        
+        btnRegistrar = new JButton();
+        btnRegistrar.setText("Crear Usuari");
+        btnRegistrar.setBounds(150,270,120,40);
+        panel.add(btnRegistrar);
+        configurarBotoRegistrar();
         
         
         frameUsuari.add(panel);
@@ -106,24 +115,24 @@ public class SwingFrameUsuari{
             @Override
             public void actionPerformed(ActionEvent e) {
                 
-//                Usuari usuTemp;
-//                try {
-//                    usuTemp = new Usuari(textFieldUsuari.getText(), new String(textFieldpwd.getPassword()), false);
-//                } catch (Exception ex) {
-//                    controlador.missatgeError("Usuari o contrassenya Incorrectes");
-//                    return;
-//                }
-//                
-//                try {
-//                    if (!bd.estaRegistrat(usuTemp)){
-//                        controlador.missatgeError("Usuari o contrassenya Incorrectes");
-//                        return;
-//                    }
-//                    
-//                } catch (GestorSportManagerException ex) {
-//                    controlador.missatgeError("Usuari o contrassenya Incorrectes");
-//                    return;
-//                }
+                Usuari usuTemp;
+                try {
+                    usuTemp = new Usuari(textFieldUsuari.getText(), new String(textFieldpwd.getPassword()), false);
+                } catch (Exception ex) {
+                    controlador.missatgeError("Usuari o contrassenya Incorrectes");
+                    return;
+                }
+                
+                try {
+                    if (!bd.estaRegistrat(usuTemp)){
+                        controlador.missatgeError("Usuari o contrassenya Incorrectes");
+                        return;
+                    }
+                    
+                } catch (GestorSportManagerException ex) {
+                    controlador.missatgeError("Usuari o contrassenya Incorrectes");
+                    return;
+                }
                 
                 controlador.moveToMenu(frameUsuari);
             }
@@ -135,6 +144,15 @@ public class SwingFrameUsuari{
             @Override
             public void mouseClicked(MouseEvent e) {
                 controlador.moveToForgetPwd(frameUsuari);
+            }
+        });
+    }
+
+    private void configurarBotoRegistrar() {
+        btnRegistrar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controlador.moveToRegistrar(frameUsuari);
             }
         });
     }

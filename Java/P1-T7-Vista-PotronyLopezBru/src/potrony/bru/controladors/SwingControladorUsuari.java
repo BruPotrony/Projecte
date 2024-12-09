@@ -35,6 +35,7 @@ import potrony.bru.Interface.SportManagerInterfaceCP;
 import potrony.bru.grafics.SwingFrameConsultarEquip;
 import potrony.bru.grafics.SwingFrameEquipJugadors;
 import potrony.bru.grafics.SwingFrameJRS;
+import potrony.bru.grafics.SwingFrameRegistrar;
 
 /**
  *
@@ -54,6 +55,7 @@ public class SwingControladorUsuari{
     private SwingFrameConsultarEquip frameConsultarEquip;
     private SwingFrameEquipJugadors frameEquipJugadors;
     private SwingFrameJRS frameJRS;
+    private SwingFrameRegistrar frameRegistrar;
 
     
     public String urlJRS;
@@ -149,6 +151,11 @@ public class SwingControladorUsuari{
     
     public void moveToJRS(long idEquip){
         frameJRS = new SwingFrameJRS(this,manager,idEquip, userJRS, pswdJRS, urlJRS);
+    }
+    
+    public void moveToRegistrar(JFrame frame){
+        frame.dispose();
+        frameRegistrar=new SwingFrameRegistrar(this,manager);
     }
     
     
